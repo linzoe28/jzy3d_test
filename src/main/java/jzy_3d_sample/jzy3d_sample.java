@@ -1,6 +1,9 @@
+package jzy_3d_sample;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jzy3d.analysis.AbstractAnalysis;
 import org.jzy3d.analysis.AnalysisLauncher;
 import org.jzy3d.chart.factories.AWTChartComponentFactory;
@@ -29,37 +32,33 @@ public class jzy3d_sample extends AbstractAnalysis {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        AnalysisLauncher.open(new SurfaceDemo());
+        try {
+            AnalysisLauncher.open(new jzy3d_sample());
+        } catch (Exception ex) {
+            Logger.getLogger(jzy3d_sample.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public void init() throws Exception {
-//        1	1.0	0.5	0.0	1.0	-0.5	0.0	-1.0	-0.5	0.0
-//        2	-1.0	-0.5	0.0	-1.0	0.5	0.0	1.0	0.5	0.0
-
-//        double[][] disDataProp = new double[][]{{1.0, 1.0, -1.0}, {0.5, -0.5, -0.5}, {0, 0, 0}};
-//        List<Polygon> polygons = new ArrayList<>();
-//        for (int i = 0; i < disDataProp.length - 1; i++) {
-//            for (int j = 0; j < disDataProp[i].length - 1; j++) {
-//                Polygon polygon = new Polygon();
-//                polygon.add(new Point(new Coord3d(i, j, disDataProp[i][j])));
-//                polygon.add(new Point(new Coord3d(i, j + 1, disDataProp[i][j + 1])));
-//                polygon.add(new Point(new Coord3d(i + 1, j + 1, disDataProp[i + 1][j + 1])));
-//                polygon.add(new Point(new Coord3d(i + 1, j, disDataProp[i + 1][j])));
-//                polygons.add(polygon);
-//            }
-//        }
-        Color[] colors = new Color[]{Color.BLUE, Color.CYAN, Color.GRAY, Color.GREEN, Color.MAGENTA};
         List<Polygon> polygons = new ArrayList<Polygon>();
-        for (int i = 0; i < 1000; i++) {
+        double[][][] meshs = new double[][][]{
+            {{1, 0.5, 0}, {1, -0.5, 0}, {-1, -0.5, 0}},
+            {{-1, -0.5, 0}, {-1, 0.5, 0}, {1, 0.5, 0}}
+        };
+        for (int i = 0; i < meshs.length; i++) {
             Polygon polygon = new Polygon();
-            polygon.add(new Point(new Coord3d(Math.random() * 100, Math.random() * 100, Math.random() * 100)));
-            polygon.add(new Point(new Coord3d(Math.random() * 100, Math.random() * 100, Math.random() * 100)));
-            polygon.add(new Point(new Coord3d(Math.random() * 100, Math.random() * 100, Math.random() * 100)));
-            polygon.setColor(colors[(int) Math.floor(Math.random() * colors.length)]);
-            polygons.add(polygon);
+            double[][] mesh = meshs[i];
+            for (int j = 0; j < 3; j++) {
+                polygon.add(new Point(new Coord3d(
+                        (float) mesh[j][0],
+                        (float) mesh[j][1],
+                        (float) mesh[j][2]
+                )));
+                
+                polygons.add(polygon);
+            }
         }
-
         // Create the object to represent the function over the given range.
         Shape surface = new Shape(polygons);
         //surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new org.jzy3d.colors.Color(1, 1, 1, 1f)));
@@ -68,7 +67,8 @@ public class jzy3d_sample extends AbstractAnalysis {
 
         chart = AWTChartComponentFactory.chart(Quality.Intermediate, "awt");
         chart.getScene().getGraph().add(surface);
+
+
     }
 
 }
-
