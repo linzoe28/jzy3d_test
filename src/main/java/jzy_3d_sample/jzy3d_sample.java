@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jzy3d.analysis.AbstractAnalysis;
 import org.jzy3d.analysis.AnalysisLauncher;
+import org.jzy3d.chart.Chart;
 import org.jzy3d.chart.factories.AWTChartComponentFactory;
 import org.jzy3d.colors.Color;
 import org.jzy3d.maths.Coord3d;
@@ -55,7 +56,7 @@ public class jzy3d_sample extends AbstractAnalysis {
                         (float) mesh[j][1],
                         (float) mesh[j][2]
                 )));
-                
+                polygon.setColor(Color.random());
                 polygons.add(polygon);
             }
         }
@@ -64,7 +65,7 @@ public class jzy3d_sample extends AbstractAnalysis {
         //surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new org.jzy3d.colors.Color(1, 1, 1, 1f)));
         surface.setWireframeDisplayed(true);
         surface.setWireframeColor(org.jzy3d.colors.Color.BLACK);
-
+        
         chart = AWTChartComponentFactory.chart(Quality.Intermediate, "awt");
         chart.getScene().getGraph().add(surface);
 
