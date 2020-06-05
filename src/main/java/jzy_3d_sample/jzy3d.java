@@ -5,17 +5,21 @@
  */
 package jzy_3d_sample;
 
+import au.com.bytecode.opencsv.CSVReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import org.jzy3d.chart.AWTChart;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.jzy3d.analysis.AbstractAnalysis;
+import org.jzy3d.analysis.AnalysisLauncher;
 import org.jzy3d.chart.factories.AWTChartComponentFactory;
-import org.jzy3d.javafx.JavaFXChartFactory;
+import org.jzy3d.colors.Color;
 import org.jzy3d.maths.Coord3d;
 import org.jzy3d.plot3d.primitives.Point;
 import org.jzy3d.plot3d.primitives.Polygon;
@@ -26,31 +30,44 @@ import org.jzy3d.plot3d.rendering.canvas.Quality;
  *
  * @author user
  */
-public class NewFXMain extends Application {
+public class jzy3d extends AbstractAnalysis {
+   List<Mesh> meshs = new ArrayList<>();
+   public jzy3d(List<Mesh> meshs){
+       this.meshs=meshs;
+   }
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        
+        Read_csvdata r=new Read_csvdata();
+//        List<Mesh> meshs=r.getdata(new File("./sample/sphere_point.csv"), new File("./sample/sphere_mesh.csv"));
+        List<Mesh> meshs=r.getdata(new File("./sample/cone_point.csv"), new File("./sample/cone_mesh.csv"));
+        try {
+            AnalysisLauncher.open(new jzy3d(meshs));
+        } catch (Exception ex) {
+            Logger.getLogger(jzy3d.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+  
 
     @Override
-    public void start(Stage primaryStage) {
-        Read_csvdata r=new Read_csvdata();
-        List<Mesh> meshs= r.getdata(new File("./sample/cone_point.csv"), new File("./sample/cone_mesh.csv"));
-        
+    public void init() throws Exception {
         List<Polygon> polygons = new ArrayList<Polygon>();
-//        double[][][] meshs = new double[][][]{
-//            {{-1, -0.5, 0}, {1, -0.5, 0}, {1, 0.5, 0}},
-//            {{-1, -0.5, 0}, {1, 0.5, 0}, {-1, 0.5, 0}}
-//        };
+         System.out.println(meshs.size());
         for (int i = 0; i < meshs.size(); i++) {
+            System.out.println(meshs.get(i));
             Polygon polygon = new Polygon();
-//            double[][] mesh = meshs[i];
             Vertex [] vertices=meshs.get(i).getVertices();
             for (int j = 0; j < 3; j++) {
                 polygon.add(new Point(new Coord3d(
-//                        (float) mesh[j][0],
-//                        (float) mesh[j][1],
-//                        (float) mesh[j][2]
                         (float) vertices[j].getX(),
                         (float) vertices[j].getY(),
                         (float) vertices[j].getZ()
                 )));
+                polygon.setColor(Color.random());
                 polygons.add(polygon);
             }
         }
@@ -58,30 +75,10 @@ public class NewFXMain extends Application {
         Shape surface = new Shape(polygons);
         //surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new org.jzy3d.colors.Color(1, 1, 1, 1f)));
         surface.setWireframeDisplayed(true);
-        surface.setFaceDisplayed(true);
         surface.setWireframeColor(org.jzy3d.colors.Color.BLACK);
 
-        JavaFXChartFactory factory = new JavaFXChartFactory();
-        AWTChart chart = (AWTChart) factory.newChart(Quality.Intermediate, "offscreen");
+        chart = AWTChartComponentFactory.chart(Quality.Intermediate, "awt");
         chart.getScene().getGraph().add(surface);
-        ImageView view = factory.bindImageView(chart);
 
-        StackPane root = new StackPane();
-        root.getChildren().add(view);
-
-        Scene scene = new Scene(root, 800, 600);
-        factory.addSceneSizeChangedListener(chart, scene);
-
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
-
 }
