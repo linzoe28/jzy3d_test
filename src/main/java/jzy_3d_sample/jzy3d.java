@@ -42,8 +42,8 @@ public class jzy3d extends AbstractAnalysis {
     public static void main(String[] args) {
         
         Read_csvdata r=new Read_csvdata();
-//        List<Mesh> meshs=r.getdata(new File("./sample/sphere_point.csv"), new File("./sample/sphere_mesh.csv"));
-        List<Mesh> meshs=r.getdata(new File("./sample/cone_point.csv"), new File("./sample/cone_mesh.csv"));
+        List<Mesh> meshs=r.getdata(new File("./sample/sphere_point.csv"), new File("./sample/sphere_mesh.csv"));
+//        List<Mesh> meshs=r.getdata(new File("./sample/cone_point.csv"), new File("./sample/cone_mesh.csv"));
         try {
             AnalysisLauncher.open(new jzy3d(meshs));
         } catch (Exception ex) {
