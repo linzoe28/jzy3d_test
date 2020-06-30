@@ -31,18 +31,22 @@ import org.jzy3d.plot3d.rendering.canvas.Quality;
  * @author user
  */
 public class jzy3d extends AbstractAnalysis {
-   List<Mesh> meshs = new ArrayList<>();
-   public jzy3d(List<Mesh> meshs){
-       this.meshs=meshs;
-   }
+
+    List<Mesh> meshs = new ArrayList<>();
+
+    public jzy3d(List<Mesh> meshs) {
+        this.meshs = meshs;
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
-        Read_csvdata r=new Read_csvdata();
-        List<Mesh> meshs=r.getdata(new File("./sample/sphere_point.csv"), new File("./sample/sphere_mesh.csv"));
+
+        Read_csvdata r = new Read_csvdata();
+        List<Mesh> meshs = r.getdata(new File("./sample/cone_fine_point.csv"), new File("./sample/cone_fine_mesh.csv"));
+//        List<Mesh> meshs=r.getdata(new File("./sample/chopper_point.csv"), new File("./sample/chopper_mesh.csv"));
+//        List<Mesh> meshs=r.getdata(new File("./sample/sphere_point.csv"), new File("./sample/sphere_mesh.csv"));
 //        List<Mesh> meshs=r.getdata(new File("./sample/cone_point.csv"), new File("./sample/cone_mesh.csv"));
         try {
             AnalysisLauncher.open(new jzy3d(meshs));
@@ -51,16 +55,14 @@ public class jzy3d extends AbstractAnalysis {
         }
     }
 
-  
-
     @Override
     public void init() throws Exception {
         List<Polygon> polygons = new ArrayList<Polygon>();
-         System.out.println(meshs.size());
+        System.out.println(meshs.size());
         for (int i = 0; i < meshs.size(); i++) {
             System.out.println(meshs.get(i));
             Polygon polygon = new Polygon();
-            Vertex [] vertices=meshs.get(i).getVertices();
+            Vertex[] vertices = meshs.get(i).getVertices();
             for (int j = 0; j < 3; j++) {
                 polygon.add(new Point(new Coord3d(
                         (float) vertices[j].getX(),
