@@ -5,17 +5,13 @@
  */
 package jzy_3d_sample;
 
-import au.com.bytecode.opencsv.CSVReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jzy_3d_sample.model.Mesh;
+import jzy_3d_sample.model.Vertex;
 import org.jzy3d.analysis.AbstractAnalysis;
 import org.jzy3d.analysis.AnalysisLauncher;
 import org.jzy3d.chart.factories.AWTChartComponentFactory;

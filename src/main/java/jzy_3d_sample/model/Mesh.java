@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jzy_3d_sample;
+package jzy_3d_sample.model;
 
 import org.apache.commons.math3.complex.Complex;
 
