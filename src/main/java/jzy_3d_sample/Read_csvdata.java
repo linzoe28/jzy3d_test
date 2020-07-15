@@ -35,12 +35,12 @@ public class Read_csvdata {
             }
             CSVReader reader_mesh = new CSVReader(new FileReader(meshFile), ',', '\'', 1);
             while ((nextLine = reader_mesh.readNext()) != null) {
-                Mesh m = new Mesh();
-                m.setVertices(new Vertex[]{
+                Mesh m = new Mesh(new Vertex[]{
                     new Vertex(points.get(nextLine[1])),
                     new Vertex(points.get(nextLine[2])),
                     new Vertex(points.get(nextLine[3])),
                 });
+                
                 meshs.add(m);
             }
 

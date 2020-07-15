@@ -5,23 +5,27 @@
  */
 package jzy_3d_sample.model;
 
+import org.jzy3d.maths.Coord3d;
+
 /**
  *
  * @author user
  */
-public class Vertex implements Comparable<Vertex>{
-    private double x,y,z;
+public class Vertex extends Coord3d implements Comparable<Vertex>{
+    public Vertex(float x, float y, float z){
+        super(x, y, z);
+    }
     
     public Vertex(double x, double y, double z){
-        this.x=x;
-        this.y=y;
-        this.z=z;
+        super((float)x, (float)y, (float)z);
+    }
+    
+    public Vertex(float [] xyz){
+        super(xyz[0], xyz[1], xyz[2]);
     }
     
     public Vertex(double [] xyz){
-        this.x=xyz[0];
-        this.y=xyz[1];
-        this.z=xyz[2];
+        super((float)xyz[0], (float)xyz[1], (float)xyz[2]);
     }
 
     public Vertex() {
@@ -29,27 +33,27 @@ public class Vertex implements Comparable<Vertex>{
     
     
     
-    public double getX() {
+    public float getX() {
         return x;
     }
 
-    public void setX(double x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public double getY() {
+    public float getY() {
         return y;
     }
 
-    public void setY(double y) {
+    public void setY(float y) {
         this.y = y;
     }
 
-    public double getZ() {
+    public float getZ() {
         return z;
     }
 
-    public void setZ(double z) {
+    public void setZ(float z) {
         this.z = z;
     }
 
