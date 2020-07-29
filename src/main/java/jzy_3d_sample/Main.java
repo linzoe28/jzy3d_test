@@ -14,6 +14,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -22,6 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import jzy_3d_sample.model.Mesh;
+import jzy_3d_sample.model.RenderModel;
 import org.jzy3d.chart.AWTChart;
 import org.jzy3d.colors.Color;
 import org.jzy3d.javafx.JavaFXChartFactory;
@@ -43,60 +45,14 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         Read_csvdata r = new Read_csvdata();
         List<Mesh> meshs = r.getdata(new File("./sample/cone_fine_point.csv"), new File("./sample/cone_fine_mesh.csv"));
-
-//        List<Polygon> polygons = new ArrayList<Polygon>();
-//
-//        for (int i = 0; i < meshs.size(); i++) {
-//            Polygon polygon = new Polygon();
-//            Vertex [] vertices=meshs.get(i).getVertices();
-//            for (int j = 0; j < 3; j++) {
-//                polygon.add(new Point(new Coord3d(
-//                        (float) vertices[j].getX(),
-//                        (float) vertices[j].getY(),
-//                        (float) vertices[j].getZ()
-//                )));
-//                polygons.add(polygon);
-//            }
-//        }
-        // Create the object to represent the function over the given range.
-        Shape surface = new Shape(new ArrayList<Polygon>(meshs));
-        //surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new org.jzy3d.colors.Color(1, 1, 1, 1f)));
-        surface.setWireframeDisplayed(true);
-        surface.setFaceDisplayed(true);
-        surface.setWireframeColor(org.jzy3d.colors.Color.BLACK);
-
-        JavaFXChartFactory factory = new JavaFXChartFactory();
-        AWTChart chart = (AWTChart) factory.newChart(Quality.Intermediate, "offscreen");
-        chart.getScene().getGraph().add(surface);
-        BoundingBox3d boundingBox3d = surface.getBounds();
-
-        List<Float> xSteps = range(boundingBox3d.getXmin(), boundingBox3d.getXmax(), 5);
-        List<Float> ySteps = range(boundingBox3d.getYmin(), boundingBox3d.getYmax(), 5);
-        List<Float> zSteps = range(boundingBox3d.getZmin(), boundingBox3d.getZmax(), 5);
-
-        for (float x : xSteps) {
-            for (float y : ySteps) {
-                LineStrip lineStrip = new LineStrip(new Point(new Coord3d(x, y, boundingBox3d.getZmin()), Color.RED), new Point(new Coord3d(x, y, boundingBox3d.getZmax()), Color.RED));
-                chart.getScene().getGraph().add(lineStrip);
-            }
-        }
-        for (float x : xSteps) {
-            for (float z : zSteps) {
-                LineStrip lineStrip = new LineStrip(new Point(new Coord3d(x, boundingBox3d.getYmin(), z), Color.RED), new Point(new Coord3d(x, boundingBox3d.getYmax(), z), Color.RED));
-                chart.getScene().getGraph().add(lineStrip);
-            }
-        }
-        for (float y : ySteps) {
-            for (float z : zSteps) {
-                LineStrip lineStrip = new LineStrip(new Point(new Coord3d(boundingBox3d.getXmin(), y, z), Color.RED), new Point(new Coord3d(boundingBox3d.getXmax(), y, z), Color.RED));
-                chart.getScene().getGraph().add(lineStrip);
-            }
-        }
-        ImageView view = factory.bindImageView(chart);
-
         StackPane root = new StackPane();
+        Scene scene = new Scene(root, 800, 600);
+        RenderModel model = new RenderModel(scene, meshs);
+        ImageView view = model.getView();
+        ScrollPane scrollPane=new ScrollPane(view);
+
         BorderPane bPane = new BorderPane();
-        bPane.setCenter(view);
+        bPane.setCenter(scrollPane);
 
         HBox hBox = new HBox();
         hBox.setSpacing(10);
@@ -122,11 +78,59 @@ public class Main extends Application {
         hBox.getChildren().addAll(label, slider, textField);
         bPane.setTop(hBox);
         root.getChildren().add(bPane);
-        Scene scene = new Scene(root, 800, 600);
-        factory.addSceneSizeChangedListener(chart, scene);
+
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+//        List<Polygon> polygons = new ArrayList<Polygon>();
+//
+//        for (int i = 0; i < meshs.size(); i++) {
+//            Polygon polygon = new Polygon();
+//            Vertex [] vertices=meshs.get(i).getVertices();
+//            for (int j = 0; j < 3; j++) {
+//                polygon.add(new Point(new Coord3d(
+//                        (float) vertices[j].getX(),
+//                        (float) vertices[j].getY(),
+//                        (float) vertices[j].getZ()
+//                )));
+//                polygons.add(polygon);
+//            }
+//        }
+        // Create the object to represent the function over the given range.
+//        Shape surface = new Shape(new ArrayList<Polygon>(meshs));
+//        //surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new org.jzy3d.colors.Color(1, 1, 1, 1f)));
+//        surface.setWireframeDisplayed(true);
+//        surface.setFaceDisplayed(true);
+//        surface.setWireframeColor(org.jzy3d.colors.Color.BLACK);
+//
+//        JavaFXChartFactory factory = new JavaFXChartFactory();
+//        AWTChart chart = (AWTChart) factory.newChart(Quality.Intermediate, "offscreen");
+//        chart.getScene().getGraph().add(surface);
+//        BoundingBox3d boundingBox3d = surface.getBounds();
+//        List<Float> xSteps = range(boundingBox3d.getXmin(), boundingBox3d.getXmax(), 5);
+//        List<Float> ySteps = range(boundingBox3d.getYmin(), boundingBox3d.getYmax(), 5);
+//        List<Float> zSteps = range(boundingBox3d.getZmin(), boundingBox3d.getZmax(), 5);
+//
+//        for (float x : xSteps) {
+//            for (float y : ySteps) {
+//                LineStrip lineStrip = new LineStrip(new Point(new Coord3d(x, y, boundingBox3d.getZmin()), Color.RED), new Point(new Coord3d(x, y, boundingBox3d.getZmax()), Color.RED));
+//                chart.getScene().getGraph().add(lineStrip);
+//            }
+//        }
+//        for (float x : xSteps) {
+//            for (float z : zSteps) {
+//                LineStrip lineStrip = new LineStrip(new Point(new Coord3d(x, boundingBox3d.getYmin(), z), Color.RED), new Point(new Coord3d(x, boundingBox3d.getYmax(), z), Color.RED));
+//                chart.getScene().getGraph().add(lineStrip);
+//            }
+//        }
+//        for (float y : ySteps) {
+//            for (float z : zSteps) {
+//                LineStrip lineStrip = new LineStrip(new Point(new Coord3d(boundingBox3d.getXmin(), y, z), Color.RED), new Point(new Coord3d(boundingBox3d.getXmax(), y, z), Color.RED));
+//                chart.getScene().getGraph().add(lineStrip);
+//            }
+//        }
+        
     }
 
     private List<Float> range(float min, float max, int segments) {

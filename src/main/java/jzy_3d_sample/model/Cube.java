@@ -7,36 +7,40 @@ package jzy_3d_sample.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import org.jzy3d.maths.BoundingBox3d;
+import org.jzy3d.maths.Coord3d;
 
 /**
  *
  * @author lendle
  */
-public class Cube {
+public class Cube extends BoundingBox3d{
 
-    private List<Vertex> vertices = null;
-
+    
     /**
      * @param vertices must be of length 8
      */
     public Cube(List<Vertex> vertices) {
-        this.vertices = new ArrayList<>(vertices);
-        Collections.sort(this.vertices);
+        super(new ArrayList<Coord3d>(vertices));
     }
-
-    public List<Vertex> getVertices() {
-        return vertices;
+    
+    public Cube(BoundingBox3d box) {
+        super(box);
     }
+    
 
-    public void setVertices(List<Vertex> vertices) {
-        this.vertices = vertices;
+    protected List<Vertex> getVerticesVertexs(){
+        List<Vertex> ret=new ArrayList<>();
+        for(Coord3d point : super.getVertices()){
+            ret.add(new Vertex(point.x, point.y, point.z));
+        }
+        return ret;
     }
 
     public Vertex getSmallestVertex() {
         double xmin = Double.MAX_VALUE, ymin = Double.MAX_VALUE, zmin = Double.MAX_VALUE;
-        for (Vertex v : vertices) {
+        for (Vertex v : getVerticesVertexs()) {
             xmin = Math.min(v.getX(), xmin);
             ymin = Math.min(v.getY(), ymin);
             zmin = Math.min(v.getZ(), zmin);
@@ -46,7 +50,7 @@ public class Cube {
 
     public Vertex getLargestVertex() {
         double xmax = Double.MIN_VALUE, ymax = Double.MIN_VALUE, zmax = Double.MIN_VALUE;
-        for (Vertex v : vertices) {
+        for (Vertex v : getVerticesVertexs()) {
             xmax = Math.max(v.getX(), xmax);
             ymax = Math.max(v.getY(), ymax);
             zmax = Math.max(v.getZ(), zmax);
@@ -113,7 +117,7 @@ public class Cube {
     }
 
     public String toString() {
-        return (Arrays.deepToString(vertices.toArray()));
+        return (Arrays.deepToString(getVerticesVertexs().toArray()));
     }
 
     public static void main(String[] args) throws Exception {
