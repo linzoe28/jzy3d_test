@@ -31,7 +31,7 @@ public class NewFXMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         Read_csvdata r=new Read_csvdata();
-        List<Mesh> meshs= r.getdata(new File("./sample/cone_point.csv"), new File("./sample/cone_mesh.csv"));
+        List<Mesh> meshs= r.getdata(new File("./sample/chopper_point.csv"), new File("./sample/chopper_mesh.csv"));
         
         List<Polygon> polygons = new ArrayList<Polygon>();
 //        double[][][] meshs = new double[][][]{
