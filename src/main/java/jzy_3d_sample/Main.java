@@ -9,8 +9,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import jzy_3d_sample.model.Mesh;
@@ -33,9 +41,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Read_csvdata r=new Read_csvdata();
-        List<Mesh> meshs= r.getdata(new File("./sample/cone_fine_point.csv"), new File("./sample/cone_fine_mesh.csv"));
-        
+        Read_csvdata r = new Read_csvdata();
+        List<Mesh> meshs = r.getdata(new File("./sample/cone_fine_point.csv"), new File("./sample/cone_fine_mesh.csv"));
+
 //        List<Polygon> polygons = new ArrayList<Polygon>();
 //
 //        for (int i = 0; i < meshs.size(); i++) {
@@ -60,50 +68,76 @@ public class Main extends Application {
         JavaFXChartFactory factory = new JavaFXChartFactory();
         AWTChart chart = (AWTChart) factory.newChart(Quality.Intermediate, "offscreen");
         chart.getScene().getGraph().add(surface);
-        BoundingBox3d boundingBox3d=surface.getBounds();
-      
-        List<Float> xSteps=range(boundingBox3d.getXmin(), boundingBox3d.getXmax(), 5);
-        List<Float> ySteps=range(boundingBox3d.getYmin(), boundingBox3d.getYmax(), 5);
-        List<Float> zSteps=range(boundingBox3d.getZmin(), boundingBox3d.getZmax(), 5);
+        BoundingBox3d boundingBox3d = surface.getBounds();
 
-        for(float x: xSteps){
-            for(float y: ySteps){
-                LineStrip lineStrip=new LineStrip(new Point(new Coord3d(x, y, boundingBox3d.getZmin()), Color.RED), new Point(new Coord3d(x,y,boundingBox3d.getZmax()), Color.RED));
+        List<Float> xSteps = range(boundingBox3d.getXmin(), boundingBox3d.getXmax(), 5);
+        List<Float> ySteps = range(boundingBox3d.getYmin(), boundingBox3d.getYmax(), 5);
+        List<Float> zSteps = range(boundingBox3d.getZmin(), boundingBox3d.getZmax(), 5);
+
+        for (float x : xSteps) {
+            for (float y : ySteps) {
+                LineStrip lineStrip = new LineStrip(new Point(new Coord3d(x, y, boundingBox3d.getZmin()), Color.RED), new Point(new Coord3d(x, y, boundingBox3d.getZmax()), Color.RED));
                 chart.getScene().getGraph().add(lineStrip);
             }
         }
-        for(float x: xSteps){
-            for(float z: zSteps){
-                LineStrip lineStrip=new LineStrip(new Point(new Coord3d(x, boundingBox3d.getYmin(), z), Color.RED), new Point(new Coord3d(x,boundingBox3d.getYmax(),z), Color.RED));
+        for (float x : xSteps) {
+            for (float z : zSteps) {
+                LineStrip lineStrip = new LineStrip(new Point(new Coord3d(x, boundingBox3d.getYmin(), z), Color.RED), new Point(new Coord3d(x, boundingBox3d.getYmax(), z), Color.RED));
                 chart.getScene().getGraph().add(lineStrip);
             }
         }
-        for(float y: ySteps){
-            for(float z: zSteps){
-                LineStrip lineStrip=new LineStrip(new Point(new Coord3d(boundingBox3d.getXmin(), y, z), Color.RED), new Point(new Coord3d(boundingBox3d.getXmax(),y,z), Color.RED));
+        for (float y : ySteps) {
+            for (float z : zSteps) {
+                LineStrip lineStrip = new LineStrip(new Point(new Coord3d(boundingBox3d.getXmin(), y, z), Color.RED), new Point(new Coord3d(boundingBox3d.getXmax(), y, z), Color.RED));
                 chart.getScene().getGraph().add(lineStrip);
             }
         }
         ImageView view = factory.bindImageView(chart);
 
         StackPane root = new StackPane();
-        root.getChildren().add(view);
+        BorderPane bPane = new BorderPane();
+        bPane.setCenter(view);
 
+        HBox hBox = new HBox();
+        hBox.setSpacing(10);
+        Label label = new Label("RCS 臨界值");
+        Slider slider = new Slider();
+        slider.setMin(0);
+        slider.setMax(20);
+        slider.setValue(10);
+        slider.setShowTickLabels(true);
+        slider.setShowTickMarks(true);
+        slider.setMajorTickUnit(1);
+        slider.setBlockIncrement(1);
+        TextField textField = new TextField();
+        textField.setText(Double.toString(slider.getValue()));
+
+        slider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                textField.setText(Double.toString(slider.getValue()));
+            }
+        });
+
+        hBox.getChildren().addAll(label, slider, textField);
+        bPane.setTop(hBox);
+        root.getChildren().add(bPane);
         Scene scene = new Scene(root, 800, 600);
         factory.addSceneSizeChangedListener(chart, scene);
-
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-    private List<Float> range(float min, float max, int segments){
-        float step=(max-min)/segments;
-        List<Float> ret=new ArrayList<>();
-        for(int i=0; i<=segments; i++){
-            ret.add(min+i*step);
+
+    private List<Float> range(float min, float max, int segments) {
+        float step = (max - min) / segments;
+        List<Float> ret = new ArrayList<>();
+        for (int i = 0; i <= segments; i++) {
+            ret.add(min + i * step);
         }
         return ret;
     }
+
     /**
      * @param args the command line arguments
      */
