@@ -5,13 +5,14 @@
  */
 package jzy_3d_sample;
 
+import jzy_3d_sample.datafactory.Read_data;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -22,18 +23,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import jzy_3d_sample.datafactory.FastN2fWriter;
 import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
-import org.jzy3d.chart.AWTChart;
-import org.jzy3d.colors.Color;
-import org.jzy3d.javafx.JavaFXChartFactory;
-import org.jzy3d.maths.BoundingBox3d;
-import org.jzy3d.maths.Coord3d;
-import org.jzy3d.plot3d.primitives.LineStrip;
-import org.jzy3d.plot3d.primitives.Point;
-import org.jzy3d.plot3d.primitives.Polygon;
-import org.jzy3d.plot3d.primitives.Shape;
-import org.jzy3d.plot3d.rendering.canvas.Quality;
 
 /**
  *
@@ -43,46 +35,49 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Read_csvdata r = new Read_csvdata();
-        List<Mesh> meshs = r.getdata(new File("./sample/cone_fine_point.csv"), new File("./sample/cone_fine_mesh.csv"));
-        StackPane root = new StackPane();
-        Scene scene = new Scene(root, 800, 600);
-        RenderModel model = new RenderModel(scene, meshs);
-        ImageView view = model.getView();
-        ScrollPane scrollPane=new ScrollPane(view);
-
-        BorderPane bPane = new BorderPane();
-        bPane.setCenter(scrollPane);
-
-        HBox hBox = new HBox();
-        hBox.setSpacing(10);
-        Label label = new Label("RCS 臨界值");
-        Slider slider = new Slider();
-        slider.setMin(0);
-        slider.setMax(20);
-        slider.setValue(10);
-        slider.setShowTickLabels(true);
-        slider.setShowTickMarks(true);
-        slider.setMajorTickUnit(1);
-        slider.setBlockIncrement(1);
-        TextField textField = new TextField();
-        textField.setText(Double.toString(slider.getValue()));
-
-        slider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                textField.setText(Double.toString(slider.getValue()));
-            }
-        });
-
-        hBox.getChildren().addAll(label, slider, textField);
-        bPane.setTop(hBox);
-        root.getChildren().add(bPane);
-
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
+        try {
+            Read_data r = new Read_data();
+            //List<Mesh> meshs = r.getdata_from_pointAndMesh(new File("./sample/cone_fine_point.csv"), new File("./sample/cone_fine_mesh.csv"));
+            List<Mesh> meshs = r.getdata_from_nas(new File("./sample/FEKO2EMsuite/FEKO/Triangle with 4 mesh.nas"), new File("./sample/FEKO2EMsuite/FEKO/Triangle with 4 mesh_Currents1.os"));
+            FastN2fWriter.writeTriFile(meshs, new File("test.tri"));
+            StackPane root = new StackPane();
+            Scene scene = new Scene(root, 800, 600);
+            RenderModel model = new RenderModel(scene, meshs);
+            ImageView view = model.getView();
+            ScrollPane scrollPane=new ScrollPane(view);
+            
+            BorderPane bPane = new BorderPane();
+            bPane.setCenter(scrollPane);
+            
+            HBox hBox = new HBox();
+            hBox.setSpacing(10);
+            Label label = new Label("RCS 臨界值");
+            Slider slider = new Slider();
+            slider.setMin(0);
+            slider.setMax(20);
+            slider.setValue(10);
+            slider.setShowTickLabels(true);
+            slider.setShowTickMarks(true);
+            slider.setMajorTickUnit(1);
+            slider.setBlockIncrement(1);
+            TextField textField = new TextField();
+            textField.setText(Double.toString(slider.getValue()));
+            
+            slider.valueProperty().addListener(new ChangeListener<Number>() {
+                @Override
+                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                    textField.setText(Double.toString(slider.getValue()));
+                }
+            });
+            
+            hBox.getChildren().addAll(label, slider, textField);
+            bPane.setTop(hBox);
+            root.getChildren().add(bPane);
+            
+            primaryStage.setTitle("Hello World!");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+            
 //        List<Polygon> polygons = new ArrayList<Polygon>();
 //
 //        for (int i = 0; i < meshs.size(); i++) {
@@ -97,7 +92,7 @@ public class Main extends Application {
 //                polygons.add(polygon);
 //            }
 //        }
-        // Create the object to represent the function over the given range.
+// Create the object to represent the function over the given range.
 //        Shape surface = new Shape(new ArrayList<Polygon>(meshs));
 //        //surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new org.jzy3d.colors.Color(1, 1, 1, 1f)));
 //        surface.setWireframeDisplayed(true);
@@ -130,6 +125,9 @@ public class Main extends Application {
 //                chart.getScene().getGraph().add(lineStrip);
 //            }
 //        }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         
     }
 

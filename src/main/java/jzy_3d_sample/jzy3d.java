@@ -5,7 +5,9 @@
  */
 package jzy_3d_sample;
 
+import jzy_3d_sample.datafactory.Read_data;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,11 +39,11 @@ public class jzy3d extends AbstractAnalysis {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Read_csvdata r = new Read_csvdata();
+        Read_data r = new Read_data();
 //        List<Mesh> meshs = r.getdata(new File("./sample/cone_fine_point.csv"), new File("./sample/cone_fine_mesh.csv"));
-        List<Mesh> meshs=r.getdata(new File("./sample/chopper_point.csv"), new File("./sample/chopper_mesh.csv"));
+        List<Mesh> meshs=r.getdata_from_pointAndMesh(new File("./sample/chopper_point.csv"), new File("./sample/chopper_mesh.csv"), null);
 //        List<Mesh> meshs=r.getdata(new File("./sample/sphere_point.csv"), new File("./sample/sphere_mesh.csv"));
 //        List<Mesh> meshs=r.getdata(new File("./sample/cone_point.csv"), new File("./sample/cone_mesh.csv"));
         try {

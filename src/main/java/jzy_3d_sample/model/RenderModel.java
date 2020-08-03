@@ -10,6 +10,8 @@ import java.util.List;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import org.jzy3d.chart.AWTChart;
+import org.jzy3d.colors.ColorMapper;
+import org.jzy3d.colors.colormaps.ColorMapRainbow;
 import org.jzy3d.javafx.JavaFXChartFactory;
 import org.jzy3d.plot3d.primitives.Polygon;
 import org.jzy3d.plot3d.primitives.Shape;
@@ -30,6 +32,7 @@ public class RenderModel {
         surface.setWireframeDisplayed(true);
         surface.setFaceDisplayed(true);
         surface.setWireframeColor(org.jzy3d.colors.Color.BLACK);
+//        surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new org.jzy3d.colors.Color(1, 1, 1, 1f)));
 
         JavaFXChartFactory factory = new JavaFXChartFactory();
         AWTChart chart = (AWTChart) factory.newChart(Quality.Intermediate, "offscreen");

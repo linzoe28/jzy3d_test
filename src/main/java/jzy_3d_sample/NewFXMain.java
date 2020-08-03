@@ -5,6 +5,7 @@
  */
 package jzy_3d_sample;
 
+import jzy_3d_sample.datafactory.Read_data;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,8 @@ public class NewFXMain extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Read_csvdata r=new Read_csvdata();
-        List<Mesh> meshs= r.getdata(new File("./sample/chopper_point.csv"), new File("./sample/chopper_mesh.csv"));
+        Read_data r=new Read_data();
+        List<Mesh> meshs= r.getdata_from_pointAndMesh(new File("./sample/chopper_point.csv"), new File("./sample/chopper_mesh.csv"), null);
         
         List<Polygon> polygons = new ArrayList<Polygon>();
 //        double[][][] meshs = new double[][][]{
