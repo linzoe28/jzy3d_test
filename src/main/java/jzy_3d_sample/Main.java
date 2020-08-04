@@ -40,6 +40,8 @@ public class Main extends Application {
             //List<Mesh> meshs = r.getdata_from_pointAndMesh(new File("./sample/cone_fine_point.csv"), new File("./sample/cone_fine_mesh.csv"));
             List<Mesh> meshs = r.getdata_from_nas(new File("./sample/FEKO2EMsuite/FEKO/Triangle with 4 mesh.nas"), new File("./sample/FEKO2EMsuite/FEKO/Triangle with 4 mesh_Currents1.os"));
             FastN2fWriter.writeTriFile(meshs, new File("test.tri"));
+            FastN2fWriter.writeCurMFile(meshs, new File("test.curM"));
+            FastN2fWriter.writeCurJFile(meshs, new File("test.curJ"));
             StackPane root = new StackPane();
             Scene scene = new Scene(root, 800, 600);
             RenderModel model = new RenderModel(scene, meshs);

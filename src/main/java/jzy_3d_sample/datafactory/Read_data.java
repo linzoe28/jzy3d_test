@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.Vertex;
+import jzy_3d_sample.model.VertexCurrent;
 import jzy_3d_sample.model.os.OSRecord;
 import org.apache.commons.math3.complex.Complex;
 
@@ -136,9 +137,21 @@ public class Read_data {
                 Vertex v3 = new Vertex(points.get(nextLine[3]));
                 Mesh m = new Mesh(new Vertex[]{v1, v2, v3});
                 if (oSRecord != null) {
-                    m.setCurrent(v1, new Complex(Double.valueOf(oSRecord.getReC1()), Double.valueOf(oSRecord.getImC1())));
-                    m.setCurrent(v2, new Complex(Double.valueOf(oSRecord.getReC2()), Double.valueOf(oSRecord.getImC2())));
-                    m.setCurrent(v3, new Complex(Double.valueOf(oSRecord.getReC3()), Double.valueOf(oSRecord.getImC3())));
+                    m.setCurrent(v1, new VertexCurrent(
+                            new Complex(Double.valueOf(oSRecord.getReC1X()), Double.valueOf(oSRecord.getImC1X())),
+                            new Complex(Double.valueOf(oSRecord.getReC1Y()), Double.valueOf(oSRecord.getImC1Y())),
+                            new Complex(Double.valueOf(oSRecord.getReC1Z()), Double.valueOf(oSRecord.getImC1Z()))
+                    ));
+                    m.setCurrent(v2, new VertexCurrent(
+                            new Complex(Double.valueOf(oSRecord.getReC2X()), Double.valueOf(oSRecord.getImC2X())),
+                            new Complex(Double.valueOf(oSRecord.getReC2Y()), Double.valueOf(oSRecord.getImC2Y())),
+                            new Complex(Double.valueOf(oSRecord.getReC2Z()), Double.valueOf(oSRecord.getImC2Z()))
+                    ));
+                    m.setCurrent(v3, new VertexCurrent(
+                            new Complex(Double.valueOf(oSRecord.getReC3X()), Double.valueOf(oSRecord.getImC3X())),
+                            new Complex(Double.valueOf(oSRecord.getReC3Y()), Double.valueOf(oSRecord.getImC3Y())),
+                            new Complex(Double.valueOf(oSRecord.getReC3Z()), Double.valueOf(oSRecord.getImC3Z()))
+                    ));
                 }
                 meshs.add(m);
             }

@@ -16,42 +16,75 @@ import java.util.Map;
 import java.util.Set;
 import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.Vertex;
+import jzy_3d_sample.model.VertexCurrent;
 
 /**
  *
  * @author lendle
  */
 public class FastN2fWriter {
-    public static void writeTriFile(List<Mesh> meshs, File targetFile) throws IOException{
-        Set<Vertex> verticeSet=new HashSet<>();
-        for(Mesh m : meshs){
-            verticeSet.addAll(Arrays.asList(m.getVertices()));
+
+    public static void writeCurMFile(List<Mesh> meshs, File targetFile) throws IOException {
+        try (PrintWriter writer = new PrintWriter(targetFile)) {
+            for (int j = 0; j < meshs.size(); j++) {
+                for (int i = 0; i < 9; i++) {
+                    writer.println("0   0");
+                }
+                if (j < meshs.size() - 1) {
+                    writer.println("");
+                }
+            }
         }
-        Map<Vertex, Integer> vertexNumbering=new HashMap<>();
-        try(PrintWriter writer=new PrintWriter(targetFile)){
-            writer.println("1");
-            writer.println(verticeSet.size());
-            for(Mesh m : meshs){
+    }
+    
+    public static void writeCurJFile(List<Mesh> meshs, File targetFile) throws IOException {
+        try (PrintWriter writer = new PrintWriter(targetFile)) {
+            for (int j = 0; j < meshs.size(); j++) {
+                Mesh m=meshs.get(j);
                 Vertex [] vertices=m.getVertices();
                 for(Vertex v : vertices){
-                    if(vertexNumbering.containsKey(v)==false){
+                    VertexCurrent current=m.getCurrent(v);
+                    writer.println(String.format("%13.8E", current.getX().getReal())+"   "+String.format("%13.8E", current.getX().getImaginary()));
+                    writer.println(String.format("%13.8E", current.getY().getReal())+"   "+String.format("%13.8E", current.getY().getImaginary()));
+                    writer.println(String.format("%13.8E", current.getZ().getReal())+"   "+String.format("%13.8E", current.getZ().getImaginary()));
+                }
+                if (j < meshs.size() - 1) {
+                    writer.println("");
+                }
+            }
+        }
+    }
+
+    public static void writeTriFile(List<Mesh> meshs, File targetFile) throws IOException {
+        Set<Vertex> verticeSet = new HashSet<>();
+        for (Mesh m : meshs) {
+            verticeSet.addAll(Arrays.asList(m.getVertices()));
+        }
+        Map<Vertex, Integer> vertexNumbering = new HashMap<>();
+        try (PrintWriter writer = new PrintWriter(targetFile)) {
+            writer.println("1");
+            writer.println(verticeSet.size());
+            for (Mesh m : meshs) {
+                Vertex[] vertices = m.getVertices();
+                for (Vertex v : vertices) {
+                    if (vertexNumbering.containsKey(v) == false) {
                         vertexNumbering.put(v, vertexNumbering.size());
-                        writer.println("   "+String.format("%11.5e", v.getX())+"   "+String.format("%11.5e", v.getY())+"   "+String.format("%11.5e", v.getZ()));
+                        writer.println("   " + String.format("%11.5e", v.getX()) + "   " + String.format("%11.5e", v.getY()) + "   " + String.format("%11.5e", v.getZ()));
                     }
                 }
             }
             writer.println("");
             writer.println(meshs.size());
-            for(Mesh m : meshs){
-                Vertex [] vertices=m.getVertices();
-                String [] numbers=new String[]{
-                    ""+vertexNumbering.get(vertices[0]),
-                    ""+vertexNumbering.get(vertices[1]),
-                    ""+vertexNumbering.get(vertices[2])
+            for (Mesh m : meshs) {
+                Vertex[] vertices = m.getVertices();
+                String[] numbers = new String[]{
+                    "" + vertexNumbering.get(vertices[0]),
+                    "" + vertexNumbering.get(vertices[1]),
+                    "" + vertexNumbering.get(vertices[2])
                 };
                 writer.println(String.join("   ", numbers));
             }
-            writer.println();
+            //writer.println();
         }
     }
 }

@@ -12,8 +12,12 @@ package jzy_3d_sample.model.os;
 public class OSRecord {
 
     private String num = null;
-    private String reC1 = null, reC2 = null, reC3 = null;
-    private String imC1 = null, imC2 = null, imC3 = null;
+    private String reC1X = null, reC2X = null, reC3X = null;
+    private String imC1X = null, imC2X = null, imC3X = null;
+    private String reC1Y = null, reC2Y = null, reC3Y = null;
+    private String imC1Y = null, imC2Y = null, imC3Y = null;
+    private String reC1Z = null, reC2Z = null, reC3Z = null;
+    private String imC1Z = null, imC2Z = null, imC3Z = null;
 
     public String getNum() {
         return num;
@@ -23,57 +27,153 @@ public class OSRecord {
         this.num = num;
     }
 
-    public String getReC1() {
-        return reC1;
+    public String getReC1X() {
+        return reC1X;
     }
 
-    public void setReC1(String reC1) {
-        this.reC1 = reC1;
+    public void setReC1X(String reC1X) {
+        this.reC1X = reC1X;
     }
 
-    public String getReC2() {
-        return reC2;
+    public String getReC2X() {
+        return reC2X;
     }
 
-    public void setReC2(String reC2) {
-        this.reC2 = reC2;
+    public void setReC2X(String reC2X) {
+        this.reC2X = reC2X;
     }
 
-    public String getReC3() {
-        return reC3;
+    public String getReC3X() {
+        return reC3X;
     }
 
-    public void setReC3(String reC3) {
-        this.reC3 = reC3;
+    public void setReC3X(String reC3X) {
+        this.reC3X = reC3X;
     }
 
-    public String getImC1() {
-        return imC1;
+    public String getImC1X() {
+        return imC1X;
     }
 
-    public void setImC1(String imC1) {
-        this.imC1 = imC1;
+    public void setImC1X(String imC1X) {
+        this.imC1X = imC1X;
     }
 
-    public String getImC2() {
-        return imC2;
+    public String getImC2X() {
+        return imC2X;
     }
 
-    public void setImC2(String imC2) {
-        this.imC2 = imC2;
+    public void setImC2X(String imC2X) {
+        this.imC2X = imC2X;
     }
 
-    public String getImC3() {
-        return imC3;
+    public String getImC3X() {
+        return imC3X;
     }
 
-    public void setImC3(String imC3) {
-        this.imC3 = imC3;
+    public void setImC3X(String imC3X) {
+        this.imC3X = imC3X;
+    }
+
+    public String getReC1Y() {
+        return reC1Y;
+    }
+
+    public void setReC1Y(String reC1Y) {
+        this.reC1Y = reC1Y;
+    }
+
+    public String getReC2Y() {
+        return reC2Y;
+    }
+
+    public void setReC2Y(String reC2Y) {
+        this.reC2Y = reC2Y;
+    }
+
+    public String getReC3Y() {
+        return reC3Y;
+    }
+
+    public void setReC3Y(String reC3Y) {
+        this.reC3Y = reC3Y;
+    }
+
+    public String getImC1Y() {
+        return imC1Y;
+    }
+
+    public void setImC1Y(String imC1Y) {
+        this.imC1Y = imC1Y;
+    }
+
+    public String getImC2Y() {
+        return imC2Y;
+    }
+
+    public void setImC2Y(String imC2Y) {
+        this.imC2Y = imC2Y;
+    }
+
+    public String getImC3Y() {
+        return imC3Y;
+    }
+
+    public void setImC3Y(String imC3Y) {
+        this.imC3Y = imC3Y;
+    }
+
+    public String getReC1Z() {
+        return reC1Z;
+    }
+
+    public void setReC1Z(String reC1Z) {
+        this.reC1Z = reC1Z;
+    }
+
+    public String getReC2Z() {
+        return reC2Z;
+    }
+
+    public void setReC2Z(String reC2Z) {
+        this.reC2Z = reC2Z;
+    }
+
+    public String getReC3Z() {
+        return reC3Z;
+    }
+
+    public void setReC3Z(String reC3Z) {
+        this.reC3Z = reC3Z;
+    }
+
+    public String getImC1Z() {
+        return imC1Z;
+    }
+
+    public void setImC1Z(String imC1Z) {
+        this.imC1Z = imC1Z;
+    }
+
+    public String getImC2Z() {
+        return imC2Z;
+    }
+
+    public void setImC2Z(String imC2Z) {
+        this.imC2Z = imC2Z;
+    }
+
+    public String getImC3Z() {
+        return imC3Z;
+    }
+
+    public void setImC3Z(String imC3Z) {
+        this.imC3Z = imC3Z;
     }
 
     @Override
     public String toString() {
-        return "OSRecord{" + "num=" + num + ", reC1=" + reC1 + ", reC2=" + reC2 + ", reC3=" + reC3 + ", imC1=" + imC1 + ", imC2=" + imC2 + ", imC3=" + imC3 + '}';
+        return "OSRecord{" + "num=" + num + ", reC1X=" + reC1X + ", reC2X=" + reC2X + ", reC3X=" + reC3X + ", imC1X=" + imC1X + ", imC2X=" + imC2X + ", imC3X=" + imC3X + ", reC1Y=" + reC1Y + ", reC2Y=" + reC2Y + ", reC3Y=" + reC3Y + ", imC1Y=" + imC1Y + ", imC2Y=" + imC2Y + ", imC3Y=" + imC3Y + ", reC1Z=" + reC1Z + ", reC2Z=" + reC2Z + ", reC3Z=" + reC3Z + ", imC1Z=" + imC1Z + ", imC2Z=" + imC2Z + ", imC3Z=" + imC3Z + '}';
     }
 
     

@@ -40,12 +40,27 @@ public class OSFileParser {
                     String[] row = line.split(" +");
                     OSRecord record = new OSRecord();
                     record.setNum(row[0]);
-                    record.setReC1(row[13]);
-                    record.setImC1(row[14]);
-                    record.setReC2(row[15]);
-                    record.setImC2(row[16]);
-                    record.setReC3(row[17]);
-                    record.setImC3(row[18]);
+                    record.setReC1X(row[13]);
+                    record.setImC1X(row[14]);
+                    record.setReC1Y(row[15]);
+                    record.setImC1Y(row[16]);
+                    record.setReC1Z(row[17]);
+                    record.setImC1Z(row[18]);
+                    
+                    record.setReC2X(row[19]);
+                    record.setImC2X(row[20]);
+                    record.setReC2Y(row[21]);
+                    record.setImC2Y(row[22]);
+                    record.setReC2Z(row[23]);
+                    record.setImC2Z(row[24]);
+                    
+                    record.setReC3X(row[25]);
+                    record.setImC3X(row[26]);
+                    record.setReC3Y(row[27]);
+                    record.setImC3Y(row[28]);
+                    record.setReC3Z(row[29]);
+                    record.setImC3Z(row[30]);
+                    
                     ret.put(record.getNum(), record);
                 } else {
                     if (firstRecordGot) {

@@ -17,7 +17,7 @@ import org.jzy3d.plot3d.primitives.Polygon;
  */
 public class Mesh extends Polygon{
     private Vertex[] vertices=null;
-    private Map<Vertex, Complex> currentMap=new HashMap<>();
+    private Map<Vertex, VertexCurrent> currentMap=new HashMap<>();
     private Complex rcs;
     
     public Mesh(Vertex [] vertices){
@@ -27,19 +27,19 @@ public class Mesh extends Polygon{
         }
     }
 
-    public void setCurrent(Vertex vertex, Complex current){
+    public void setCurrent(Vertex vertex, VertexCurrent current){
         currentMap.put(vertex, current);
     }
     
-    public void setCurrent(float x, float y, float z, Complex current){
+    public void setCurrent(float x, float y, float z, VertexCurrent current){
         this.setCurrent(new Vertex(x, y, z), current);
     }
     
-    public Complex getCurrent(Vertex vertex){
+    public VertexCurrent getCurrent(Vertex vertex){
         return currentMap.get(vertex);
     }
     
-    public Complex getCurrent(float x, float y, float z){
+    public VertexCurrent getCurrent(float x, float y, float z){
         return this.getCurrent(new Vertex(x, y, z));
     }
     
