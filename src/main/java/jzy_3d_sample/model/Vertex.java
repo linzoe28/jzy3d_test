@@ -94,7 +94,7 @@ public class Vertex extends Coord3d implements Comparable<Vertex>{
     public int compareTo(Vertex o) {
         if(x==o.getX() && y==o.getY() && z==o.getZ()){
             return 0;
-        }else if(x<o.getX() && y<o.getY() && z<o.getZ()){
+        }else if(x<=o.getX() && y<=o.getY() && z<=o.getZ()){
             return -1;
         }else{
             return 1;

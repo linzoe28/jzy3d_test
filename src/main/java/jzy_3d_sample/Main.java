@@ -24,6 +24,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import jzy_3d_sample.datafactory.FastN2fWriter;
+import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
 
@@ -47,6 +48,13 @@ public class Main extends Application {
             RenderModel model = new RenderModel(scene, meshs);
             ImageView view = model.getView();
             ScrollPane scrollPane=new ScrollPane(view);
+            Cube cube=model.getBoundingCube();
+            List<Cube> subCubes=cube.slice(0.05);
+            
+            for(Cube subCube : subCubes){
+                System.out.println(subCube.getMeshs().size());
+            }
+//            System.out.println(model.getBoundingCube().slice(0.001, true));
             
             BorderPane bPane = new BorderPane();
             bPane.setCenter(scrollPane);

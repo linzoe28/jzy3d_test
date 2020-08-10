@@ -54,4 +54,8 @@ public class Mesh extends Polygon{
     public void setRcs(Complex rcs) {
         this.rcs = rcs;
     }
+    
+    public Vertex getCenter(){
+        return new Vertex((vertices[0].x+vertices[1].x+vertices[2].x)/3, (vertices[0].y+vertices[1].y+vertices[2].y)/3, (vertices[0].z+vertices[1].z+vertices[2].z)/3);
+    }
 }

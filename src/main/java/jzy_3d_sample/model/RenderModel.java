@@ -26,6 +26,7 @@ public class RenderModel {
     private Shape surface=null;
     private ImageView view=null;
     private Scene scene=null;
+    private List<Mesh> meshs=new ArrayList<>();
     public RenderModel(Scene scene, List<Mesh> meshs){
         this.scene=scene;
         surface = new Shape(new ArrayList<Polygon>(meshs));
@@ -39,6 +40,7 @@ public class RenderModel {
         chart.getScene().getGraph().add(surface);
         view = factory.bindImageView(chart);
         factory.addSceneSizeChangedListener(chart, scene);
+        this.meshs.addAll(meshs);
     }
 
     public Shape getSurface() {
@@ -50,6 +52,6 @@ public class RenderModel {
     }
     
     public Cube getBoundingCube(){
-        return new Cube(surface.getBounds());
+        return new Cube(surface.getBounds(), meshs);
     }
 }
