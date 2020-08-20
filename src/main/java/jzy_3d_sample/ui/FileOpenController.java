@@ -27,6 +27,7 @@ public class FileOpenController{
     private File nasFile=null;
     private File osFile=null;
     private boolean ok=false;
+    private FileChooser fileChooser=new FileChooser();
 
     @FXML
     void cancelButtonAction(MouseEvent event) {
@@ -36,12 +37,15 @@ public class FileOpenController{
 
     @FXML
     void nasFileButtonAction(MouseEvent event) {
-        FileChooser fileChooser=new FileChooser();
+        fileChooser.getExtensionFilters().clear();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Nas Files", "*.nas"),
                 new FileChooser.ExtensionFilter("All Files", "*.*")
         );
         nasFile=fileChooser.showOpenDialog(nasFileText.getScene().getWindow());
+        if(nasFile!=null){
+            fileChooser.setInitialDirectory(nasFile.getParentFile());
+        }
         nasFileText.setText((nasFile!=null)?nasFile.getAbsolutePath():"");
     }
 
@@ -68,12 +72,15 @@ public class FileOpenController{
     
     @FXML
     void osFileButtonAction(MouseEvent event) {
-        FileChooser fileChooser=new FileChooser();
+        fileChooser.getExtensionFilters().clear();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Os Files", "*.os"),
                 new FileChooser.ExtensionFilter("All Files", "*.*")
         );
         osFile=fileChooser.showOpenDialog(osFileText.getScene().getWindow());
+        if(osFile!=null){
+            fileChooser.setInitialDirectory(osFile.getParentFile());
+        }
         osFileText.setText((osFile!=null)?osFile.getAbsolutePath():"");
     }
     

@@ -29,9 +29,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -60,10 +60,10 @@ public class Main extends Application {
         try {
             Read_data r = new Read_data();
             //List<Mesh> meshs = r.getdata_from_pointAndMesh(new File("./sample/cone_fine_point.csv"), new File("./sample/cone_fine_mesh.csv"));
-            meshs = r.getdata_from_nas(new File("./sample/FEKO2EMsuite/FEKO/Triangle with 4 mesh.nas"), new File("./sample/FEKO2EMsuite/FEKO/Triangle with 4 mesh_Currents1.os"));
-            FastN2fWriter.writeTriFile(meshs, new File("test.tri"));
-            FastN2fWriter.writeCurMFile(meshs, new File("test.curM"));
-            FastN2fWriter.writeCurJFile(meshs, new File("test.curJ"));
+//            meshs = r.getdata_from_nas(new File("./sample/FEKO2EMsuite/FEKO/Triangle with 4 mesh.nas"), new File("./sample/FEKO2EMsuite/FEKO/Triangle with 4 mesh_Currents1.os"));
+//            FastN2fWriter.writeTriFile(meshs, new File("test.tri"));
+//            FastN2fWriter.writeCurMFile(meshs, new File("test.curM"));
+//            FastN2fWriter.writeCurJFile(meshs, new File("test.curJ"));
 
             MenuBar menuBar = new MenuBar();
             Menu fileMenu = new Menu("File");
@@ -72,6 +72,7 @@ public class Main extends Application {
             fileMenu.getItems().add(new SeparatorMenuItem());
             MenuItem fileExitMenuItem = new MenuItem("Exit");
             fileMenu.getItems().add(fileExitMenuItem);
+            final StackPane root = new StackPane();
 
             fileOpenMenuItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -85,12 +86,13 @@ public class Main extends Application {
                         stage.initStyle(StageStyle.UNDECORATED);
                         stage.setTitle("Open File...");
                         stage.setScene(new Scene(root1));
-                        stage.show();
+                        stage.showAndWait();
                         if(fileOpenController.isOk()){
                             if(renderModel!=null){
                                 container.setCenter(null);
                             }
                             meshs = r.getdata_from_nas(fileOpenController.getNasFile(), fileOpenController.getOsFile());
+                            System.out.println(meshs.size());
                             RenderModel renderModel=loadRenderModel(meshs);
                             ScrollPane scrollPane = new ScrollPane(renderModel.getView());
                             container.setCenter(scrollPane);
@@ -110,12 +112,12 @@ public class Main extends Application {
             menuBar.getMenus().add(fileMenu);
 
             VBox menuBarContainer = new VBox(menuBar);
-            StackPane root = new StackPane();
+            
             menuBarContainer.getChildren().add(root);
             scene = new Scene(menuBarContainer, 800, 600);
-            RenderModel model = this.loadRenderModel(meshs);
-            ImageView view = model.getView();
-            ScrollPane scrollPane = new ScrollPane(view);
+//            RenderModel model = this.loadRenderModel(meshs);
+//            ImageView view = model.getView();
+//            ScrollPane scrollPane = new ScrollPane(view);
 //            Cube cube = model.getBoundingCube();
 //            List<Cube> subCubes = cube.slice(0.05);
 
@@ -125,7 +127,7 @@ public class Main extends Application {
 //            System.out.println(model.getBoundingCube().slice(0.001, true));
 
             container = new BorderPane();
-            container.setCenter(scrollPane);
+            //container.setCenter(scrollPane);
 
             HBox hBox = new HBox();
             hBox.setSpacing(10);
@@ -203,7 +205,7 @@ public class Main extends Application {
 //                chart.getScene().getGraph().add(lineStrip);
 //            }
 //        }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
