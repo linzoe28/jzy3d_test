@@ -11,11 +11,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -27,10 +30,18 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -92,10 +103,16 @@ public class Main extends Application {
                                 container.setCenter(null);
                             }
                             meshs = r.getdata_from_nas(fileOpenController.getNasFile(), fileOpenController.getOsFile());
-                            System.out.println(meshs.size());
                             RenderModel renderModel=loadRenderModel(meshs);
-                            ScrollPane scrollPane = new ScrollPane(renderModel.getView());
+                            ScrollPane scrollPane = new ScrollPane();
                             container.setCenter(scrollPane);
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    scrollPane.setContent(renderModel.getView());
+                                    primaryStage.setWidth(800);
+                                }
+                            });
                         }
                     } catch (IOException ex) {
                         ex.printStackTrace();

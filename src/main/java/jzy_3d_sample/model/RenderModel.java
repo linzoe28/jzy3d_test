@@ -10,8 +10,6 @@ import java.util.List;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import org.jzy3d.chart.AWTChart;
-import org.jzy3d.colors.ColorMapper;
-import org.jzy3d.colors.colormaps.ColorMapRainbow;
 import org.jzy3d.javafx.JavaFXChartFactory;
 import org.jzy3d.plot3d.primitives.Polygon;
 import org.jzy3d.plot3d.primitives.Shape;
