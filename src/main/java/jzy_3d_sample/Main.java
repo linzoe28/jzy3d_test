@@ -5,6 +5,7 @@
  */
 package jzy_3d_sample;
 
+import java.io.File;
 import jzy_3d_sample.datafactory.Read_data;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,10 +33,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import jzy_3d_sample.datafactory.FastN2fWriter;
 import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
 import jzy_3d_sample.ui.FileOpenController;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -56,6 +59,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             Read_data r = new Read_data();
+
 
             MenuBar menuBar = new MenuBar();
             Menu fileMenu = new Menu("File");
@@ -84,8 +88,16 @@ public class Main extends Application {
                             }
                             meshs = r.getdata_from_nas(fileOpenController.getNasFile(), fileOpenController.getOsFile());
                             renderModel=loadRenderModel(meshs);
-//                            Cube cube=renderModel.getBoundingCube();
-//                            List<Cube> subCubes=cube.slice(0.5);
+                            Cube cube=renderModel.getBoundingCube();
+                            List<Cube> subCubes=cube.slice(0.5);
+                            FileUtils.forceMkdir(new File(fileOpenController.getNasFile().getName()));
+                            for (int i=0; i<subCubes.size(); i++){
+                                Cube c=subCubes.get(i);
+                                FastN2fWriter.writeTriFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.pathSeparator+i+".tri"));
+                                FastN2fWriter.writeCurMFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.pathSeparator+i+".curM"));
+                                FastN2fWriter.writeCurJFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.pathSeparator+i+".curJ"));
+                            }
+                            
                             ScrollPane scrollPane = new ScrollPane();
                             container.setCenter(scrollPane);
                             Platform.runLater(new Runnable() {
