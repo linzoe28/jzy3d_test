@@ -65,7 +65,7 @@ public class Vertex extends Coord3d implements Comparable<Vertex>{
         hash = 29 * hash + (int) (Double.doubleToLongBits(this.z) ^ (Double.doubleToLongBits(this.z) >>> 32));
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
