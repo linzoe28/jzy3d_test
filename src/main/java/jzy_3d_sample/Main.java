@@ -9,6 +9,7 @@ import java.io.File;
 import jzy_3d_sample.datafactory.Read_data;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -89,13 +90,13 @@ public class Main extends Application {
                             meshs = r.getdata_from_nas(fileOpenController.getNasFile(), fileOpenController.getOsFile());
                             renderModel=loadRenderModel(meshs);
                             Cube cube=renderModel.getBoundingCube();
-                            List<Cube> subCubes=cube.slice(0.5);
+                            List<Cube> subCubes=cube.slice(4,4,4);
                             FileUtils.forceMkdir(new File(fileOpenController.getNasFile().getName()));
                             for (int i=0; i<subCubes.size(); i++){
                                 Cube c=subCubes.get(i);
-                                FastN2fWriter.writeTriFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.pathSeparator+i+".tri"));
-                                FastN2fWriter.writeCurMFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.pathSeparator+i+".curM"));
-                                FastN2fWriter.writeCurJFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.pathSeparator+i+".curJ"));
+                                FastN2fWriter.writeTriFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.separator+i+".tri"));
+                                FastN2fWriter.writeCurMFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.separator+i+".curM"));
+                                FastN2fWriter.writeCurJFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.separator+i+".curJ"));
                             }
                             
                             ScrollPane scrollPane = new ScrollPane();
