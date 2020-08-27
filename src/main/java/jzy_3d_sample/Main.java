@@ -91,12 +91,15 @@ public class Main extends Application {
                             renderModel=loadRenderModel(meshs);
                             Cube cube=renderModel.getBoundingCube();
                             List<Cube> subCubes=cube.slice(4,4,4);
-                            FileUtils.forceMkdir(new File(fileOpenController.getNasFile().getName()));
+                            File subCubeRoot=new File(fileOpenController.getNasFile().getName());
+                            FileUtils.forceMkdir(subCubeRoot);
                             for (int i=0; i<subCubes.size(); i++){
                                 Cube c=subCubes.get(i);
-                                FastN2fWriter.writeTriFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.separator+i+".tri"));
-                                FastN2fWriter.writeCurMFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.separator+i+".curM"));
-                                FastN2fWriter.writeCurJFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.separator+i+".curJ"));
+                                File subCubeFolder=new File(subCubeRoot, ""+i);
+                                FileUtils.forceMkdir(subCubeFolder);
+                                FastN2fWriter.writeTriFile(c.getMeshs(), new File(subCubeFolder, i+".tri"));
+                                FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeFolder, i+".curM"));
+                                FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeFolder, i+".curJ"));
                             }
                             
                             ScrollPane scrollPane = new ScrollPane();

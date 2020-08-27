@@ -101,6 +101,7 @@ public class Cube extends BoundingBox3d{
         double xUnit=xLength/xParts;
         double yUnit=yLength/yParts;
         double zUnit=zLength/zParts;
+        List<Mesh> localMeshs=new ArrayList<>(this.meshs);
         List<Cube> subCubes = new ArrayList<>();
         for(int i=0; i<xParts; i++){
             for(int j=0; j<yParts; j++){
@@ -119,6 +120,16 @@ public class Cube extends BoundingBox3d{
                     subCubes.add(new Cube(subVertices));
                 }
             }
+        }
+        for(Cube cube : subCubes){
+            List<Mesh> consumedMeshs=new ArrayList<>();
+            for(Mesh mesh : localMeshs){
+                if(cube.contains(mesh.getCenter())){
+                    cube.getMeshs().add(mesh);
+                    consumedMeshs.add(mesh);
+                }
+            }
+            localMeshs.removeAll(consumedMeshs);
         }
         return subCubes;
     }
