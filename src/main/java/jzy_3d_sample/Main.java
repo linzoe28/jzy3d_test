@@ -9,7 +9,6 @@ import java.io.File;
 import jzy_3d_sample.datafactory.Read_data;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -20,6 +19,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -39,6 +39,7 @@ import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
 import jzy_3d_sample.ui.FileOpenController;
+import jzy_3d_sample.ui.RcslistController;
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -152,8 +153,38 @@ public class Main extends Application {
                     textField.setText(Double.toString(slider.getValue()));
                 }
             });
+            
+            Button enterRCSButton=new Button("Enter RCS Values");
+            
+            enterRCSButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rcslist.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        RcslistController rcslistController=fxmlLoader.getController();
+                        Stage stage = new Stage();
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.initStyle(StageStyle.UTILITY);
+                        stage.setTitle("Paste RCS Values......");
+                        stage.setScene(new Scene(root1));
+                        stage.showAndWait();
+                        if(rcslistController.isOk()){
+                            //處理貼進來的 rcs 清單
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    primaryStage.setWidth(800);
+                                }
+                            });
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
 
-            hBox.getChildren().addAll(label, slider, textField);
+            hBox.getChildren().addAll(label, slider, textField, enterRCSButton);
             container.setTop(hBox);
 
             primaryStage.setTitle("Hello World!");
