@@ -20,6 +20,15 @@ import org.jzy3d.maths.Coord3d;
 public class Cube extends BoundingBox3d{
 
     private List<Mesh> meshs=new ArrayList<>();
+    private double rcs;
+
+    public double getRcs() {
+        return rcs;
+    }
+
+    public void setRcs(double rcs) {
+        this.rcs = rcs;
+    }
     /**
      * @param vertices must be of length 8
      */

@@ -10,6 +10,8 @@ import jzy_3d_sample.datafactory.Read_data;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -17,6 +19,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -40,33 +43,42 @@ import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
 import jzy_3d_sample.ui.FileOpenController;
 import jzy_3d_sample.ui.RcslistController;
+import jzy_3d_sample.ui.SlicecubeController;
 import org.apache.commons.io.FileUtils;
+import org.jzy3d.colors.Color;
 
 /**
  *
  * @author user
  */
 public class Main extends Application {
-    private List<Mesh> meshs=null;
-    private RenderModel renderModel=null;
-    private Scene scene=null;
-    private BorderPane container=null;
-    
-    private RenderModel loadRenderModel(List<Mesh> meshs){
-        this.meshs=meshs;
+
+    private List<Mesh> meshs = null;
+    private RenderModel renderModel = null;
+    private Scene scene = null;
+    private BorderPane container = null;
+    private List<Cube> subCubes = null;
+    File subCubeRoot = null;
+
+    private RenderModel loadRenderModel(List<Mesh> meshs) {
+        this.meshs = meshs;
         this.renderModel = new RenderModel(scene, meshs);
         return this.renderModel;
     }
+
     @Override
     public void start(Stage primaryStage) {
         try {
             Read_data r = new Read_data();
 
-
             MenuBar menuBar = new MenuBar();
             Menu fileMenu = new Menu("File");
             MenuItem fileOpenMenuItem = new MenuItem("Open");
             fileMenu.getItems().add(fileOpenMenuItem);
+            MenuItem fileSliceMenuItem = new MenuItem("子空間切割");
+            fileMenu.getItems().add(fileSliceMenuItem);
+            MenuItem fileRCSMenuItem = new MenuItem("RCS資料輸入");
+            fileMenu.getItems().add(fileRCSMenuItem);
             fileMenu.getItems().add(new SeparatorMenuItem());
             MenuItem fileExitMenuItem = new MenuItem("Exit");
             fileMenu.getItems().add(fileExitMenuItem);
@@ -77,38 +89,95 @@ public class Main extends Application {
                     try {
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/fileopen.fxml"));
                         Parent root1 = (Parent) fxmlLoader.load();
-                        FileOpenController fileOpenController=fxmlLoader.getController();
+                        FileOpenController fileOpenController = fxmlLoader.getController();
                         Stage stage = new Stage();
                         stage.initModality(Modality.APPLICATION_MODAL);
                         stage.initStyle(StageStyle.UNDECORATED);
                         stage.setTitle("Open File...");
                         stage.setScene(new Scene(root1));
                         stage.showAndWait();
-                        if(fileOpenController.isOk()){
-                            if(renderModel!=null){
+                        if (fileOpenController.isOk()) {
+                            if (renderModel != null) {
                                 container.setCenter(null);
                             }
                             meshs = r.getdata_from_nas(fileOpenController.getNasFile(), fileOpenController.getOsFile());
-                            renderModel=loadRenderModel(meshs);
-                            Cube cube=renderModel.getBoundingCube();
-                            List<Cube> subCubes=cube.slice(4,4,4);
-                            File subCubeRoot=new File(fileOpenController.getNasFile().getName());
-                            FileUtils.forceMkdir(subCubeRoot);
-                            for (int i=0; i<subCubes.size(); i++){
-                                Cube c=subCubes.get(i);
-                                File subCubeFolder=new File(subCubeRoot, ""+i);
-                                FileUtils.forceMkdir(subCubeFolder);
-                                FastN2fWriter.writeTriFile(c.getMeshs(), new File(subCubeFolder, i+".tri"));
-                                FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeFolder, i+".curM"));
-                                FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeFolder, i+".curJ"));
-                            }
-                            
+                            subCubeRoot = new File(fileOpenController.getNasFile().getName());
+                            renderModel = loadRenderModel(meshs);
                             ScrollPane scrollPane = new ScrollPane();
                             container.setCenter(scrollPane);
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
                                     scrollPane.setContent(renderModel.getView());
+                                    primaryStage.setWidth(800);
+                                }
+                            });
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
+
+            fileSliceMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/slicecube.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        SlicecubeController slicecubeController = fxmlLoader.getController();
+                        Stage stage = new Stage();
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.initStyle(StageStyle.UTILITY);
+                        stage.setTitle("Paste Slice Values......");
+                        stage.setScene(new Scene(root1));
+                        stage.showAndWait();
+                        if (slicecubeController.isOk()) {
+                            double[] slice_value = slicecubeController.getslice();
+                            subCubes = renderModel.getBoundingCube().slice(slice_value[0], slice_value[1], slice_value[2]);
+                            System.out.println(subCubes.size());
+                            FileUtils.deleteDirectory(subCubeRoot);
+                            FileUtils.forceMkdir(subCubeRoot);
+                            for (int i = 0; i < subCubes.size(); i++) {
+                                Cube c = subCubes.get(i);
+                                File subCubeFolder = new File(subCubeRoot, "" + i);
+                                System.out.println(subCubeFolder);
+                                FileUtils.forceMkdir(subCubeFolder);
+                                FastN2fWriter.writeTriFile(c.getMeshs(), new File(subCubeFolder, i + ".tri"));
+                                FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeFolder, i + ".curM"));
+                                FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeFolder, i + ".curJ"));
+                            }
+                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+
+            fileRCSMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rcslist.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        RcslistController rcslistController = fxmlLoader.getController();
+                        Stage stage = new Stage();
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.initStyle(StageStyle.UTILITY);
+                        stage.setTitle("Paste RCS Values......");
+                        stage.setScene(new Scene(root1));
+                        stage.showAndWait();
+                        if (rcslistController.isOk()) {
+                            //處理貼進來的 rcs 清單
+                            String[] rcsList = rcslistController.getValues().split("\\n");
+                            for (int i = 0; i < rcsList.length; i++) {
+                                System.out.println(rcsList[i]);
+                                subCubes.get(i).setRcs(Double.valueOf(rcsList[i]));
+
+                            }
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
                                     primaryStage.setWidth(800);
                                 }
                             });
@@ -132,10 +201,10 @@ public class Main extends Application {
             container = new BorderPane();
             menuBarContainer.getChildren().add(container);
 
-
             HBox hBox = new HBox();
             hBox.setSpacing(10);
-            Label label = new Label("RCS 臨界值");
+            hBox.setPadding(new Insets(10));
+            Label label = new Label("RCS 臨界值：");
             Slider slider = new Slider();
             slider.setMin(0);
             slider.setMax(20);
@@ -144,6 +213,7 @@ public class Main extends Application {
             slider.setShowTickMarks(true);
             slider.setMajorTickUnit(1);
             slider.setBlockIncrement(1);
+            slider.setPrefWidth(500);
             TextField textField = new TextField();
             textField.setText(Double.toString(slider.getValue()));
 
@@ -153,44 +223,28 @@ public class Main extends Application {
                     textField.setText(Double.toString(slider.getValue()));
                 }
             });
-            
-            Button enterRCSButton=new Button("Enter RCS Values");
-            
-            enterRCSButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            textField.textProperty().addListener(new ChangeListener<String>() {
                 @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rcslist.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        RcslistController rcslistController=fxmlLoader.getController();
-                        Stage stage = new Stage();
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.initStyle(StageStyle.UTILITY);
-                        stage.setTitle("Paste RCS Values......");
-                        stage.setScene(new Scene(root1));
-                        stage.showAndWait();
-                        if(rcslistController.isOk()){
-                            //處理貼進來的 rcs 清單
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    primaryStage.setWidth(800);
-                                }
-                            });
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                    slider.setValue(Double.valueOf(newValue));
+                    for (Cube c : subCubes) {
+                        if (c.getRcs() > Double.valueOf(newValue)) {
+                            for (Mesh m : c.getMeshs()) {
+                                m.setColor(Color.RED);
+                            }
                         }
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
                     }
                 }
             });
 
-            hBox.getChildren().addAll(label, slider, textField, enterRCSButton);
+            hBox.getChildren().addAll(label, textField, slider);
             container.setTop(hBox);
 
-            primaryStage.setTitle("Hello World!");
+            primaryStage.setTitle("CS");
             primaryStage.setScene(scene);
             primaryStage.show();
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
