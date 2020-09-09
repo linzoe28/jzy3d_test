@@ -93,9 +93,9 @@ public class Main extends Application {
                             FileUtils.forceMkdir(new File(fileOpenController.getNasFile().getName()));
                             for (int i=0; i<subCubes.size(); i++){
                                 Cube c=subCubes.get(i);
-                                FastN2fWriter.writeTriFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.pathSeparator+i+".tri"));
-                                FastN2fWriter.writeCurMFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.pathSeparator+i+".curM"));
-                                FastN2fWriter.writeCurJFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.pathSeparator+i+".curJ"));
+                                FastN2fWriter.writeTriFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.separator+i+".tri"));
+                                FastN2fWriter.writeCurMFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.separator+i+".curM"));
+                                FastN2fWriter.writeCurJFile(c.getMeshs(), new File(fileOpenController.getNasFile().getName()+File.separator+i+".curJ"));
                             }
                             
                             ScrollPane scrollPane = new ScrollPane();
