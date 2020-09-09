@@ -29,6 +29,10 @@ public class FileOpenController{
     private boolean ok=false;
     private FileChooser fileChooser=new FileChooser();
 
+    public FileOpenController() {
+        fileChooser.setInitialDirectory(new File(".").getAbsoluteFile());
+    }
+
     @FXML
     void cancelButtonAction(MouseEvent event) {
         ok=false;
