@@ -9,7 +9,12 @@ import java.io.File;
 import jzy_3d_sample.datafactory.Read_data;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -22,7 +27,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -60,9 +64,9 @@ public class Main extends Application {
     private List<Cube> subCubes = null;
     File subCubeRoot = null;
 
-    private RenderModel loadRenderModel(List<Mesh> meshs) {
+    private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
         this.meshs = meshs;
-        this.renderModel = new RenderModel(scene, meshs);
+        this.renderModel = new RenderModel(scene, primaryStage, meshs);
         return this.renderModel;
     }
 
@@ -102,14 +106,14 @@ public class Main extends Application {
                             }
                             meshs = r.getdata_from_nas(fileOpenController.getNasFile(), fileOpenController.getOsFile());
                             subCubeRoot = new File(fileOpenController.getNasFile().getName());
-                            renderModel = loadRenderModel(meshs);
+                            renderModel = loadRenderModel(primaryStage, meshs);
                             ScrollPane scrollPane = new ScrollPane();
                             container.setCenter(scrollPane);
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
                                     scrollPane.setContent(renderModel.getView());
-                                    primaryStage.setWidth(800);
+                                    renderModel.repaint();
                                 }
                             });
                         }
@@ -154,40 +158,6 @@ public class Main extends Application {
                 }
             });
 
-            fileRCSMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rcslist.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        RcslistController rcslistController = fxmlLoader.getController();
-                        Stage stage = new Stage();
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.initStyle(StageStyle.UTILITY);
-                        stage.setTitle("Paste RCS Values......");
-                        stage.setScene(new Scene(root1));
-                        stage.showAndWait();
-                        if (rcslistController.isOk()) {
-                            //處理貼進來的 rcs 清單
-                            String[] rcsList = rcslistController.getValues().split("\\n");
-                            for (int i = 0; i < rcsList.length; i++) {
-                                System.out.println(rcsList[i]);
-                                subCubes.get(i).setRcs(Double.valueOf(rcsList[i]));
-
-                            }
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    primaryStage.setWidth(800);
-                                }
-                            });
-                        }
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            });
-
             fileExitMenuItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -217,6 +187,35 @@ public class Main extends Application {
             TextField textField = new TextField();
             textField.setText(Double.toString(slider.getValue()));
 
+            fileRCSMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rcslist.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        RcslistController rcslistController = fxmlLoader.getController();
+                        Stage stage = new Stage();
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.initStyle(StageStyle.UTILITY);
+                        stage.setTitle("Paste RCS Values......");
+                        stage.setScene(new Scene(root1));
+                        stage.showAndWait();
+                        if (rcslistController.isOk()) {
+                            //處理貼進來的 rcs 清單
+                            String[] rcsList = rcslistController.getValues().split("\\n");
+                            for (int i = 0; i < rcsList.length; i++) {
+                                subCubes.get(i).setRcs(Double.valueOf(rcsList[i]));
+
+                            }
+                            resetColor(Double.valueOf(textField.getText()));
+                            renderModel.repaint();
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
+
             slider.valueProperty().addListener(new ChangeListener<Number>() {
                 @Override
                 public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -228,13 +227,8 @@ public class Main extends Application {
                 @Override
                 public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                     slider.setValue(Double.valueOf(newValue));
-                    for (Cube c : subCubes) {
-                        if (c.getRcs() > Double.valueOf(newValue)) {
-                            for (Mesh m : c.getMeshs()) {
-                                m.setColor(Color.RED);
-                            }
-                        }
-                    }
+                    resetColor(Double.valueOf(newValue));
+                    renderModel.repaint();
                 }
             });
 
@@ -251,13 +245,40 @@ public class Main extends Application {
 
     }
 
-    private List<Float> range(float min, float max, int segments) {
-        float step = (max - min) / segments;
-        List<Float> ret = new ArrayList<>();
-        for (int i = 0; i <= segments; i++) {
-            ret.add(min + i * step);
+    private void resetColor(double rcsThreshold) {
+//        List<Cube> colorCubes = new ArrayList<>(subCubes);
+//        Collections.sort(colorCubes, new Comparator<Cube>() {
+//
+//            @Override
+//            public int compare(Cube o1, Cube o2) {
+//                return (int) (o1.getRcs() - o2.getRcs());
+//            }
+//        });
+//
+//        Color[] colors = new Color[colorCubes.size()];
+//        double gap = 255.0 / (colorCubes.size() - 1);
+//        for (int i = 0; i < colorCubes.size(); i++) {
+//            colors[i] = new Color((float) (0 + gap *i), 0, (float) (255 - gap *i));
+//        }
+//        System.out.println(Arrays.deepToString(colors));
+//        for (int i = 0; i < colorCubes.size(); i++) {
+//            Cube c = colorCubes.get(i);
+//            for (Mesh m : c.getMeshs()) {
+//                m.setColor((c.getRcs()>=rcsThreshold)?Color.RED:colors[i]);
+//            }
+//        }
+
+        for (Cube c : subCubes) {
+            if (c.getRcs() >= rcsThreshold) {
+                for (Mesh m : c.getMeshs()) {
+                    m.setColor(Color.RED);
+                }
+            } else {
+                for (Mesh m : c.getMeshs()) {
+                    m.setColor(Color.WHITE);
+                }
+            }
         }
-        return ret;
     }
 
     /**
