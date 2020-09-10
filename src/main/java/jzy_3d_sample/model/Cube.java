@@ -130,16 +130,31 @@ public class Cube extends BoundingBox3d{
                 }
             }
         }
-        for(Cube cube : subCubes){
-            List<Mesh> consumedMeshs=new ArrayList<>();
-            for(Mesh mesh : localMeshs){
+        Cube lastCube=null;
+        outer: for(Mesh mesh : localMeshs){
+            if(lastCube!=null && lastCube.contains(mesh.getCenter())){
+                lastCube.getMeshs().add(mesh);
+                continue;
+            }
+            for(Cube cube : subCubes){
                 if(cube.contains(mesh.getCenter())){
+                    lastCube=cube;
                     cube.getMeshs().add(mesh);
-                    consumedMeshs.add(mesh);
+//                    System.out.println(cube);
+                    continue outer;
                 }
             }
-            localMeshs.removeAll(consumedMeshs);
         }
+//        for(Cube cube : subCubes){
+//            List<Mesh> consumedMeshs=new ArrayList<>();
+//            for(Mesh mesh : localMeshs){
+//                if(cube.contains(mesh.getCenter())){
+//                    cube.getMeshs().add(mesh);
+//                    consumedMeshs.add(mesh);
+//                }
+//            }
+//            localMeshs.removeAll(consumedMeshs);
+//        }
         return subCubes;
     }
     

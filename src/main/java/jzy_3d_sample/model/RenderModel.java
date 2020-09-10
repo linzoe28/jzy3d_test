@@ -12,10 +12,14 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.jzy3d.chart.AWTChart;
+import org.jzy3d.chart.Settings;
 import org.jzy3d.javafx.JavaFXChartFactory;
+import org.jzy3d.maths.Coord3d;
 import org.jzy3d.plot3d.primitives.Polygon;
 import org.jzy3d.plot3d.primitives.Shape;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
+import org.jzy3d.plot3d.rendering.view.View;
+import org.jzy3d.plot3d.transform.Scale;
 
 /**
  * a utility class for constructing rendering related objects
@@ -34,17 +38,20 @@ public class RenderModel {
     public RenderModel(Scene scene, Stage stage, List<Mesh> meshs) {
         this.scene = scene;
         this.stage = stage;
+        Settings.getInstance().setHardwareAccelerated(true);
+        //System.out.println(Settings.getInstance().isHardwareAccelerated());
         surface = new Shape(new ArrayList<Polygon>(meshs));
         surface.setWireframeDisplayed(true);
         surface.setFaceDisplayed(true);
-        surface.setWireframeColor(org.jzy3d.colors.Color.BLUE);
+        surface.setWireframeColor(org.jzy3d.colors.Color.GRAY);
 //        surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new org.jzy3d.colors.Color(1, 1, 1, 1f)));
 
         JavaFXChartFactory factory = new JavaFXChartFactory();
-        chart = (AWTChart) factory.newChart(Quality.Intermediate, "offscreen");
+        chart = (AWTChart) factory.newChart(Quality.Fastest, "offscreen");
         chart.getScene().getGraph().add(surface);
         view = factory.bindImageView(chart);
         factory.addSceneSizeChangedListener(chart, scene);
+        
         this.meshs.addAll(meshs);
     }
 

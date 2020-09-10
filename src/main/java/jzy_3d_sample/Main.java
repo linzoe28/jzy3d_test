@@ -50,6 +50,7 @@ import jzy_3d_sample.ui.RcslistController;
 import jzy_3d_sample.ui.SlicecubeController;
 import org.apache.commons.io.FileUtils;
 import org.jzy3d.colors.Color;
+import org.jzy3d.plot3d.rendering.view.View;
 
 /**
  *
@@ -113,6 +114,7 @@ public class Main extends Application {
                                 @Override
                                 public void run() {
                                     scrollPane.setContent(renderModel.getView());
+                                    
                                     renderModel.repaint();
                                 }
                             });
@@ -267,7 +269,7 @@ public class Main extends Application {
 //                m.setColor((c.getRcs()>=rcsThreshold)?Color.RED:colors[i]);
 //            }
 //        }
-
+        renderModel.getSurface().setWireframeDisplayed(false);
         for (Cube c : subCubes) {
             if (c.getRcs() >= rcsThreshold) {
                 for (Mesh m : c.getMeshs()) {
@@ -275,7 +277,7 @@ public class Main extends Application {
                 }
             } else {
                 for (Mesh m : c.getMeshs()) {
-                    m.setColor(Color.WHITE);
+                    m.setColor(Color.BLUE);
                 }
             }
         }
