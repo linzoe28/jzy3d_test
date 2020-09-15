@@ -14,12 +14,9 @@ import javafx.stage.Stage;
 import org.jzy3d.chart.AWTChart;
 import org.jzy3d.chart.Settings;
 import org.jzy3d.javafx.JavaFXChartFactory;
-import org.jzy3d.maths.Coord3d;
 import org.jzy3d.plot3d.primitives.Polygon;
 import org.jzy3d.plot3d.primitives.Shape;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
-import org.jzy3d.plot3d.rendering.view.View;
-import org.jzy3d.plot3d.transform.Scale;
 
 /**
  * a utility class for constructing rendering related objects
@@ -43,7 +40,7 @@ public class RenderModel {
         surface = new Shape(new ArrayList<Polygon>(meshs));
         surface.setWireframeDisplayed(true);
         surface.setFaceDisplayed(true);
-        surface.setWireframeColor(org.jzy3d.colors.Color.GRAY);
+        surface.setWireframeColor(org.jzy3d.colors.Color.BLUE);
 //        surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new org.jzy3d.colors.Color(1, 1, 1, 1f)));
 
         JavaFXChartFactory factory = new JavaFXChartFactory();

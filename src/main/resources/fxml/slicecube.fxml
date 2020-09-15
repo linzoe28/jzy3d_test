@@ -9,14 +9,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="jzy_3d_sample.ui.SlicecubeController">
+<AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.SlicecubeController">
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
             <HBox>
                <children>
-                  <Label text="X值：" />
+                  <Label text="X 維度：" />
                   <TextField prefHeight="23.0" prefWidth="188.0" fx:id="x_value" />
                </children>
                <padding>
@@ -28,7 +27,7 @@
             </HBox>
             <HBox>
                <children>
-                  <Label text="Y值：">
+                  <Label text="Y 維度：">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -48,7 +47,7 @@
             </HBox>
             <HBox>
                <children>
-                  <Label text="Z值：">
+                  <Label text="Z 維度：">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

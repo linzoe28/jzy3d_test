@@ -9,12 +9,9 @@ import java.io.File;
 import jzy_3d_sample.datafactory.Read_data;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -25,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -46,11 +44,11 @@ import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
 import jzy_3d_sample.ui.FileOpenController;
+import jzy_3d_sample.ui.LegendController;
 import jzy_3d_sample.ui.RcslistController;
 import jzy_3d_sample.ui.SlicecubeController;
 import org.apache.commons.io.FileUtils;
 import org.jzy3d.colors.Color;
-import org.jzy3d.plot3d.rendering.view.View;
 
 /**
  *
@@ -64,6 +62,8 @@ public class Main extends Application {
     private BorderPane container = null;
     private List<Cube> subCubes = null;
     File subCubeRoot = null;
+    VBox colorLegend=null;
+    FXMLLoader legendloader=null;
 
     private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
         this.meshs = meshs;
@@ -75,6 +75,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             Read_data r = new Read_data();
+            
 
             MenuBar menuBar = new MenuBar();
             Menu fileMenu = new Menu("File");
@@ -114,7 +115,7 @@ public class Main extends Application {
                                 @Override
                                 public void run() {
                                     scrollPane.setContent(renderModel.getView());
-                                    
+
                                     renderModel.repaint();
                                 }
                             });
@@ -153,6 +154,7 @@ public class Main extends Application {
                                 FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeFolder, i + ".curM"));
                                 FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeFolder, i + ".curJ"));
                             }
+
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -207,9 +209,10 @@ public class Main extends Application {
                             String[] rcsList = rcslistController.getValues().split("\\n");
                             for (int i = 0; i < rcsList.length; i++) {
                                 subCubes.get(i).setRcs(Double.valueOf(rcsList[i]));
-
                             }
                             resetColor(Double.valueOf(textField.getText()));
+                            colorLegend.setPrefWidth(63);
+                            colorLegend.setVisible(true);
                             renderModel.repaint();
                         }
                     } catch (IOException ex) {
@@ -217,7 +220,6 @@ public class Main extends Application {
                     }
                 }
             });
-
             slider.valueProperty().addListener(new ChangeListener<Number>() {
                 @Override
                 public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -236,7 +238,13 @@ public class Main extends Application {
 
             hBox.getChildren().addAll(label, textField, slider);
             container.setTop(hBox);
-
+            
+            legendloader = new FXMLLoader(getClass().getResource("/fxml/legend.fxml"));
+            colorLegend = (VBox) legendloader.load();
+            container.setRight(colorLegend);
+            colorLegend.setPrefWidth(0);
+            colorLegend.setVisible(false);
+            colorLegend.setPadding(new Insets(10));
             primaryStage.setTitle("CS");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -248,38 +256,43 @@ public class Main extends Application {
     }
 
     private void resetColor(double rcsThreshold) {
-//        List<Cube> colorCubes = new ArrayList<>(subCubes);
-//        Collections.sort(colorCubes, new Comparator<Cube>() {
-//
-//            @Override
-//            public int compare(Cube o1, Cube o2) {
-//                return (int) (o1.getRcs() - o2.getRcs());
-//            }
-//        });
-//
-//        Color[] colors = new Color[colorCubes.size()];
-//        double gap = 255.0 / (colorCubes.size() - 1);
-//        for (int i = 0; i < colorCubes.size(); i++) {
-//            colors[i] = new Color((float) (0 + gap *i), 0, (float) (255 - gap *i));
-//        }
+        List<Cube> colorCubes = new ArrayList<>(subCubes);
+        Collections.sort(colorCubes, new Comparator<Cube>() {
+
+            @Override
+            public int compare(Cube o1, Cube o2) {
+                return (int) (o1.getRcs() - o2.getRcs());
+            }
+        });
+
+        double gap = (rcsThreshold - colorCubes.get(0).getRcs()) / 5;
+        System.out.println("gap" + gap);
+        LegendController legendController=legendloader.getController();
+        legendController.getRedValue().setText(String.format("%05.2f",rcsThreshold));
+        legendController.getoValue().setText(String.format("%05.2f",rcsThreshold-gap));
+        legendController.getyValue().setText(String.format("%05.2f",rcsThreshold-2*gap));
+        legendController.getgValue().setText(String.format("%05.2f",rcsThreshold-3*gap));
+        legendController.getbValue().setText(String.format("%05.2f",rcsThreshold-4*gap));
+        legendController.getbValue1().setText(String.format("%05.2f",rcsThreshold-5*gap));
 //        System.out.println(Arrays.deepToString(colors));
-//        for (int i = 0; i < colorCubes.size(); i++) {
-//            Cube c = colorCubes.get(i);
-//            for (Mesh m : c.getMeshs()) {
-//                m.setColor((c.getRcs()>=rcsThreshold)?Color.RED:colors[i]);
-//            }
-//        }
-        renderModel.getSurface().setWireframeDisplayed(false);
-        for (Cube c : subCubes) {
-            if (c.getRcs() >= rcsThreshold) {
-                for (Mesh m : c.getMeshs()) {
+        for (int i = 0; i < colorCubes.size(); i++) {
+            Cube c = colorCubes.get(i);
+            for (Mesh m : c.getMeshs()) {
+                if (c.getRcs() >= rcsThreshold) {
                     m.setColor(Color.RED);
-                }
-            } else {
-                for (Mesh m : c.getMeshs()) {
-                    m.setColor(Color.BLUE);
+                } else if (c.getRcs() >= rcsThreshold - gap && c.getRcs() < rcsThreshold) {
+                    m.setColor(new Color(235, 117, 50));
+                } else if (c.getRcs() >= rcsThreshold - 2 * gap && c.getRcs() < rcsThreshold - gap) {
+                    m.setColor(new Color(247, 208, 56));
+                } else if (c.getRcs() >= rcsThreshold - 3 * gap && c.getRcs() < rcsThreshold - 2 * gap) {
+                    m.setColor(new Color(163, 224, 72));
+                } else if (c.getRcs() >= rcsThreshold - 4 * gap && c.getRcs() < rcsThreshold - 3 * gap) {
+                    m.setColor(new Color(52, 187, 230));
+                } else {
+                    m.setColor(new Color(0, 59, 231));
                 }
             }
+            renderModel.getSurface().setWireframeDisplayed(false);
         }
     }
 

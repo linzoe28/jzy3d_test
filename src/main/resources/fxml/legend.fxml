@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox alignment="TOP_CENTER" prefHeight="108.0" prefWidth="57.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.LegendController">
+   <children>
+      <Label contentDisplay="CENTER" prefHeight="15.0" prefWidth="35.0" text="RCS">
+         <font>
+            <Font name="Arial Black" size="10.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="3.0" />
+         </VBox.margin>
+      </Label>
+      <BorderPane>
+         <center>
+            <Label fx:id="rValue" minWidth="-Infinity" style="-fx-background-color: red;" text="1111" textFill="#f20606" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="2.0" />
+               </BorderPane.margin>
+            </Label>
+         </center>
+         <right>
+            <Label fx:id="redValue" contentDisplay="RIGHT" text="50" textAlignment="CENTER" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+         </right>
+      </BorderPane>
+      <BorderPane>
+         <right>
+            <Label fx:id="oValue" contentDisplay="RIGHT" text="50" textAlignment="CENTER" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+         </right>
+         <center>
+            <Label minWidth="-Infinity" style="-fx-background-color: rgb(235,117,50);" text="1111" textFill="#eb7532" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="2.0" />
+               </BorderPane.margin>
+            </Label>
+         </center>
+      </BorderPane>
+      <BorderPane>
+         <right>
+            <Label fx:id="yValue" contentDisplay="RIGHT" text="50" textAlignment="CENTER" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+         </right>
+         <center>
+            <Label minWidth="-Infinity" style="-fx-background-color: rgb(247, 208, 56);" text="1111" textFill="#f7d038" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="2.0" />
+               </BorderPane.margin>
+            </Label>
+         </center>
+      </BorderPane>
+      <BorderPane>
+         <right>
+            <Label fx:id="gValue" contentDisplay="RIGHT" text="50" textAlignment="CENTER" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+         </right>
+         <center>
+            <Label minWidth="-Infinity" style="-fx-background-color: rgb(163, 224, 72);" text="1111" textFill="#a3e048" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="2.0" />
+               </BorderPane.margin>
+            </Label>
+         </center>
+      </BorderPane>
+      <BorderPane>
+         <right>
+            <Label fx:id="bValue" contentDisplay="RIGHT" text="50" textAlignment="CENTER" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+         </right>
+         <center>
+            <Label fx:id="gValue1" minWidth="-Infinity" style="-fx-background-color: rgb(52, 187, 230);" text="1112" textFill="#34bbe6" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="2.0" />
+               </BorderPane.margin>
+            </Label>
+         </center>
+      </BorderPane>
+      <BorderPane>
+         <right>
+            <Label fx:id="bValue1" contentDisplay="RIGHT" text="50" textAlignment="CENTER" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+         </right>
+         <center>
+            <Label fx:id="gValue11" minWidth="-Infinity" style="-fx-background-color: rgb(0, 59, 231);" text="1112" textFill="#003be7" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="2.0" />
+               </BorderPane.margin>
+            </Label>
+         </center>
+      </BorderPane>
+   </children>
+</VBox>
