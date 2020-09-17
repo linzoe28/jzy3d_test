@@ -31,6 +31,7 @@ public class RenderModel {
     private List<Mesh> meshs = new ArrayList<>();
     private Stage stage = null;
     private AWTChart chart=null;
+    private float currentZoom=1;
 
     public RenderModel(Scene scene, Stage stage, List<Mesh> meshs) {
         this.scene = scene;
@@ -52,6 +53,12 @@ public class RenderModel {
         this.meshs.addAll(meshs);
     }
 
+    public AWTChart getChart() {
+        return chart;
+    }
+
+    
+    
     public Shape getSurface() {
         return surface;
     }
@@ -62,6 +69,17 @@ public class RenderModel {
 
     public Cube getBoundingCube() {
         return new Cube(surface.getBounds(), meshs);
+    }
+    
+    public void zoom(float factor){
+        chart.getView().zoomX(1/currentZoom, true);
+        chart.getView().zoomY(1/currentZoom, true);
+        chart.getView().zoomZ(1/currentZoom, true);
+        chart.getView().zoomX(factor, true);
+        chart.getView().zoomY(factor, true);
+        chart.getView().zoomZ(factor, true);
+        currentZoom=factor;
+        surface.updateBounds();
     }
 
     public void repaint() {

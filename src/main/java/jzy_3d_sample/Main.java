@@ -22,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -33,8 +34,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -170,10 +174,11 @@ public class Main extends Application {
             });
             menuBar.getMenus().add(fileMenu);
 
-            VBox menuBarContainer = new VBox(menuBar);
+            BorderPane menuBarContainer = new BorderPane();
+            menuBarContainer.setTop(menuBar);
             scene = new Scene(menuBarContainer, 800, 600);
             container = new BorderPane();
-            menuBarContainer.getChildren().add(container);
+            menuBarContainer.setCenter(container);
 
             HBox hBox = new HBox();
             hBox.setSpacing(10);
@@ -238,6 +243,27 @@ public class Main extends Application {
 
             hBox.getChildren().addAll(label, textField, slider);
             container.setTop(hBox);
+            HBox bottomBar=new HBox();
+            bottomBar.setAlignment(Pos.CENTER);
+            container.setBottom(bottomBar);
+            Label zoomLabel = new Label("Zoom in/out：");
+            Slider zoomSlider = new Slider();
+            zoomSlider.setMin(0);
+            zoomSlider.setMax(10);
+            zoomSlider.setValue(1);
+            zoomSlider.setShowTickLabels(true);
+            zoomSlider.setShowTickMarks(true);
+            zoomSlider.setMajorTickUnit(0.5);
+            zoomSlider.setBlockIncrement(0.5);
+            zoomSlider.setPrefWidth(500);
+            bottomBar.getChildren().addAll(zoomLabel, zoomSlider);
+            zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
+                @Override
+                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                    renderModel.zoom(1/newValue.floatValue());
+                    renderModel.repaint();
+                }
+            });
             
             legendloader = new FXMLLoader(getClass().getResource("/fxml/legend.fxml"));
             colorLegend = (VBox) legendloader.load();
