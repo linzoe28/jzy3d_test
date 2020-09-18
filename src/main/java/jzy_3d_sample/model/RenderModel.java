@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import org.jzy3d.chart.AWTChart;
 import org.jzy3d.chart.Settings;
 import org.jzy3d.javafx.JavaFXChartFactory;
+import org.jzy3d.maths.Coord3d;
 import org.jzy3d.plot3d.primitives.Polygon;
 import org.jzy3d.plot3d.primitives.Shape;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
@@ -79,7 +80,9 @@ public class RenderModel {
         chart.getView().zoomY(factor, true);
         chart.getView().zoomZ(factor, true);
         currentZoom=factor;
-        surface.updateBounds();
+        chart.getView().setBoundManual(surface.getBounds().scale(new Coord3d(factor, factor, factor)));
+        chart.getView().shoot();
+        //chart.getView().updateBoundsForceUpdate(true);
     }
 
     public void repaint() {
