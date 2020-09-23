@@ -25,6 +25,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -54,6 +55,7 @@ import org.jzy3d.colors.Color;
 import org.jzy3d.maths.Coord3d;
 import org.jzy3d.plot3d.primitives.LineStrip;
 import org.jzy3d.plot3d.primitives.Point;
+import org.jzy3d.plot3d.primitives.Sphere;
 
 /**
  *
@@ -152,15 +154,41 @@ public class Main extends Application {
                             for (int i = 0; i < subCubes.size(); i++) {
                                 Cube cube = subCubes.get(i);
                                 colorPainter.paint(i, cube);
-                                List<Coord3d> vertices = cube.getVertices();
-                                LineStrip lineStrip1 = new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(1), Color.RED));
-                                LineStrip lineStrip2 = new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(2), Color.RED));
-                                LineStrip lineStrip3 = new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(3), Color.RED));
-                                LineStrip lineStrip4 = new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(4), Color.RED));
-                                renderModel.getChart().getScene().getGraph().add(lineStrip1);
-                                renderModel.getChart().getScene().getGraph().add(lineStrip2);
-                                renderModel.getChart().getScene().getGraph().add(lineStrip3);
-                                renderModel.getChart().getScene().getGraph().add(lineStrip4);
+//                               if(i!=22){
+//                                   continue;
+//                               }
+//                                List<Coord3d> vertices = cube.getVertices();
+//                               
+//                                Coord3d[] mappedVertices=new Coord3d[]{vertices.get(0), vertices.get(3), vertices.get(1), vertices.get(4), vertices.get(2), vertices.get(5), vertices.get(7), vertices.get(6)};
+//                                
+//                                LineStrip lineStrip1 = new LineStrip(new Point(mappedVertices[0], Color.RED), new Point(mappedVertices[1], Color.RED));
+//                                LineStrip lineStrip2 = new LineStrip(new Point(mappedVertices[0], Color.RED), new Point(mappedVertices[2], Color.RED));
+//                                LineStrip lineStrip3 = new LineStrip(new Point(mappedVertices[0], Color.RED), new Point(mappedVertices[3], Color.RED));
+//                                LineStrip lineStrip4 = new LineStrip(new Point(mappedVertices[1], Color.RED), new Point(mappedVertices[4], Color.RED));
+//                                LineStrip lineStrip5 = new LineStrip(new Point(mappedVertices[2], Color.RED), new Point(mappedVertices[4], Color.RED));
+//                                LineStrip lineStrip6 = new LineStrip(new Point(mappedVertices[7], Color.RED), new Point(mappedVertices[4], Color.RED));
+//                                LineStrip lineStrip7 = new LineStrip(new Point(mappedVertices[3], Color.RED), new Point(mappedVertices[6], Color.RED));
+//                                LineStrip lineStrip8 = new LineStrip(new Point(mappedVertices[1], Color.RED), new Point(mappedVertices[6], Color.RED));
+//                                LineStrip lineStrip9 = new LineStrip(new Point(mappedVertices[7], Color.RED), new Point(mappedVertices[6], Color.RED));
+//                                LineStrip lineStrip10 = new LineStrip(new Point(mappedVertices[7], Color.RED), new Point(mappedVertices[4], Color.RED));
+//                                LineStrip lineStrip11 = new LineStrip(new Point(mappedVertices[5], Color.RED), new Point(mappedVertices[2], Color.RED));
+//                                LineStrip lineStrip12 = new LineStrip(new Point(mappedVertices[5], Color.RED), new Point(mappedVertices[7], Color.RED));
+//                                renderModel.getChart().getScene().getGraph().add(lineStrip1);
+//                                renderModel.getChart().getScene().getGraph().add(lineStrip2);
+//                                renderModel.getChart().getScene().getGraph().add(lineStrip3);
+//                                renderModel.getChart().getScene().getGraph().add(lineStrip4);
+//                                renderModel.getChart().getScene().getGraph().add(lineStrip5);
+//                                renderModel.getChart().getScene().getGraph().add(lineStrip6);
+//                                renderModel.getChart().getScene().getGraph().add(lineStrip7);
+//                                renderModel.getChart().getScene().getGraph().add(lineStrip8);
+//                                renderModel.getChart().getScene().getGraph().add(lineStrip9);
+//                                renderModel.getChart().getScene().getGraph().add(lineStrip10);
+//                                renderModel.getChart().getScene().getGraph().add(lineStrip11);
+//                                renderModel.getChart().getScene().getGraph().add(lineStrip12);
+//                                
+//                                for(Mesh m : cube.getMeshs()){
+//                                    m.setColor(Color.BLUE);
+//                                }
                             }
                             renderModel.getSurface().setWireframeDisplayed(false);
                             renderModel.repaint();
@@ -251,21 +279,27 @@ public class Main extends Application {
                 }
             });
 
-            textField.textProperty().addListener(new ChangeListener<String>() {
+//            textField.textProperty().addListener(new ChangeListener<String>() {
+//                @Override
+//                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                    slider.setValue(Double.valueOf(newValue));
+//                }
+//            });
+            
+            Button refreshButton=new Button("GO");
+            hBox.getChildren().addAll(label, textField, slider, refreshButton);
+            refreshButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                    slider.setValue(Double.valueOf(newValue));
-                    resetColor(Double.valueOf(newValue));
+                public void handle(ActionEvent event) {
+                    resetColor(Double.valueOf(textField.getText()));
                     renderModel.repaint();
                 }
             });
-
-            hBox.getChildren().addAll(label, textField, slider);
             container.setTop(hBox);
 
             HBox bottomBar = new HBox();
             bottomBar.setAlignment(Pos.CENTER);
-            container.setBottom(bottomBar);
+//            container.setBottom(bottomBar);//disable zoom in/out for now
             Label zoomLabel = new Label("Zoom in/out：");
             Slider zoomSlider = new Slider();
             zoomSlider.setMin(0);
@@ -299,8 +333,8 @@ public class Main extends Application {
                     public void run() {
                         try {
 //                            System.out.println(new File(".").getAbsolutePath());
-                            meshs = r.getdata_from_nas(new File("./sample/FEKO2EMsuite/FEKO/Triangle with 4 mesh.nas"), new File("./sample/FEKO2EMsuite/FEKO/Triangle with 4 mesh_Currents1.os"));
-                            subCubeRoot = new File(new File("sample/FEKO2EMsuite/FEKO/Triangle with 4 mesh.nas").getName());
+                            meshs = r.getdata_from_nas(new File("./sample/missile_cone_test/missile_cone_test.nas"), new File("./sample/missile_cone_test/missile_cone_test.os"));
+                            subCubeRoot = new File(new File("./sample/missile_cone_test/missile_cone_test.nas").getName());
                             renderModel = loadRenderModel(primaryStage, meshs);
                             ScrollPane scrollPane = new ScrollPane();
                             container.setCenter(scrollPane);

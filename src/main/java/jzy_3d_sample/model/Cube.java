@@ -126,7 +126,6 @@ public class Cube extends BoundingBox3d{
                             createVertexInCube(origin[0]+xUnit, origin[1], origin[2]+zUnit),
                             createVertexInCube(origin[0]+xUnit, origin[1]+yUnit, origin[2]+zUnit)
                     );
-                    System.out.println(subVertices);
                     subCubes.add(new Cube(subVertices));
                 }
             }

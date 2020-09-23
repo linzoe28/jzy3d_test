@@ -15,16 +15,16 @@ import org.jzy3d.colors.Color;
  */
 public class SubCubesColorPainter implements ColorPainter{
     private Color[] colors=new Color[]{
-        new Color(220,220,220, 100),
-        new Color(211,211,211, 100),
-        new Color(192,192,192, 100),
-        new Color(169,169,169, 100),
-        new Color(128,128,128, 100),
-        new Color(105,105,105, 100),
-        new Color(119,136,153, 100),
+        new Color(238, 238, 238, 100),
+        new Color(204, 204, 204, 100),
+        new Color(153, 153, 153, 100),
+        new Color(102,102,102, 100),
+        new Color(51, 51, 51, 100),
+        new Color(0,0,0, 100)/*,
+        new Color(119,136,153, 100)/*,
         new Color(112,128,144, 100),
         new Color(47,79,79, 100),
-        new Color(0,0,0, 100)
+        new Color(0,0,0, 100)*/
     };
     @Override
     public void paint(int index, Cube cube) {

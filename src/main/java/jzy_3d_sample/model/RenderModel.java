@@ -50,7 +50,7 @@ public class RenderModel {
         chart = (AWTChart) factory.newChart(Quality.Fastest, "offscreen");
         chart.getScene().getGraph().add(surface);
         view = factory.bindImageView(chart);
-        chart.getControllers().add(new JavaFXCameraMouseController(view) {
+        chart.getControllers().add(new JavaFXCameraMouseController(chart, view) {
             @Override
             protected void mouseWheelMoved(ScrollEvent e) {
 
