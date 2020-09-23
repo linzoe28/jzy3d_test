@@ -23,7 +23,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -34,11 +33,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -49,10 +45,15 @@ import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
 import jzy_3d_sample.ui.FileOpenController;
 import jzy_3d_sample.ui.LegendController;
+import jzy_3d_sample.ui.RainbowColorPainter;
 import jzy_3d_sample.ui.RcslistController;
 import jzy_3d_sample.ui.SlicecubeController;
+import jzy_3d_sample.ui.SubCubesColorPainter;
 import org.apache.commons.io.FileUtils;
 import org.jzy3d.colors.Color;
+import org.jzy3d.maths.Coord3d;
+import org.jzy3d.plot3d.primitives.LineStrip;
+import org.jzy3d.plot3d.primitives.Point;
 
 /**
  *
@@ -60,14 +61,15 @@ import org.jzy3d.colors.Color;
  */
 public class Main extends Application {
 
+    private static final boolean TEST = true;
     private List<Mesh> meshs = null;
     private RenderModel renderModel = null;
     private Scene scene = null;
     private BorderPane container = null;
     private List<Cube> subCubes = null;
     File subCubeRoot = null;
-    VBox colorLegend=null;
-    FXMLLoader legendloader=null;
+    VBox colorLegend = null;
+    FXMLLoader legendloader = null;
 
     private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
         this.meshs = meshs;
@@ -79,7 +81,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             Read_data r = new Read_data();
-            
 
             MenuBar menuBar = new MenuBar();
             Menu fileMenu = new Menu("File");
@@ -146,13 +147,29 @@ public class Main extends Application {
                         if (slicecubeController.isOk()) {
                             double[] slice_value = slicecubeController.getslice();
                             subCubes = renderModel.getBoundingCube().slice(slice_value[0], slice_value[1], slice_value[2]);
-                            System.out.println(subCubes.size());
+                            SubCubesColorPainter colorPainter=new SubCubesColorPainter();
+                            for(int i=0; i<subCubes.size(); i++){
+                                Cube cube=subCubes.get(i);
+                                colorPainter.paint(i, cube);
+                                List<Coord3d> vertices=cube.getVertices();
+                                LineStrip lineStrip1=new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(1), Color.RED));
+                                LineStrip lineStrip2=new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(2), Color.RED));
+                                LineStrip lineStrip3=new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(3), Color.RED));
+                                LineStrip lineStrip4=new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(4), Color.RED));
+                                renderModel.getChart().getScene().getGraph().add(lineStrip1);
+                                renderModel.getChart().getScene().getGraph().add(lineStrip2);
+                                renderModel.getChart().getScene().getGraph().add(lineStrip3);
+                                renderModel.getChart().getScene().getGraph().add(lineStrip4);
+                            }
+                            renderModel.getSurface().setWireframeDisplayed(false);
+                            renderModel.repaint();
+//                            System.out.println(subCubes.size());
                             FileUtils.deleteDirectory(subCubeRoot);
                             FileUtils.forceMkdir(subCubeRoot);
                             for (int i = 0; i < subCubes.size(); i++) {
                                 Cube c = subCubes.get(i);
                                 File subCubeFolder = new File(subCubeRoot, "" + i);
-                                System.out.println(subCubeFolder);
+//                                System.out.println(subCubeFolder);
                                 FileUtils.forceMkdir(subCubeFolder);
                                 FastN2fWriter.writeTriFile(c.getMeshs(), new File(subCubeFolder, i + ".tri"));
                                 FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeFolder, i + ".curM"));
@@ -243,7 +260,7 @@ public class Main extends Application {
 
             hBox.getChildren().addAll(label, textField, slider);
             container.setTop(hBox);
-            HBox bottomBar=new HBox();
+            HBox bottomBar = new HBox();
             bottomBar.setAlignment(Pos.CENTER);
             container.setBottom(bottomBar);
             Label zoomLabel = new Label("Zoom in/out：");
@@ -260,11 +277,11 @@ public class Main extends Application {
             zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
                 @Override
                 public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                    renderModel.zoom(1/newValue.floatValue());
+                    renderModel.zoom(1 / newValue.floatValue());
                     renderModel.repaint();
                 }
             });
-            
+
             legendloader = new FXMLLoader(getClass().getResource("/fxml/legend.fxml"));
             colorLegend = (VBox) legendloader.load();
             container.setRight(colorLegend);
@@ -273,6 +290,31 @@ public class Main extends Application {
             colorLegend.setPadding(new Insets(10));
             primaryStage.setTitle("CS");
             primaryStage.setScene(scene);
+            if (TEST) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+//                            System.out.println(new File(".").getAbsolutePath());
+                            meshs = r.getdata_from_nas(new File("./sample/FEKO2EMsuite/FEKO/Triangle with 4 mesh.nas"), new File("./sample/FEKO2EMsuite/FEKO/Triangle with 4 mesh_Currents1.os"));
+                            subCubeRoot = new File(new File("sample/FEKO2EMsuite/FEKO/Triangle with 4 mesh.nas").getName());
+                            renderModel = loadRenderModel(primaryStage, meshs);
+                            ScrollPane scrollPane = new ScrollPane();
+                            container.setCenter(scrollPane);
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    scrollPane.setContent(renderModel.getView());
+                                    
+                                    renderModel.repaint();
+                                }
+                            });
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                });
+            }
             primaryStage.show();
 
         } catch (Exception ex) {
@@ -280,7 +322,7 @@ public class Main extends Application {
         }
 
     }
-
+    
     private void resetColor(double rcsThreshold) {
         List<Cube> colorCubes = new ArrayList<>(subCubes);
         Collections.sort(colorCubes, new Comparator<Cube>() {
@@ -292,34 +334,21 @@ public class Main extends Application {
         });
 
         double gap = (rcsThreshold - colorCubes.get(0).getRcs()) / 5;
-        System.out.println("gap" + gap);
-        LegendController legendController=legendloader.getController();
-        legendController.getRedValue().setText(String.format("%05.2f",rcsThreshold));
-        legendController.getoValue().setText(String.format("%05.2f",rcsThreshold-gap));
-        legendController.getyValue().setText(String.format("%05.2f",rcsThreshold-2*gap));
-        legendController.getgValue().setText(String.format("%05.2f",rcsThreshold-3*gap));
-        legendController.getbValue().setText(String.format("%05.2f",rcsThreshold-4*gap));
-        legendController.getbValue1().setText(String.format("%05.2f",rcsThreshold-5*gap));
+//        System.out.println("gap" + gap);
+        LegendController legendController = legendloader.getController();
+        legendController.getRedValue().setText(String.format("%05.2f", rcsThreshold));
+        legendController.getoValue().setText(String.format("%05.2f", rcsThreshold - gap));
+        legendController.getyValue().setText(String.format("%05.2f", rcsThreshold - 2 * gap));
+        legendController.getgValue().setText(String.format("%05.2f", rcsThreshold - 3 * gap));
+        legendController.getbValue().setText(String.format("%05.2f", rcsThreshold - 4 * gap));
+        legendController.getbValue1().setText(String.format("%05.2f", rcsThreshold - 5 * gap));
+        RainbowColorPainter painter=new RainbowColorPainter(rcsThreshold, gap);
 //        System.out.println(Arrays.deepToString(colors));
         for (int i = 0; i < colorCubes.size(); i++) {
             Cube c = colorCubes.get(i);
-            for (Mesh m : c.getMeshs()) {
-                if (c.getRcs() >= rcsThreshold) {
-                    m.setColor(Color.RED);
-                } else if (c.getRcs() >= rcsThreshold - gap && c.getRcs() < rcsThreshold) {
-                    m.setColor(new Color(235, 117, 50));
-                } else if (c.getRcs() >= rcsThreshold - 2 * gap && c.getRcs() < rcsThreshold - gap) {
-                    m.setColor(new Color(247, 208, 56));
-                } else if (c.getRcs() >= rcsThreshold - 3 * gap && c.getRcs() < rcsThreshold - 2 * gap) {
-                    m.setColor(new Color(163, 224, 72));
-                } else if (c.getRcs() >= rcsThreshold - 4 * gap && c.getRcs() < rcsThreshold - 3 * gap) {
-                    m.setColor(new Color(52, 187, 230));
-                } else {
-                    m.setColor(new Color(0, 59, 231));
-                }
-            }
-            renderModel.getSurface().setWireframeDisplayed(false);
+            painter.paint(i, c);
         }
+        renderModel.getSurface().setWireframeDisplayed(false);
     }
 
     /**

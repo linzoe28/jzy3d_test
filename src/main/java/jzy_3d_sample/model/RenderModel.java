@@ -10,10 +10,12 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 import org.jzy3d.chart.AWTChart;
 import org.jzy3d.chart.Settings;
 import org.jzy3d.javafx.JavaFXChartFactory;
+import org.jzy3d.javafx.controllers.mouse.JavaFXCameraMouseController;
 import org.jzy3d.plot3d.primitives.Polygon;
 import org.jzy3d.plot3d.primitives.Shape;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
@@ -30,8 +32,8 @@ public class RenderModel {
     private Scene scene = null;
     private List<Mesh> meshs = new ArrayList<>();
     private Stage stage = null;
-    private AWTChart chart=null;
-    private float currentZoom=1;
+    private AWTChart chart = null;
+    private float currentZoom = 1;
 
     public RenderModel(Scene scene, Stage stage, List<Mesh> meshs) {
         this.scene = scene;
@@ -48,8 +50,15 @@ public class RenderModel {
         chart = (AWTChart) factory.newChart(Quality.Fastest, "offscreen");
         chart.getScene().getGraph().add(surface);
         view = factory.bindImageView(chart);
+        chart.getControllers().add(new JavaFXCameraMouseController(view) {
+            @Override
+            protected void mouseWheelMoved(ScrollEvent e) {
+
+            }
+            
+        });
         factory.addSceneSizeChangedListener(chart, scene);
-        
+
         this.meshs.addAll(meshs);
     }
 
@@ -57,8 +66,6 @@ public class RenderModel {
         return chart;
     }
 
-    
-    
     public Shape getSurface() {
         return surface;
     }
@@ -70,16 +77,17 @@ public class RenderModel {
     public Cube getBoundingCube() {
         return new Cube(surface.getBounds(), meshs);
     }
-    
-    public void zoom(float factor){
-        chart.getView().zoomX(1/currentZoom, true);
-        chart.getView().zoomY(1/currentZoom, true);
-        chart.getView().zoomZ(1/currentZoom, true);
+
+    public void zoom(float factor) {
+        chart.getView().zoomX(1 / currentZoom, true);
+        chart.getView().zoomY(1 / currentZoom, true);
+        chart.getView().zoomZ(1 / currentZoom, true);
         chart.getView().zoomX(factor, true);
         chart.getView().zoomY(factor, true);
         chart.getView().zoomZ(factor, true);
-        currentZoom=factor;
-        surface.updateBounds();
+        currentZoom = factor;
+//        surface.updateBounds();
+//        view.setFitWidth(view.getFitWidth()*factor);
     }
 
     public void repaint() {
