@@ -70,6 +70,7 @@ public class Main extends Application {
     File subCubeRoot = null;
     VBox colorLegend = null;
     FXMLLoader legendloader = null;
+    Slider slider = new Slider();
 
     private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
         this.meshs = meshs;
@@ -147,15 +148,15 @@ public class Main extends Application {
                         if (slicecubeController.isOk()) {
                             double[] slice_value = slicecubeController.getslice();
                             subCubes = renderModel.getBoundingCube().slice(slice_value[0], slice_value[1], slice_value[2]);
-                            SubCubesColorPainter colorPainter=new SubCubesColorPainter();
-                            for(int i=0; i<subCubes.size(); i++){
-                                Cube cube=subCubes.get(i);
+                            SubCubesColorPainter colorPainter = new SubCubesColorPainter();
+                            for (int i = 0; i < subCubes.size(); i++) {
+                                Cube cube = subCubes.get(i);
                                 colorPainter.paint(i, cube);
-                                List<Coord3d> vertices=cube.getVertices();
-                                LineStrip lineStrip1=new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(1), Color.RED));
-                                LineStrip lineStrip2=new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(2), Color.RED));
-                                LineStrip lineStrip3=new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(3), Color.RED));
-                                LineStrip lineStrip4=new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(4), Color.RED));
+                                List<Coord3d> vertices = cube.getVertices();
+                                LineStrip lineStrip1 = new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(1), Color.RED));
+                                LineStrip lineStrip2 = new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(2), Color.RED));
+                                LineStrip lineStrip3 = new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(3), Color.RED));
+                                LineStrip lineStrip4 = new LineStrip(new Point(vertices.get(0), Color.RED), new Point(vertices.get(4), Color.RED));
                                 renderModel.getChart().getScene().getGraph().add(lineStrip1);
                                 renderModel.getChart().getScene().getGraph().add(lineStrip2);
                                 renderModel.getChart().getScene().getGraph().add(lineStrip3);
@@ -201,14 +202,14 @@ public class Main extends Application {
             hBox.setSpacing(10);
             hBox.setPadding(new Insets(10));
             Label label = new Label("RCS 臨界值：");
-            Slider slider = new Slider();
             slider.setMin(0);
-            slider.setMax(20);
-            slider.setValue(10);
+            slider.setMax(1);
+            slider.setValue(0);
             slider.setShowTickLabels(true);
             slider.setShowTickMarks(true);
-            slider.setMajorTickUnit(1);
-            slider.setBlockIncrement(1);
+            slider.setMajorTickUnit(0.01);
+            slider.setBlockIncrement(0.01);
+            slider.setSnapToTicks(true);
             slider.setPrefWidth(500);
             TextField textField = new TextField();
             textField.setText(Double.toString(slider.getValue()));
@@ -232,6 +233,7 @@ public class Main extends Application {
                             for (int i = 0; i < rcsList.length; i++) {
                                 subCubes.get(i).setRcs(Double.valueOf(rcsList[i]));
                             }
+                            sortCube(subCubes);
                             resetColor(Double.valueOf(textField.getText()));
                             colorLegend.setPrefWidth(63);
                             colorLegend.setVisible(true);
@@ -260,6 +262,7 @@ public class Main extends Application {
 
             hBox.getChildren().addAll(label, textField, slider);
             container.setTop(hBox);
+
             HBox bottomBar = new HBox();
             bottomBar.setAlignment(Pos.CENTER);
             container.setBottom(bottomBar);
@@ -305,7 +308,7 @@ public class Main extends Application {
                                 @Override
                                 public void run() {
                                     scrollPane.setContent(renderModel.getView());
-                                    
+
                                     renderModel.repaint();
                                 }
                             });
@@ -322,33 +325,50 @@ public class Main extends Application {
         }
 
     }
-    
+
     private void resetColor(double rcsThreshold) {
         List<Cube> colorCubes = new ArrayList<>(subCubes);
-        Collections.sort(colorCubes, new Comparator<Cube>() {
-
-            @Override
-            public int compare(Cube o1, Cube o2) {
-                return (int) (o1.getRcs() - o2.getRcs());
+        for (Cube c : colorCubes) {
+            if (c.getRcs() != 0) {
+                System.out.println(c.getRcs());
             }
-        });
-
+        }
+        System.out.println("MIN" + colorCubes.get(0).getRcs() + ",MAX" + colorCubes.get(colorCubes.size() - 1).getRcs());
         double gap = (rcsThreshold - colorCubes.get(0).getRcs()) / 5;
-//        System.out.println("gap" + gap);
+        System.out.println("gap" + gap);
         LegendController legendController = legendloader.getController();
-        legendController.getRedValue().setText(String.format("%05.2f", rcsThreshold));
-        legendController.getoValue().setText(String.format("%05.2f", rcsThreshold - gap));
-        legendController.getyValue().setText(String.format("%05.2f", rcsThreshold - 2 * gap));
-        legendController.getgValue().setText(String.format("%05.2f", rcsThreshold - 3 * gap));
-        legendController.getbValue().setText(String.format("%05.2f", rcsThreshold - 4 * gap));
-        legendController.getbValue1().setText(String.format("%05.2f", rcsThreshold - 5 * gap));
-        RainbowColorPainter painter=new RainbowColorPainter(rcsThreshold, gap);
+        legendController.getRedValue().setText(String.format("%06.4f", rcsThreshold));
+        legendController.getoValue().setText(String.format("%06.4f", rcsThreshold - gap));
+        legendController.getyValue().setText(String.format("%06.4f", rcsThreshold - 2 * gap));
+        legendController.getgValue().setText(String.format("%06.4f", rcsThreshold - 3 * gap));
+        legendController.getbValue().setText(String.format("%06.4f", rcsThreshold - 4 * gap));
+        legendController.getbValue1().setText(String.format("%06.4f", rcsThreshold - 5 * gap));
 //        System.out.println(Arrays.deepToString(colors));
+        RainbowColorPainter painter = new RainbowColorPainter(rcsThreshold, gap);
         for (int i = 0; i < colorCubes.size(); i++) {
             Cube c = colorCubes.get(i);
             painter.paint(i, c);
         }
         renderModel.getSurface().setWireframeDisplayed(false);
+    }
+
+    private void sortCube(List<Cube> Cubes) {
+        Collections.sort(Cubes, new Comparator<Cube>() {
+
+            @Override
+            public int compare(Cube o1, Cube o2) {
+                if (o1.getRcs() < o2.getRcs()) {
+                    return -1;
+                } else if (o1.getRcs() == o2.getRcs()) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            }
+        });
+        slider.setMax(Cubes.get(Cubes.size() - 1).getRcs());
+        slider.setMin(Cubes.get(0).getRcs());
+        slider.setValue(Cubes.get(0).getRcs());
     }
 
     /**

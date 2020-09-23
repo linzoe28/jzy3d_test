@@ -85,9 +85,10 @@ public class RenderModel {
         chart.getView().zoomX(factor, true);
         chart.getView().zoomY(factor, true);
         chart.getView().zoomZ(factor, true);
-        currentZoom = factor;
-//        surface.updateBounds();
-//        view.setFitWidth(view.getFitWidth()*factor);
+        currentZoom=factor;
+//        chart.getView().setBoundManual(surface.getBounds().scale(new Coord3d(factor, factor, factor)));
+//        chart.getView().shoot();
+        //chart.getView().updateBoundsForceUpdate(true);
     }
 
     public void repaint() {
