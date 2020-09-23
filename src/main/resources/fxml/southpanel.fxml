@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" prefHeight="50.0" prefWidth="688.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.SouthpanelController">
+   <children>
+      <Label layoutX="14.0" layoutY="24.0" text="Before:" />
+      <TextField fx:id="textBefore" editable="false" layoutX="62.0" layoutY="19.0" prefHeight="26.0" prefWidth="104.0" />
+      <Label layoutX="175.0" layoutY="24.0" text="After:" />
+      <TextField fx:id="textAfter" editable="false" layoutX="212.0" layoutY="19.0" prefHeight="26.0" prefWidth="123.0" />
+   </children>
+</AnchorPane>

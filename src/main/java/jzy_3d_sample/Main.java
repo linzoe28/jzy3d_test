@@ -34,6 +34,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -49,13 +50,9 @@ import jzy_3d_sample.ui.LegendController;
 import jzy_3d_sample.ui.RainbowColorPainter;
 import jzy_3d_sample.ui.RcslistController;
 import jzy_3d_sample.ui.SlicecubeController;
+import jzy_3d_sample.ui.SouthpanelController;
 import jzy_3d_sample.ui.SubCubesColorPainter;
 import org.apache.commons.io.FileUtils;
-import org.jzy3d.colors.Color;
-import org.jzy3d.maths.Coord3d;
-import org.jzy3d.plot3d.primitives.LineStrip;
-import org.jzy3d.plot3d.primitives.Point;
-import org.jzy3d.plot3d.primitives.Sphere;
 
 /**
  *
@@ -73,6 +70,7 @@ public class Main extends Application {
     VBox colorLegend = null;
     FXMLLoader legendloader = null;
     Slider slider = new Slider();
+    private SouthpanelController southpanelController=null;
 
     private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
         this.meshs = meshs;
@@ -258,9 +256,12 @@ public class Main extends Application {
                         if (rcslistController.isOk()) {
                             //處理貼進來的 rcs 清單
                             String[] rcsList = rcslistController.getValues().split("\\n");
+                            double sum=0;
                             for (int i = 0; i < rcsList.length; i++) {
                                 subCubes.get(i).setRcs(Double.valueOf(rcsList[i]));
+                                sum+=subCubes.get(i).getRcs();
                             }
+                            southpanelController.setTextBeforeValue(sum);
                             sortCube(subCubes);
                             resetColor(Double.valueOf(textField.getText()));
                             colorLegend.setPrefWidth(63);
@@ -291,7 +292,15 @@ public class Main extends Application {
             refreshButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    resetColor(Double.valueOf(textField.getText()));
+                    double threshold=Double.valueOf(textField.getText());
+                    resetColor(threshold);
+                    double sum=0;
+                    for(Cube cube : subCubes){
+                        if(cube.getRcs()<threshold){
+                            sum+=cube.getRcs();
+                        }
+                    }
+                    southpanelController.setTextAfterValue(sum);
                     renderModel.repaint();
                 }
             });
@@ -300,6 +309,12 @@ public class Main extends Application {
             HBox bottomBar = new HBox();
             bottomBar.setAlignment(Pos.CENTER);
 //            container.setBottom(bottomBar);//disable zoom in/out for now
+
+            FXMLLoader southpanelFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/southpanel.fxml"));
+            AnchorPane southpanelRoot = (AnchorPane) southpanelFxmlLoader.load();
+            southpanelController=southpanelFxmlLoader.getController();
+            container.setBottom(southpanelRoot);
+            
             Label zoomLabel = new Label("Zoom in/out：");
             Slider zoomSlider = new Slider();
             zoomSlider.setMin(0);
