@@ -51,4 +51,18 @@ public class Mesh extends Polygon{
     public Vertex getCenter(){
         return new Vertex((vertices[0].x+vertices[1].x+vertices[2].x)/3, (vertices[0].y+vertices[1].y+vertices[2].y)/3, (vertices[0].z+vertices[1].z+vertices[2].z)/3);
     }
+    
+    public double getCurrentAbs(){
+        Complex x=new Complex(0, 0);
+        Complex y=new Complex(0, 0);
+        Complex z=new Complex(0, 0);
+        for(VertexCurrent c : this.currentMap.values()){
+            x.add(c.getX());
+            y.add(c.getY());
+            z.add(c.getZ());
+        }
+        x.add(y);
+        x.add(z);
+        return x.abs();
+    }
 }

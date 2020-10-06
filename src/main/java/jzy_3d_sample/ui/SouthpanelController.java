@@ -8,15 +8,8 @@ public class SouthpanelController {
     @FXML
     private TextField textBefore;
 
-    @FXML
-    private TextField textAfter;
-    
-    public void setTextBeforeValue(double value){
-        textBefore.setText(""+value);
-    }
-    
-    public void setTextAfterValue(double value){
-        textAfter.setText(""+value);
+    public void setTextBeforeValue(String value){
+        textBefore.setText(value);
     }
 
 }

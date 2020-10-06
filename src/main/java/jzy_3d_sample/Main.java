@@ -5,7 +5,9 @@
  */
 package jzy_3d_sample;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import jzy_3d_sample.datafactory.Read_data;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,12 +49,14 @@ import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
 import jzy_3d_sample.ui.FileOpenController;
 import jzy_3d_sample.ui.LegendController;
+import jzy_3d_sample.ui.RCSvalueController;
 import jzy_3d_sample.ui.RainbowColorPainter;
 import jzy_3d_sample.ui.RcslistController;
 import jzy_3d_sample.ui.SlicecubeController;
 import jzy_3d_sample.ui.SouthpanelController;
 import jzy_3d_sample.ui.SubCubesColorPainter;
 import org.apache.commons.io.FileUtils;
+import org.jzy3d.colors.Color;
 
 /**
  *
@@ -69,8 +73,9 @@ public class Main extends Application {
     File subCubeRoot = null;
     VBox colorLegend = null;
     FXMLLoader legendloader = null;
-    Slider slider = new Slider();
-    private SouthpanelController southpanelController=null;
+    String RCSTotal = "";
+    private SouthpanelController southpanelController = null;
+    private RCSvalueController rCSvalueController = null;
 
     private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
         this.meshs = meshs;
@@ -91,6 +96,8 @@ public class Main extends Application {
             fileMenu.getItems().add(fileSliceMenuItem);
             MenuItem fileRCSMenuItem = new MenuItem("RCS資料輸入");
             fileMenu.getItems().add(fileRCSMenuItem);
+            MenuItem researchMenuItem = new MenuItem("研改輸出");
+            fileMenu.getItems().add(researchMenuItem);
             fileMenu.getItems().add(new SeparatorMenuItem());
             MenuItem fileExitMenuItem = new MenuItem("Exit");
             fileMenu.getItems().add(fileExitMenuItem);
@@ -152,51 +159,14 @@ public class Main extends Application {
                             for (int i = 0; i < subCubes.size(); i++) {
                                 Cube cube = subCubes.get(i);
                                 colorPainter.paint(i, cube);
-//                               if(i!=22){
-//                                   continue;
-//                               }
-//                                List<Coord3d> vertices = cube.getVertices();
-//                               
-//                                Coord3d[] mappedVertices=new Coord3d[]{vertices.get(0), vertices.get(3), vertices.get(1), vertices.get(4), vertices.get(2), vertices.get(5), vertices.get(7), vertices.get(6)};
-//                                
-//                                LineStrip lineStrip1 = new LineStrip(new Point(mappedVertices[0], Color.RED), new Point(mappedVertices[1], Color.RED));
-//                                LineStrip lineStrip2 = new LineStrip(new Point(mappedVertices[0], Color.RED), new Point(mappedVertices[2], Color.RED));
-//                                LineStrip lineStrip3 = new LineStrip(new Point(mappedVertices[0], Color.RED), new Point(mappedVertices[3], Color.RED));
-//                                LineStrip lineStrip4 = new LineStrip(new Point(mappedVertices[1], Color.RED), new Point(mappedVertices[4], Color.RED));
-//                                LineStrip lineStrip5 = new LineStrip(new Point(mappedVertices[2], Color.RED), new Point(mappedVertices[4], Color.RED));
-//                                LineStrip lineStrip6 = new LineStrip(new Point(mappedVertices[7], Color.RED), new Point(mappedVertices[4], Color.RED));
-//                                LineStrip lineStrip7 = new LineStrip(new Point(mappedVertices[3], Color.RED), new Point(mappedVertices[6], Color.RED));
-//                                LineStrip lineStrip8 = new LineStrip(new Point(mappedVertices[1], Color.RED), new Point(mappedVertices[6], Color.RED));
-//                                LineStrip lineStrip9 = new LineStrip(new Point(mappedVertices[7], Color.RED), new Point(mappedVertices[6], Color.RED));
-//                                LineStrip lineStrip10 = new LineStrip(new Point(mappedVertices[7], Color.RED), new Point(mappedVertices[4], Color.RED));
-//                                LineStrip lineStrip11 = new LineStrip(new Point(mappedVertices[5], Color.RED), new Point(mappedVertices[2], Color.RED));
-//                                LineStrip lineStrip12 = new LineStrip(new Point(mappedVertices[5], Color.RED), new Point(mappedVertices[7], Color.RED));
-//                                renderModel.getChart().getScene().getGraph().add(lineStrip1);
-//                                renderModel.getChart().getScene().getGraph().add(lineStrip2);
-//                                renderModel.getChart().getScene().getGraph().add(lineStrip3);
-//                                renderModel.getChart().getScene().getGraph().add(lineStrip4);
-//                                renderModel.getChart().getScene().getGraph().add(lineStrip5);
-//                                renderModel.getChart().getScene().getGraph().add(lineStrip6);
-//                                renderModel.getChart().getScene().getGraph().add(lineStrip7);
-//                                renderModel.getChart().getScene().getGraph().add(lineStrip8);
-//                                renderModel.getChart().getScene().getGraph().add(lineStrip9);
-//                                renderModel.getChart().getScene().getGraph().add(lineStrip10);
-//                                renderModel.getChart().getScene().getGraph().add(lineStrip11);
-//                                renderModel.getChart().getScene().getGraph().add(lineStrip12);
-//                                
-//                                for(Mesh m : cube.getMeshs()){
-//                                    m.setColor(Color.BLUE);
-//                                }
                             }
                             renderModel.getSurface().setWireframeDisplayed(false);
                             renderModel.repaint();
-//                            System.out.println(subCubes.size());
                             FileUtils.deleteDirectory(subCubeRoot);
                             FileUtils.forceMkdir(subCubeRoot);
                             for (int i = 0; i < subCubes.size(); i++) {
                                 Cube c = subCubes.get(i);
                                 File subCubeFolder = new File(subCubeRoot, "" + i);
-//                                System.out.println(subCubeFolder);
                                 FileUtils.forceMkdir(subCubeFolder);
                                 FastN2fWriter.writeTriFile(c.getMeshs(), new File(subCubeFolder, i + ".tri"));
                                 FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeFolder, i + ".curM"));
@@ -207,6 +177,13 @@ public class Main extends Application {
                     } catch (IOException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                }
+            });
+            
+            researchMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent t) {
+                    
                 }
             });
 
@@ -224,22 +201,6 @@ public class Main extends Application {
             container = new BorderPane();
             menuBarContainer.setCenter(container);
 
-            HBox hBox = new HBox();
-            hBox.setSpacing(10);
-            hBox.setPadding(new Insets(10));
-            Label label = new Label("RCS 臨界值：");
-            slider.setMin(0);
-            slider.setMax(1);
-            slider.setValue(0);
-            slider.setShowTickLabels(true);
-            slider.setShowTickMarks(true);
-            slider.setMajorTickUnit(0.01);
-            slider.setBlockIncrement(0.01);
-            slider.setSnapToTicks(true);
-            slider.setPrefWidth(500);
-            TextField textField = new TextField();
-            textField.setText(Double.toString(slider.getValue()));
-
             fileRCSMenuItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -253,17 +214,21 @@ public class Main extends Application {
                         stage.setTitle("Paste RCS Values......");
                         stage.setScene(new Scene(root1));
                         stage.showAndWait();
+                        ArrayList<String> rcsList = new ArrayList<>();
                         if (rcslistController.isOk()) {
-                            //處理貼進來的 rcs 清單
-                            String[] rcsList = rcslistController.getValues().split("\\n");
-                            double sum=0;
-                            for (int i = 0; i < rcsList.length; i++) {
-                                subCubes.get(i).setRcs(Double.valueOf(rcsList[i]));
-                                sum+=subCubes.get(i).getRcs();
+                            FileReader fileReader = new FileReader(rcslistController.getRCSFile());
+                            BufferedReader br = new BufferedReader(fileReader);
+                            while (br.ready()) {
+                                rcsList.add(br.readLine());
                             }
-                            southpanelController.setTextBeforeValue(sum);
+                            //處理讀進來的 rcs 清單
+                            for (int i = 0; i < rcsList.size() - 1; i++) {
+                                subCubes.get(i).setRcs(Double.valueOf(rcsList.get(i)));
+                            }
+                            RCSTotal = rcsList.get(rcsList.size() - 1);
+                            southpanelController.setTextBeforeValue(RCSTotal);
                             sortCube(subCubes);
-                            resetColor(Double.valueOf(textField.getText()));
+                            resetColor(Double.valueOf(rCSvalueController.getThreshold()));
                             colorLegend.setPrefWidth(63);
                             colorLegend.setVisible(true);
                             renderModel.repaint();
@@ -273,81 +238,45 @@ public class Main extends Application {
                     }
                 }
             });
-            slider.valueProperty().addListener(new ChangeListener<Number>() {
-                @Override
-                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                    textField.setText(Double.toString(slider.getValue()));
-                }
-            });
 
-//            textField.textProperty().addListener(new ChangeListener<String>() {
-//                @Override
-//                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//                    slider.setValue(Double.valueOf(newValue));
-//                }
-//            });
-            
-            Button refreshButton=new Button("GO");
-            hBox.getChildren().addAll(label, textField, slider, refreshButton);
-            refreshButton.setOnAction(new EventHandler<ActionEvent>() {
+            FXMLLoader rcsvalueFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rcsvaluepanel.fxml"));
+            AnchorPane rcsvalueRoot = (AnchorPane) rcsvalueFxmlLoader.load();
+            rCSvalueController = rcsvalueFxmlLoader.getController();
+            container.setTop(rcsvalueRoot);
+            rCSvalueController.setActionHandler(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    double threshold=Double.valueOf(textField.getText());
+                    double threshold = Double.valueOf(rCSvalueController.getThreshold());
                     resetColor(threshold);
-                    double sum=0;
-                    for(Cube cube : subCubes){
-                        if(cube.getRcs()<threshold){
-                            sum+=cube.getRcs();
+                    double sum = 0;
+                    for (Cube cube : subCubes) {
+                        if (cube.getRcs() < threshold) {
+                            sum += cube.getRcs();
                         }
                     }
-                    southpanelController.setTextAfterValue(sum);
                     renderModel.repaint();
                 }
             });
-            container.setTop(hBox);
-
-            HBox bottomBar = new HBox();
-            bottomBar.setAlignment(Pos.CENTER);
-//            container.setBottom(bottomBar);//disable zoom in/out for now
 
             FXMLLoader southpanelFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/southpanel.fxml"));
             AnchorPane southpanelRoot = (AnchorPane) southpanelFxmlLoader.load();
-            southpanelController=southpanelFxmlLoader.getController();
+            southpanelController = southpanelFxmlLoader.getController();
             container.setBottom(southpanelRoot);
-            
-            Label zoomLabel = new Label("Zoom in/out：");
-            Slider zoomSlider = new Slider();
-            zoomSlider.setMin(0);
-            zoomSlider.setMax(10);
-            zoomSlider.setValue(1);
-            zoomSlider.setShowTickLabels(true);
-            zoomSlider.setShowTickMarks(true);
-            zoomSlider.setMajorTickUnit(0.5);
-            zoomSlider.setBlockIncrement(0.5);
-            zoomSlider.setPrefWidth(500);
-            bottomBar.getChildren().addAll(zoomLabel, zoomSlider);
-            zoomSlider.valueProperty().addListener(new ChangeListener<Number>() {
-                @Override
-                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                    renderModel.zoom(1 / newValue.floatValue());
-                    renderModel.repaint();
-                }
-            });
-
             legendloader = new FXMLLoader(getClass().getResource("/fxml/legend.fxml"));
             colorLegend = (VBox) legendloader.load();
             container.setRight(colorLegend);
             colorLegend.setPrefWidth(0);
             colorLegend.setVisible(false);
             colorLegend.setPadding(new Insets(10));
+
             primaryStage.setTitle("CS");
             primaryStage.setScene(scene);
+
             if (TEST) {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
                         try {
-//                            System.out.println(new File(".").getAbsolutePath());
                             meshs = r.getdata_from_nas(new File("./sample/missile_cone_test/missile_cone_test.nas"), new File("./sample/missile_cone_test/missile_cone_test.os"));
                             subCubeRoot = new File(new File("./sample/missile_cone_test/missile_cone_test.nas").getName());
                             renderModel = loadRenderModel(primaryStage, meshs);
@@ -399,6 +328,22 @@ public class Main extends Application {
             painter.paint(i, c);
         }
         renderModel.getSurface().setWireframeDisplayed(false);
+        //設定亮點
+        List<Mesh> meshs = subCubes.get(subCubes.size() - 1).getMeshs();
+        Collections.sort(meshs, new Comparator<Mesh>() {
+
+            @Override
+            public int compare(Mesh o1, Mesh o2) {
+                if (o1.getCurrentAbs() < o2.getCurrentAbs()) {
+                    return -1;
+                } else if (o1.getCurrentAbs() == o2.getCurrentAbs()) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            }
+        });
+        meshs.get(meshs.size() - 1).setColor(Color.WHITE);
     }
 
     private void sortCube(List<Cube> Cubes) {
@@ -415,9 +360,11 @@ public class Main extends Application {
                 }
             }
         });
-        slider.setMax(Cubes.get(Cubes.size() - 1).getRcs());
-        slider.setMin(Cubes.get(0).getRcs());
-        slider.setValue(Cubes.get(0).getRcs());
+        rCSvalueController.setSlidermax(Cubes.get(Cubes.size() - 1).getRcs());
+        rCSvalueController.setSlidermin(Cubes.get(0).getRcs());
+        rCSvalueController.setSlidervalue(Cubes.get(0).getRcs());
+        double majortick = ((Cubes.get(Cubes.size() - 1).getRcs()) - (Cubes.get(0).getRcs())) / 20;
+        rCSvalueController.setSliderMajorTickUnit(majortick);
     }
 
     /**

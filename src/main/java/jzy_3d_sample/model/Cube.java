@@ -21,6 +21,8 @@ public class Cube extends BoundingBox3d{
 
     private List<Mesh> meshs=new ArrayList<>();
     private double rcs;
+    
+    
 
     public double getRcs() {
         return rcs;
