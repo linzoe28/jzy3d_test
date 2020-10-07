@@ -27,6 +27,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -47,6 +49,8 @@ import jzy_3d_sample.datafactory.FastN2fWriter;
 import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
+import jzy_3d_sample.model.Vertex;
+import jzy_3d_sample.model.VertexCurrent;
 import jzy_3d_sample.ui.FileOpenController;
 import jzy_3d_sample.ui.LegendController;
 import jzy_3d_sample.ui.RCSvalueController;
@@ -56,6 +60,7 @@ import jzy_3d_sample.ui.SlicecubeController;
 import jzy_3d_sample.ui.SouthpanelController;
 import jzy_3d_sample.ui.SubCubesColorPainter;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.math3.complex.Complex;
 import org.jzy3d.colors.Color;
 
 /**
@@ -179,11 +184,40 @@ public class Main extends Application {
                     }
                 }
             });
-            
+
             researchMenuItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent t) {
-                    
+                    try {
+                        double rcsvalue = rCSvalueController.getThreshold();
+                        ArrayList<Mesh> rmeshs = new ArrayList<>();
+                        for (Cube c : subCubes) {
+                            if (c.getRcs() >= rcsvalue) {
+                                for (Mesh m : c.getClonedMeshs()) {
+                                    for (Vertex v : m.getVertices()) {
+                                        m.setCurrent(v, new VertexCurrent(Complex.ZERO, Complex.ZERO, Complex.ZERO));
+                                        rmeshs.add(m);
+                                    }
+                                }
+                            } else {
+                                for (Mesh m : c.getMeshs()) {
+                                    rmeshs.add(m);
+                                }
+                            }
+                        }
+                        File researchFile = new File("research_" + subCubeRoot.getName());
+                        FileUtils.deleteDirectory(researchFile);
+                        FileUtils.forceMkdir(researchFile);
+                        FastN2fWriter.writeTriFile(rmeshs, new File(researchFile, "rFile.tri"));
+                        FastN2fWriter.writeCurMFile(rmeshs, new File(researchFile, "rFile.curM"));
+                        FastN2fWriter.writeCurJFile(rmeshs, new File(researchFile, "rFile.curJ"));
+
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setHeaderText(researchFile.getName()+"已輸出完成");
+                        alert.showAndWait();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
 

@@ -15,7 +15,7 @@ import org.jzy3d.plot3d.primitives.Polygon;
  *
  * @author user
  */
-public class Mesh extends Polygon{
+public class Mesh extends Polygon implements Cloneable{
     private Vertex[] vertices=null;
     private Map<Vertex, VertexCurrent> currentMap=new HashMap<>();
     
@@ -65,4 +65,19 @@ public class Mesh extends Polygon{
         x.add(z);
         return x.abs();
     }
+
+    @Override
+    protected Mesh clone() throws CloneNotSupportedException {
+        Vertex [] newVertices=new Vertex[this.vertices.length];
+        for(int i=0; i<newVertices.length; i++){
+            newVertices[i]=(Vertex) this.vertices[i].clone();
+        }
+        Mesh newMesh=new Mesh(newVertices);
+        for(Vertex v : newVertices){
+            newMesh.setCurrent(v, (VertexCurrent) currentMap.get(v).clone());
+        }
+        return newMesh;
+    }
+    
+    
 }

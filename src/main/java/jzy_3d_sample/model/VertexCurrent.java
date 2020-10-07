@@ -11,7 +11,7 @@ import org.apache.commons.math3.complex.Complex;
  *
  * @author lendle
  */
-public class VertexCurrent {
+public class VertexCurrent implements Cloneable{
 
     private Complex x, y, z = null;
 
@@ -44,5 +44,12 @@ public class VertexCurrent {
     public void setZ(Complex z) {
         this.z = z;
     }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return new VertexCurrent(x, y, z);
+    }
+    
+    
 
 }

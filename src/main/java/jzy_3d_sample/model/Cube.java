@@ -7,9 +7,9 @@ package jzy_3d_sample.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jzy3d.maths.BoundingBox3d;
 import org.jzy3d.maths.Coord3d;
 
@@ -235,7 +235,19 @@ public class Cube extends BoundingBox3d{
 //
 //        return subCubes;
 //    }
-
+    
+    public List<Mesh> getClonedMeshs(){
+        List<Mesh> ret=new ArrayList<>();
+        for(Mesh m: meshs){
+            try {
+                ret.add(m.clone());
+            } catch (CloneNotSupportedException ex) {
+                Logger.getLogger(Cube.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return ret;
+    }
+    
     public String toString() {
         return (Arrays.deepToString(getVerticesVertexs().toArray()));
     }

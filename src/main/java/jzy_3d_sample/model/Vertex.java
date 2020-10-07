@@ -11,7 +11,7 @@ import org.jzy3d.maths.Coord3d;
  *
  * @author user
  */
-public class Vertex extends Coord3d implements Comparable<Vertex>{
+public class Vertex extends Coord3d implements Comparable<Vertex>, Cloneable{
     public Vertex(float x, float y, float z){
         super(x, y, z);
     }
@@ -104,4 +104,11 @@ public class Vertex extends Coord3d implements Comparable<Vertex>{
     public String toString(){
         return "("+x+","+y+","+z+")";
     }
+
+    @Override
+    public Coord3d clone() {
+        return new Vertex(x, y, z);
+    }
+    
+    
 }

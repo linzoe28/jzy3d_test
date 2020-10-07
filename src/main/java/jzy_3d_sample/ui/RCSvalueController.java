@@ -32,14 +32,6 @@ public class RCSvalueController {
             }
         });
         
-//        textRCS.textProperty().addListener(new ChangeListener<String>(){
-//            @Override
-//            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-//                sliderRCS.setValue(Double.valueOf(t));
-//            }
-//        
-//        });
-        
     }
 
     @FXML
