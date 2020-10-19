@@ -215,6 +215,7 @@ public class Main extends Application {
                         Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setHeaderText(researchFile.getName()+"已輸出完成");
                         alert.showAndWait();
+                        
                     } catch (IOException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     }
