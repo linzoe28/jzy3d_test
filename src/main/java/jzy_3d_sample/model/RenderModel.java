@@ -49,6 +49,7 @@ public class RenderModel {
         JavaFXChartFactory factory = new JavaFXChartFactory();
         chart = (AWTChart) factory.newChart(Quality.Fastest, "offscreen");
         chart.getScene().getGraph().add(surface);
+        chart.getView().setSquared(false);
         view = factory.bindImageView(chart);
         chart.getControllers().add(new JavaFXCameraMouseController(chart, view) {
             @Override

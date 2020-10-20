@@ -18,29 +18,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -62,6 +54,8 @@ import jzy_3d_sample.ui.SubCubesColorPainter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.complex.Complex;
 import org.jzy3d.colors.Color;
+import org.jzy3d.plot3d.primitives.Point;
+import org.jzy3d.plot3d.primitives.Sphere;
 
 /**
  *
@@ -81,6 +75,7 @@ public class Main extends Application {
     String RCSTotal = "";
     private SouthpanelController southpanelController = null;
     private RCSvalueController rCSvalueController = null;
+    private Point extremeValuePoint=null;
 
     private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
         this.meshs = meshs;
@@ -312,7 +307,7 @@ public class Main extends Application {
                     @Override
                     public void run() {
                         try {
-                            meshs = r.getdata_from_nas(new File("./sample/missile_cone_test/missile_cone_test.nas"), new File("./sample/missile_cone_test/missile_cone_test.os"));
+                            meshs = r.getdata_from_nas(new File("./sample/Missile_RCS_Vpol_MLFMM_10GHz_Efield_YZplane 154deg/Missile_RCS_Vpol_MLFMM_10GHz_Efield_YZplane 154deg.nas"), new File("./sample/Missile_RCS_Vpol_MLFMM_10GHz_Efield_YZplane 154deg/Missile_RCS_Vpol_MLFMM_10GHz_Efield_YZplane 154deg.os"));
                             subCubeRoot = new File(new File("./sample/missile_cone_test/missile_cone_test.nas").getName());
                             renderModel = loadRenderModel(primaryStage, meshs);
                             ScrollPane scrollPane = new ScrollPane();
@@ -340,6 +335,9 @@ public class Main extends Application {
     }
 
     private void resetColor(double rcsThreshold) {
+        if(extremeValuePoint!=null){
+            renderModel.getChart().getScene().remove(extremeValuePoint);
+        }
         List<Cube> colorCubes = new ArrayList<>(subCubes);
         for (Cube c : colorCubes) {
             if (c.getRcs() != 0) {
@@ -379,6 +377,8 @@ public class Main extends Application {
             }
         });
         meshs.get(meshs.size() - 1).setColor(Color.WHITE);
+        this.extremeValuePoint=new Point(meshs.get(meshs.size() - 1).getCenter(),Color.WHITE, 5);
+        renderModel.getChart().getScene().add(extremeValuePoint);
     }
 
     private void sortCube(List<Cube> Cubes) {
