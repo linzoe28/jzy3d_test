@@ -130,13 +130,36 @@ public class Read_data {
             }
             CSVReader reader_mesh = new CSVReader(new FileReader(meshFile), ',', '\'', 1);
             while ((nextLine = reader_mesh.readNext()) != null) {
-                OSRecord oSRecord = osRecords.get(nextLine[0]);
 //                System.out.println(oSRecord);
                 Vertex v1 = new Vertex(points.get(nextLine[1]));
                 Vertex v2 = new Vertex(points.get(nextLine[2]));
                 Vertex v3 = new Vertex(points.get(nextLine[3]));
+                //use the center point of the mesh as the key value to osrecords
                 Mesh m = new Mesh(new Vertex[]{v1, v2, v3});
+                Vertex center=m.getCenter();
+                String key=String.format("%13.3E", (double)center.getX())+
+                            String.format("%13.3E", (double)center.getY())+
+                            String.format("%13.3E", (double)center.getZ());
+                OSRecord oSRecord = osRecords.get(key);
+                if(oSRecord==null){
+                    double minDistance=Double.MAX_VALUE;
+                    OSRecord candidate=null;
+                    for(OSRecord record : osRecords.values()){
+                        double distance=Math.sqrt(Math.pow(record.getX()-center.getX(), 2)+Math.pow(record.getY()-center.getY(), 2)+Math.pow(record.getZ()-center.getZ(), 2));
+                        if(distance<minDistance){
+                            candidate=record;
+                            minDistance=distance;
+                        }
+                    }
+                    oSRecord=candidate;
+//                    System.out.println(key+":"+oSRecord.getKey()+":"+nextLine[0]+":"+oSRecord.getNum());
+                }
                 if (oSRecord != null) {
+                    osRecords.remove(oSRecord.getKey());
+//                    if(nextLine[0].equals(oSRecord.getNum())==false){
+//                        System.out.println("");
+//                    }
+//                    osRecords.remove(oSRecord.getKey());
                     m.setCurrent(v1, new VertexCurrent(
                             new Complex(Double.valueOf(oSRecord.getReC1X()), Double.valueOf(oSRecord.getImC1X())),
                             new Complex(Double.valueOf(oSRecord.getReC1Y()), Double.valueOf(oSRecord.getImC1Y())),

@@ -39,6 +39,13 @@ public class OSFileParser {
                     firstRecordGot = true;
                     String[] row = line.split(" +");
                     OSRecord record = new OSRecord();
+                    String key=String.format("%13.3E", Double.valueOf(row[1]))+
+                            String.format("%13.3E", Double.valueOf(row[2]))+
+                            String.format("%13.3E", Double.valueOf(row[3]));
+                    record.setKey(key);
+                    record.setX(Double.valueOf(row[1]));
+                    record.setY(Double.valueOf(row[2]));
+                    record.setZ(Double.valueOf(row[3]));
                     record.setNum(row[0]);
                     record.setReC1X(row[13]);
                     record.setImC1X(row[14]);
@@ -61,7 +68,8 @@ public class OSFileParser {
                     record.setReC3Z(row[29]);
                     record.setImC3Z(row[30]);
                     
-                    ret.put(record.getNum(), record);
+                    ret.put(record.getKey(), record);
+                    
                 } else {
                     if (firstRecordGot) {
                         break;

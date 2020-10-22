@@ -12,13 +12,52 @@ package jzy_3d_sample.model.os;
 public class OSRecord {
 
     private String num = null;
+    private String key=null;
     private String reC1X = null, reC2X = null, reC3X = null;
     private String imC1X = null, imC2X = null, imC3X = null;
     private String reC1Y = null, reC2Y = null, reC3Y = null;
     private String imC1Y = null, imC2Y = null, imC3Y = null;
     private String reC1Z = null, reC2Z = null, reC3Z = null;
     private String imC1Z = null, imC2Z = null, imC3Z = null;
+    private double x=-1, y=-1, z=-1;
 
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public double getZ() {
+        return z;
+    }
+
+    public void setZ(double z) {
+        this.z = z;
+    }
+
+   
+    
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    
+    
     public String getNum() {
         return num;
     }

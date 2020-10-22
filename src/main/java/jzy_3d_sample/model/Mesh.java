@@ -49,7 +49,7 @@ public class Mesh extends Polygon implements Cloneable{
 
     
     public Vertex getCenter(){
-        return new Vertex((vertices[0].x+vertices[1].x+vertices[2].x)/3, (vertices[0].y+vertices[1].y+vertices[2].y)/3, (vertices[0].z+vertices[1].z+vertices[2].z)/3);
+        return new Vertex(((double)vertices[0].x+vertices[1].x+vertices[2].x)/3, ((double)vertices[0].y+vertices[1].y+vertices[2].y)/3, ((double)vertices[0].z+vertices[1].z+vertices[2].z)/3);
     }
     
     public double getCurrentAbs(){
