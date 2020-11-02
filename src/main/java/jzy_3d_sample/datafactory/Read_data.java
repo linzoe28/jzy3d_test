@@ -137,9 +137,9 @@ public class Read_data {
                 //use the center point of the mesh as the key value to osrecords
                 Mesh m = new Mesh(new Vertex[]{v1, v2, v3});
                 Vertex center=m.getCenter();
-                String key=String.format("%13.3E", (double)center.getX())+
-                            String.format("%13.3E", (double)center.getY())+
-                            String.format("%13.3E", (double)center.getZ());
+                String key=String.format("%13.4E", (double)center.getX())+
+                            String.format("%13.4E", (double)center.getY())+
+                            String.format("%13.4E", (double)center.getZ());
                 OSRecord oSRecord = osRecords.get(key);
                 if(oSRecord==null){
                     double minDistance=Double.MAX_VALUE;

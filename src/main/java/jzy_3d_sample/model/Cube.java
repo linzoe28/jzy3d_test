@@ -7,6 +7,8 @@ package jzy_3d_sample.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -113,6 +115,25 @@ public class Cube extends BoundingBox3d{
         double yUnit=yLength/yParts;
         double zUnit=zLength/zParts;
         List<Mesh> localMeshs=new ArrayList<>(this.meshs);
+        Collections.sort(localMeshs, new Comparator<Mesh>() {
+            @Override
+            public int compare(Mesh o1, Mesh o2) {
+                if(o1.equals(o2)){
+                    return 0;
+                }
+                Vertex center1=o1.getCenter();
+                Vertex center2=o2.getCenter();
+                double d1=Math.pow(center1.x,2)+Math.pow(center1.y,2)+Math.pow(center1.z,2);
+                double d2=Math.pow(center2.x,2)+Math.pow(center2.y,2)+Math.pow(center2.z,2);
+                if(d1>d2){
+                    return 1;
+                }else if(d1==d2){
+                    return 0;
+                }else{
+                    return -1;
+                }
+            }
+        });
         List<Cube> subCubes = new ArrayList<>();
         for(int i=0; i<xParts; i++){
             for(int j=0; j<yParts; j++){
@@ -133,16 +154,27 @@ public class Cube extends BoundingBox3d{
             }
         }
         Cube lastCube=null;
+        List<Cube> lastFewCubes=new ArrayList<>();
         outer: for(Mesh mesh : localMeshs){
             if(lastCube!=null && lastCube.contains(mesh.getCenter())){
                 lastCube.getMeshs().add(mesh);
                 continue;
             }
-            for(Cube cube : subCubes){
+            for(Cube cube : lastFewCubes){
                 if(cube.contains(mesh.getCenter())){
                     lastCube=cube;
                     cube.getMeshs().add(mesh);
-//                    System.out.println(cube);
+                    continue outer;
+                }
+            }
+            for(Cube cube : subCubes){
+                if(cube.contains(mesh.getCenter())){
+                    cube.getMeshs().add(mesh);
+                    if(lastFewCubes.size()>(xParts*yParts*zParts)/5){
+                        lastFewCubes.remove(0);
+                    }
+                    lastCube=cube;
+                    lastFewCubes.add(cube);
                     continue outer;
                 }
             }

@@ -63,7 +63,7 @@ import org.jzy3d.plot3d.primitives.Sphere;
  */
 public class Main extends Application {
 
-    private static final boolean TEST = true;
+    private static final boolean TEST = false;
     private List<Mesh> meshs = null;
     private RenderModel renderModel = null;
     private Scene scene = null;
@@ -75,7 +75,7 @@ public class Main extends Application {
     String RCSTotal = "";
     private SouthpanelController southpanelController = null;
     private RCSvalueController rCSvalueController = null;
-    private Point extremeValuePoint=null;
+    private Point extremeValuePoint = null;
 
     private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
         this.meshs = meshs;
@@ -153,26 +153,40 @@ public class Main extends Application {
                         stage.setScene(new Scene(root1));
                         stage.showAndWait();
                         if (slicecubeController.isOk()) {
-                            double[] slice_value = slicecubeController.getslice();
-                            subCubes = renderModel.getBoundingCube().slice(slice_value[0], slice_value[1], slice_value[2]);
-                            SubCubesColorPainter colorPainter = new SubCubesColorPainter();
-                            for (int i = 0; i < subCubes.size(); i++) {
-                                Cube cube = subCubes.get(i);
-                                colorPainter.paint(i, cube);
-                            }
-                            renderModel.getSurface().setWireframeDisplayed(false);
-                            renderModel.repaint();
-                            FileUtils.deleteDirectory(subCubeRoot);
-                            FileUtils.forceMkdir(subCubeRoot);
-                            for (int i = 0; i < subCubes.size(); i++) {
-                                Cube c = subCubes.get(i);
-                                File subCubeFolder = new File(subCubeRoot, "" + i);
-                                FileUtils.forceMkdir(subCubeFolder);
-                                FastN2fWriter.writeTriFile(c.getMeshs(), new File(subCubeFolder, i + ".tri"));
-                                FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeFolder, i + ".curM"));
-                                FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeFolder, i + ".curJ"));
-                            }
-
+                            new Thread() {
+                                public void run() {
+                                    try {
+                                        southpanelController.startProgress();
+                                        southpanelController.setStatus("Slicing cubes......");
+                                        double[] slice_value = slicecubeController.getslice();
+                                        subCubes = renderModel.getBoundingCube().slice(slice_value[0], slice_value[1], slice_value[2]);
+                                        SubCubesColorPainter colorPainter = new SubCubesColorPainter();
+                                        for (int i = 0; i < subCubes.size(); i++) {
+                                            Cube cube = subCubes.get(i);
+                                            colorPainter.paint(i, cube);
+                                        }
+                                        renderModel.getSurface().setWireframeDisplayed(false);
+                                        renderModel.repaint();
+                                        southpanelController.setStatus("Output fast_n2f files......");
+                                        FileUtils.deleteDirectory(subCubeRoot);
+                                        FileUtils.forceMkdir(subCubeRoot);
+                                        for (int i = 0; i < subCubes.size(); i++) {
+                                            Cube c = subCubes.get(i);
+                                            File subCubeFolder = new File(subCubeRoot, "" + i);
+                                            FileUtils.forceMkdir(subCubeFolder);
+                                            FastN2fWriter.writeTriFile(c.getMeshs(), new File(subCubeFolder, i + ".tri"));
+                                            FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeFolder, i + ".curM"));
+                                            FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeFolder, i + ".curJ"));
+                                        }
+                                        
+                                        southpanelController.setStatus("Done");
+                                        southpanelController.stopProgress();
+                                        
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                            }.start();
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -208,9 +222,9 @@ public class Main extends Application {
                         FastN2fWriter.writeCurJFile(rmeshs, new File(researchFile, "rFile.curJ"));
 
                         Alert alert = new Alert(AlertType.INFORMATION);
-                        alert.setHeaderText(researchFile.getName()+"已輸出完成");
+                        alert.setHeaderText(researchFile.getName() + "已輸出完成");
                         alert.showAndWait();
-                        
+
                     } catch (IOException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -335,7 +349,7 @@ public class Main extends Application {
     }
 
     private void resetColor(double rcsThreshold) {
-        if(extremeValuePoint!=null){
+        if (extremeValuePoint != null) {
             renderModel.getChart().getScene().remove(extremeValuePoint);
         }
         List<Cube> colorCubes = new ArrayList<>(subCubes);
@@ -377,7 +391,7 @@ public class Main extends Application {
             }
         });
         meshs.get(meshs.size() - 1).setColor(Color.WHITE);
-        this.extremeValuePoint=new Point(meshs.get(meshs.size() - 1).getCenter(),Color.WHITE, 5);
+        this.extremeValuePoint = new Point(meshs.get(meshs.size() - 1).getCenter(), Color.WHITE, 5);
         renderModel.getChart().getScene().add(extremeValuePoint);
     }
 

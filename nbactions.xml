@@ -43,4 +43,11 @@
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-assembly:single</actionName>
+            <displayName>assembly:single</displayName>
+            <goals>
+                <goal>assembly:single</goal>
+            </goals>
+        </action>
     </actions>

@@ -1,0 +1,31 @@
+#!/bin/bash
+
+read -p "Number of Subspace:" q
+echo -e "Your Number of Subspace: ${q}"
+h=$[q-1]
+read -p "Operating Frequency(MHz):" w
+echo -e "Your Operating Frequency(MHz): ${w}" 
+
+mkdir ap
+
+for ((i=0;i<=h;i++))
+
+do
+
+	cp fast_n2f $i
+
+	cd $i
+
+	./fast_n2f $i $w 180 360	  
+
+	cd ..
+
+        cp $i/$i.ap ap/
+	
+	cd ap 
+
+	sed -i '1d' $i.ap
+	
+	cd ..
+done
+
