@@ -43,6 +43,7 @@ import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
 import jzy_3d_sample.model.Vertex;
 import jzy_3d_sample.model.VertexCurrent;
+import jzy_3d_sample.ui.BackgroundRunner;
 import jzy_3d_sample.ui.FileOpenController;
 import jzy_3d_sample.ui.LegendController;
 import jzy_3d_sample.ui.RCSvalueController;
@@ -51,6 +52,8 @@ import jzy_3d_sample.ui.RcslistController;
 import jzy_3d_sample.ui.SlicecubeController;
 import jzy_3d_sample.ui.SouthpanelController;
 import jzy_3d_sample.ui.SubCubesColorPainter;
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.util.Zip4jUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.complex.Complex;
 import org.jzy3d.colors.Color;
@@ -116,22 +119,42 @@ public class Main extends Application {
                         stage.setScene(new Scene(root1));
                         stage.showAndWait();
                         if (fileOpenController.isOk()) {
-                            if (renderModel != null) {
-                                container.setCenter(null);
-                            }
-                            meshs = r.getdata_from_nas(fileOpenController.getNasFile(), fileOpenController.getOsFile());
-                            subCubeRoot = new File(fileOpenController.getNasFile().getName());
-                            renderModel = loadRenderModel(primaryStage, meshs);
-                            ScrollPane scrollPane = new ScrollPane();
-                            container.setCenter(scrollPane);
-                            Platform.runLater(new Runnable() {
+                            new BackgroundRunner(southpanelController) {
                                 @Override
-                                public void run() {
-                                    scrollPane.setContent(renderModel.getView());
-
-                                    renderModel.repaint();
+                                public void runBeforeWorkerThread() {
+                                    southpanelController.setStatus("Rendering......");
                                 }
-                            });
+                                
+                                @Override
+                                public void runInWorkerThread() {
+                                    try {
+                                        if (renderModel != null) {
+                                            container.setCenter(null);
+                                        }
+                                        meshs = r.getdata_from_nas(fileOpenController.getNasFile(), fileOpenController.getOsFile());
+                                        subCubeRoot = new File(fileOpenController.getNasFile().getName());
+                                        renderModel = loadRenderModel(primaryStage, meshs);
+                                        ScrollPane scrollPane = new ScrollPane();
+                                        
+                                        Platform.runLater(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                container.setCenter(scrollPane);
+                                                scrollPane.setContent(renderModel.getView());
+                                                renderModel.repaint();
+                                            }
+                                        });     } catch (IOException ex) {
+                                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                                
+                                @Override
+                                public void runInUIThread() {
+                                    
+                                    southpanelController.setStatus("Done");
+                                }
+                            }.start();
+                            
                         }
                     } catch (IOException ex) {
                         ex.printStackTrace();
@@ -153,11 +176,15 @@ public class Main extends Application {
                         stage.setScene(new Scene(root1));
                         stage.showAndWait();
                         if (slicecubeController.isOk()) {
-                            new Thread() {
-                                public void run() {
+                            new BackgroundRunner(southpanelController) {
+                                @Override
+                                public void runBeforeWorkerThread() {
+                                    southpanelController.setStatus("Slicing cubes......");
+                                }
+
+                                @Override
+                                public void runInWorkerThread() {
                                     try {
-                                        southpanelController.startProgress();
-                                        southpanelController.setStatus("Slicing cubes......");
                                         double[] slice_value = slicecubeController.getslice();
                                         subCubes = renderModel.getBoundingCube().slice(slice_value[0], slice_value[1], slice_value[2]);
                                         SubCubesColorPainter colorPainter = new SubCubesColorPainter();
@@ -178,15 +205,20 @@ public class Main extends Application {
                                             FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeFolder, i + ".curM"));
                                             FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeFolder, i + ".curJ"));
                                         }
-                                        
-                                        southpanelController.setStatus("Done");
-                                        southpanelController.stopProgress();
-                                        
+                                        ZipFile zipFile = new ZipFile(new File(subCubeRoot.getName() + ".zip"));
+                                        zipFile.addFolder(subCubeRoot);
+                                        FileUtils.deleteDirectory(subCubeRoot);
                                     } catch (IOException ex) {
                                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                                     }
                                 }
+
+                                @Override
+                                public void runInUIThread() {
+                                    southpanelController.setStatus("Done");
+                                }
                             }.start();
+
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -197,37 +229,60 @@ public class Main extends Application {
             researchMenuItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent t) {
-                    try {
-                        double rcsvalue = rCSvalueController.getThreshold();
-                        ArrayList<Mesh> rmeshs = new ArrayList<>();
-                        for (Cube c : subCubes) {
-                            if (c.getRcs() >= rcsvalue) {
-                                for (Mesh m : c.getClonedMeshs()) {
-                                    for (Vertex v : m.getVertices()) {
-                                        m.setCurrent(v, new VertexCurrent(Complex.ZERO, Complex.ZERO, Complex.ZERO));
-                                        rmeshs.add(m);
+                    new BackgroundRunner(southpanelController) {
+                        File researchFile = null;
+                        public void runBeforeWorkerThread() {
+                            southpanelController.setStatus("Outputing research results......");
+                        }
+
+                        @Override
+                        public void runInWorkerThread() {
+                            try {
+                                double rcsvalue = rCSvalueController.getThreshold();
+                                ArrayList<Mesh> rmeshs = new ArrayList<>();
+                                for (Cube c : subCubes) {
+                                    if (c.getRcs() >= rcsvalue) {
+                                        for (Mesh m : c.getClonedMeshs()) {
+                                            for (Vertex v : m.getVertices()) {
+                                                m.setCurrent(v, new VertexCurrent(Complex.ZERO, Complex.ZERO, Complex.ZERO));
+                                                rmeshs.add(m);
+                                            }
+                                        }
+                                    } else {
+                                        for (Mesh m : c.getMeshs()) {
+                                            rmeshs.add(m);
+                                        }
                                     }
                                 }
-                            } else {
-                                for (Mesh m : c.getMeshs()) {
-                                    rmeshs.add(m);
-                                }
+                                researchFile = new File("research_" + subCubeRoot.getName());
+                                FileUtils.deleteDirectory(researchFile);
+                                FileUtils.forceMkdir(researchFile);
+                                researchFile = new File(researchFile, "0");
+                                FileUtils.forceMkdir(researchFile);
+                                FastN2fWriter.writeTriFile(rmeshs, new File(researchFile, "0.tri"));
+                                FastN2fWriter.writeCurMFile(rmeshs, new File(researchFile, "0.curM"));
+                                FastN2fWriter.writeCurJFile(rmeshs, new File(researchFile, "0.curJ"));
+                                ZipFile zipFile = new ZipFile(new File("research_" + subCubeRoot.getName() + ".zip"));
+                                zipFile.addFolder(researchFile.getParentFile());
+                            } catch (IOException ex) {
+                                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
-                        File researchFile = new File("research_" + subCubeRoot.getName());
-                        FileUtils.deleteDirectory(researchFile);
-                        FileUtils.forceMkdir(researchFile);
-                        FastN2fWriter.writeTriFile(rmeshs, new File(researchFile, "rFile.tri"));
-                        FastN2fWriter.writeCurMFile(rmeshs, new File(researchFile, "rFile.curM"));
-                        FastN2fWriter.writeCurJFile(rmeshs, new File(researchFile, "rFile.curJ"));
 
-                        Alert alert = new Alert(AlertType.INFORMATION);
-                        alert.setHeaderText(researchFile.getName() + "已輸出完成");
-                        alert.showAndWait();
+                        @Override
+                        public void runInUIThread() {
+                            try {
+                                southpanelController.setStatus("Done");
+                                Alert alert = new Alert(AlertType.INFORMATION);
+                                alert.setHeaderText(researchFile.getParentFile().getName() + "已輸出完成");
+                                alert.showAndWait();
+                                FileUtils.deleteDirectory(researchFile.getParentFile());
+                            } catch (IOException ex) {
+                                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
 
-                    } catch (IOException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    }.start();
                 }
             });
 
@@ -391,7 +446,8 @@ public class Main extends Application {
             }
         });
         meshs.get(meshs.size() - 1).setColor(Color.WHITE);
-        this.extremeValuePoint = new Point(meshs.get(meshs.size() - 1).getCenter(), Color.WHITE, 5);
+        this.extremeValuePoint = new Point(meshs.get(meshs.size() - 1).getCenter(), Color.WHITE, 10);
+        southpanelController.setExtremePointPosition(meshs.get(meshs.size() - 1).getCenter());
         renderModel.getChart().getScene().add(extremeValuePoint);
     }
 

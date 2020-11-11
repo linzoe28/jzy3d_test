@@ -7,6 +7,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class RCSvalueController {
 
@@ -21,6 +23,17 @@ public class RCSvalueController {
     public void setActionHandler(EventHandler<ActionEvent> handler){
         this.eventHandler=handler;
     }
+    
+    @FXML
+    void onTextRCSChange(KeyEvent event) {
+        try{
+            if(event.getCode()==KeyCode.ENTER){
+                double value=Double.valueOf(textRCS.getText());
+                sliderRCS.setValue(value);
+            }
+        }catch(Exception e){}
+    }
+
     
     @FXML
     public void initialize() {

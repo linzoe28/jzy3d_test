@@ -5,12 +5,22 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import jzy_3d_sample.model.Vertex;
+import jzy_3d_sample.ui.BackgroundRunner.ProgressReporter;
 
-public class SouthpanelController {
+public class SouthpanelController implements ProgressReporter{
 
     @FXML
     private TextField textBefore;
-
+    @FXML
+    private Label extremePointPosition;
+    
+    public void setExtremePointPosition(Vertex point){
+        this.extremePointPosition.setText(""+String.format("%.4f", point.x)+", "+String.format("%.4f", point.y)+", "+String.format("%.4f", point.z));
+        extremePointPosition.setTooltip(new Tooltip(""+point.x+", "+point.y+", "+point.z));
+    }
+    
     public void setTextBeforeValue(String value){
         textBefore.setText(value);
     }
