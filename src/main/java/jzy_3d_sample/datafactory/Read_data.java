@@ -79,7 +79,11 @@ public class Read_data {
                     String Z = null;
                     if ((line = reader.readLine()) != null) {
                         String item1[] = line.split(" +");
-                        Z = item1[2];
+                        if(item1.length<3){
+                            Z=item1[1];
+                        }else{
+                            Z = item1[2];
+                        }
                     }
                     bw.newLine();
                     bw.write(GRID + "," + X + "," + Y + "," + Z);

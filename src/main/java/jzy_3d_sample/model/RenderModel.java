@@ -47,7 +47,7 @@ public class RenderModel {
 //        surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new org.jzy3d.colors.Color(1, 1, 1, 1f)));
 
         JavaFXChartFactory factory = new JavaFXChartFactory();
-        chart = (AWTChart) factory.newChart(Quality.Fastest, "offscreen");
+        chart = (AWTChart) factory.newChart(Quality.Nicest, "offscreen");
         chart.getScene().getGraph().add(surface);
         chart.getView().setSquared(false);
         view = factory.bindImageView(chart);

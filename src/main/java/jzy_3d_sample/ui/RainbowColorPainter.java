@@ -29,7 +29,7 @@ public class RainbowColorPainter implements ColorPainter {
             if (c.getRcs() >= rcsThreshold) {
                 m.setColor(Color.RED);
             } else if (c.getRcs() >= rcsThreshold - gap && c.getRcs() < rcsThreshold) {
-                m.setColor(new Color(235, 117, 50));
+                m.setColor(new Color(255, 128, 0));
             } else if (c.getRcs() >= rcsThreshold - 2 * gap && c.getRcs() < rcsThreshold - gap) {
                 m.setColor(new Color(247, 208, 56));
             } else if (c.getRcs() >= rcsThreshold - 3 * gap && c.getRcs() < rcsThreshold - 2 * gap) {

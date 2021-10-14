@@ -90,8 +90,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             Read_data r = new Read_data();
-
             MenuBar menuBar = new MenuBar();
+            menuBar.setStyle("-fx-font-size: 11pt;");
             Menu fileMenu = new Menu("File");
             MenuItem fileOpenMenuItem = new MenuItem("Open");
             fileMenu.getItems().add(fileOpenMenuItem);
@@ -123,14 +123,15 @@ public class Main extends Application {
                                 @Override
                                 public void runBeforeWorkerThread() {
                                     southpanelController.setStatus("Rendering......");
+                                    if (renderModel != null) {
+                                            container.setCenter(null);
+                                        }
                                 }
                                 
                                 @Override
                                 public void runInWorkerThread() {
                                     try {
-                                        if (renderModel != null) {
-                                            container.setCenter(null);
-                                        }
+                                        
                                         meshs = r.getdata_from_nas(fileOpenController.getNasFile(), fileOpenController.getOsFile());
                                         subCubeRoot = new File(fileOpenController.getNasFile().getName());
                                         renderModel = loadRenderModel(primaryStage, meshs);
@@ -205,9 +206,9 @@ public class Main extends Application {
                                             FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeFolder, i + ".curM"));
                                             FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeFolder, i + ".curJ"));
                                         }
-                                        ZipFile zipFile = new ZipFile(new File(subCubeRoot.getName() + ".zip"));
-                                        zipFile.addFolder(subCubeRoot);
-                                        FileUtils.deleteDirectory(subCubeRoot);
+//                                        ZipFile zipFile = new ZipFile(new File(subCubeRoot.getName() + ".zip"));
+//                                        zipFile.addFolder(subCubeRoot);
+//                                        FileUtils.deleteDirectory(subCubeRoot);
                                     } catch (IOException ex) {
                                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                                     }
@@ -262,8 +263,8 @@ public class Main extends Application {
                                 FastN2fWriter.writeTriFile(rmeshs, new File(researchFile, "0.tri"));
                                 FastN2fWriter.writeCurMFile(rmeshs, new File(researchFile, "0.curM"));
                                 FastN2fWriter.writeCurJFile(rmeshs, new File(researchFile, "0.curJ"));
-                                ZipFile zipFile = new ZipFile(new File("research_" + subCubeRoot.getName() + ".zip"));
-                                zipFile.addFolder(researchFile.getParentFile());
+//                                ZipFile zipFile = new ZipFile(new File("research_" + subCubeRoot.getName() + ".zip"));
+//                                zipFile.addFolder(researchFile.getParentFile());
                             } catch (IOException ex) {
                                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -276,8 +277,8 @@ public class Main extends Application {
                                 Alert alert = new Alert(AlertType.INFORMATION);
                                 alert.setHeaderText(researchFile.getParentFile().getName() + "已輸出完成");
                                 alert.showAndWait();
-                                FileUtils.deleteDirectory(researchFile.getParentFile());
-                            } catch (IOException ex) {
+//                                FileUtils.deleteDirectory(researchFile.getParentFile());
+                            } catch (Exception ex) {
                                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }

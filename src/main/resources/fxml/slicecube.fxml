@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.SlicecubeController">
    <children>
@@ -15,7 +16,10 @@
          <children>
             <HBox>
                <children>
-                  <Label text="X 維度：" />
+                  <Label text="X 維度：">
+                     <font>
+                        <Font size="15.0" />
+                     </font></Label>
                   <TextField prefHeight="23.0" prefWidth="188.0" fx:id="x_value" />
                </children>
                <padding>
@@ -31,6 +35,9 @@
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </Label>
                   <TextField fx:id="y_value" prefHeight="23.0" prefWidth="188.0">
                      <HBox.margin>
@@ -51,6 +58,9 @@
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </Label>
                   <TextField fx:id="z_value" prefHeight="23.0" prefWidth="188.0">
                      <HBox.margin>
@@ -69,13 +79,19 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onOk" text="OK">
                      <FlowPane.margin>
-                        <Insets right="10.0" />
+                        <Insets right="5.0" />
                      </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onCancel" text="Cancel">
                      <FlowPane.margin>
                         <Insets />
                      </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </Button>
                </children>
                <VBox.margin>

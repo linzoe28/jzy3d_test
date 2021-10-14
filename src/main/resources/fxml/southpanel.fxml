@@ -7,22 +7,32 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" prefHeight="41.0" prefWidth="790.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.SouthpanelController">
    <children>
-      <HBox prefHeight="41.0" prefWidth="440.0" spacing="3.0">
+      <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="502.0" spacing="3.0" AnchorPane.leftAnchor="5.0">
          <children>
-            <Label text="RCS 總值：" />
-            <TextField fx:id="textBefore" editable="false" prefHeight="26.0" prefWidth="104.0">
+            <Label prefHeight="20.0" prefWidth="78.0" text="RCS 總值：">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <TextField fx:id="textBefore" editable="false" prefHeight="26.0" prefWidth="131.0">
                <padding>
                   <Insets left="5.0" />
                </padding>
             </TextField>
-            <Label text="極值座標:" />
-            <Label fx:id="extremePointPosition" prefHeight="15.0" prefWidth="207.0" />
+            <Label prefHeight="20.0" prefWidth="70.0" text="極值座標:">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <Label fx:id="extremePointPosition" prefHeight="15.0" prefWidth="207.0">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
          </children>
       </HBox>
-      <BorderPane layoutX="386.0" prefHeight="41.0" prefWidth="300.0" AnchorPane.rightAnchor="5.0">
+      <BorderPane layoutX="386.0" prefHeight="40.0" prefWidth="300.0" AnchorPane.rightAnchor="5.0">
          <center>
             <Label fx:id="textStatus" BorderPane.alignment="CENTER" />
          </center>

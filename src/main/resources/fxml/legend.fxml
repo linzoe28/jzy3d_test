@@ -10,7 +10,7 @@
    <children>
       <Label contentDisplay="CENTER" prefHeight="15.0" prefWidth="35.0" text="RCS">
          <font>
-            <Font name="Arial Black" size="10.0" />
+            <Font name="Arial Black" size="14.0" />
          </font>
          <VBox.margin>
             <Insets bottom="3.0" />
@@ -22,12 +22,15 @@
                <BorderPane.margin>
                   <Insets right="2.0" />
                </BorderPane.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
             </Label>
          </center>
          <right>
             <Label fx:id="redValue" contentDisplay="RIGHT" text="50" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
-                  <Font size="10.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
          </right>
@@ -36,15 +39,18 @@
          <right>
             <Label fx:id="oValue" contentDisplay="RIGHT" text="50" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
-                  <Font size="10.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
          </right>
          <center>
-            <Label minWidth="-Infinity" style="-fx-background-color: rgb(235,117,50);" text="1111" textFill="#eb7532" BorderPane.alignment="CENTER">
+            <Label minWidth="-Infinity" style="-fx-background-color: rgb(255, 128, 0);" text="1111" textFill="#ff8000" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets right="2.0" />
                </BorderPane.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
             </Label>
          </center>
       </BorderPane>
@@ -52,7 +58,7 @@
          <right>
             <Label fx:id="yValue" contentDisplay="RIGHT" text="50" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
-                  <Font size="10.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
          </right>
@@ -61,6 +67,9 @@
                <BorderPane.margin>
                   <Insets right="2.0" />
                </BorderPane.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
             </Label>
          </center>
       </BorderPane>
@@ -68,7 +77,7 @@
          <right>
             <Label fx:id="gValue" contentDisplay="RIGHT" text="50" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
-                  <Font size="10.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
          </right>
@@ -77,6 +86,9 @@
                <BorderPane.margin>
                   <Insets right="2.0" />
                </BorderPane.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
             </Label>
          </center>
       </BorderPane>
@@ -84,7 +96,7 @@
          <right>
             <Label fx:id="bValue" contentDisplay="RIGHT" text="50" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
-                  <Font size="10.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
          </right>
@@ -93,6 +105,9 @@
                <BorderPane.margin>
                   <Insets right="2.0" />
                </BorderPane.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
             </Label>
          </center>
       </BorderPane>
@@ -100,7 +115,7 @@
          <right>
             <Label fx:id="bValue1" contentDisplay="RIGHT" text="50" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
-                  <Font size="10.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
          </right>
@@ -109,6 +124,9 @@
                <BorderPane.margin>
                   <Insets right="2.0" />
                </BorderPane.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
             </Label>
          </center>
       </BorderPane>

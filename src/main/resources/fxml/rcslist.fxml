@@ -12,10 +12,13 @@
    <children>
       <HBox layoutX="15.0" layoutY="88.0">
          <children>
-            <Label prefHeight="25.0" prefWidth="50.0" text="RCS 檔案">
+            <Label prefHeight="25.0" prefWidth="70.0" text="RCS 檔案">
                <HBox.margin>
                   <Insets right="5.0" />
                </HBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
             </Label>
             <TextField fx:id="RCSFileText" prefHeight="25.0" prefWidth="460.0" />
             <Button fx:id="RCSFileButton" mnemonicParsing="false" onAction="#RCSFileButtonAction" prefHeight="25.0" prefWidth="41.0" text="...">
@@ -25,14 +28,20 @@
             </Button>
          </children>
       </HBox>
-      <HBox layoutX="493.0" layoutY="163.0">
+      <HBox layoutX="493.0" layoutY="163.0" AnchorPane.rightAnchor="5.0">
          <children>
             <Button mnemonicParsing="false" onAction="#onOk" text="OK">
                <HBox.margin>
                   <Insets right="5.0" />
                </HBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+            <Button mnemonicParsing="false" onAction="#onCancel" text="Cancel">
+               <font>
+                  <Font size="15.0" />
+               </font></Button>
          </children>
       </HBox>
    </children>

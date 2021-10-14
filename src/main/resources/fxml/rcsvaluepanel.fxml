@@ -8,14 +8,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" prefHeight="44.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.RCSvalueController">
    <children>
-      <BorderPane prefHeight="38.0" prefWidth="590.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="15.0">
+      <BorderPane prefHeight="38.0" prefWidth="611.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="15.0">
          <left>
             <HBox alignment="CENTER" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="RCS 臨界值：" />
+                  <Label text="RCS 臨界值：">
+                     <font>
+                        <Font size="15.0" />
+                     </font></Label>
                   <TextField fx:id="textRCS" onKeyPressed="#onTextRCSChange" prefHeight="26.0" prefWidth="104.0">
                      <padding>
                         <Insets left="5.0" right="5.0" />
@@ -28,9 +32,9 @@
             </HBox>
          </left>
          <center>
-            <Slider fx:id="sliderRCS" majorTickUnit="0.01" max="1.0" prefHeight="37.0" prefWidth="353.0" showTickLabels="true" showTickMarks="true" BorderPane.alignment="CENTER">
+            <Slider fx:id="sliderRCS" majorTickUnit="0.01" max="1.0" prefHeight="47.0" prefWidth="392.0" showTickLabels="true" showTickMarks="true" BorderPane.alignment="CENTER">
                <padding>
-                  <Insets left="5.0" right="20.0" top="10.0" />
+                  <Insets left="5.0" right="8.0" top="10.0" />
                </padding>
             </Slider>
          </center>
@@ -39,6 +43,9 @@
                <padding>
                   <Insets left="5.0" right="5.0" />
                </padding>
+               <font>
+                  <Font size="15.0" />
+               </font>
             </Button>
          </right>
       </BorderPane>
