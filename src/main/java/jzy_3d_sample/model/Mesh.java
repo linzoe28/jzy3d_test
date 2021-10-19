@@ -5,6 +5,7 @@
  */
 package jzy_3d_sample.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.math3.complex.Complex;
@@ -15,7 +16,8 @@ import org.jzy3d.plot3d.primitives.Polygon;
  *
  * @author user
  */
-public class Mesh extends Polygon implements Cloneable{
+public class Mesh extends Polygon implements Cloneable, Serializable{
+    private static final long serialVersionUID = -1636927109633279805L;
     private Vertex[] vertices=null;
     private Map<Vertex, VertexCurrent> currentMap=new HashMap<>();
     

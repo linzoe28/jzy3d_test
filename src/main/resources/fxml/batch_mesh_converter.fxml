@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="368.0" prefWidth="648.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.MeshConverterController">
+   <children>
+      <HBox layoutX="20.0" layoutY="40.0" prefWidth="648.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
+         <children>
+            <Label minWidth="-Infinity" text="Nas 檔案">
+               <padding>
+                  <Insets right="5.0" />
+               </padding>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="nasFileText" editable="false" focusTraversable="false" prefHeight="26.0" prefWidth="461.0" HBox.hgrow="ALWAYS" />
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#buttonNasClicked" prefHeight="26.0" prefWidth="53.0" text="..." />
+         </children>
+      </HBox>
+      <HBox layoutX="20.0" layoutY="94.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+         <children>
+            <Label minWidth="-Infinity" text="Os 檔案">
+               <padding>
+                  <Insets right="12.0" />
+               </padding>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="osFileText" editable="false" focusTraversable="false" prefHeight="26.0" prefWidth="461.0" HBox.hgrow="ALWAYS" />
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#buttonOsClicked" prefHeight="26.0" prefWidth="53.0" text="..." />
+         </children>
+      </HBox>
+      <TitledPane collapsible="false" layoutX="22.0" layoutY="134.0" prefHeight="120.0" prefWidth="608.0" text="切割" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+         <content>
+            <VBox minHeight="-Infinity" prefHeight="143.0" prefWidth="606.0">
+               <children>
+                  <HBox>
+                     <children>
+                        <Label text="X 維度：">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <TextField prefHeight="23.0" prefWidth="188.0" fx:id="x_value" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label text="Y 維度：">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="y_value" prefHeight="23.0" prefWidth="188.0">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label text="Z 維度：">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="z_value" prefHeight="23.0" prefWidth="188.0">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+            </VBox>
+         </content>
+      </TitledPane>
+      <FlowPane alignment="BOTTOM_RIGHT" layoutX="428.0" layoutY="300.0" prefHeight="54.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="20.0">
+         <children>
+            <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#buttonOkClicked" text="OK" />
+            <Button mnemonicParsing="false" onAction="#buttonCancelClicked" text="Cancel" />
+         </children>
+      </FlowPane>
+      <HBox layoutX="20.0" layoutY="364.0" prefHeight="54.0" prefWidth="479.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0">
+         <children>
+            <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="351.0" visible="false" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
+            </ProgressBar>
+         </children>
+      </HBox>
+      <HBox layoutX="20.0" layoutY="27.0" prefWidth="648.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="27.0">
+         <children>
+            <Label minWidth="-Infinity" text="輸出目錄">
+               <padding>
+                  <Insets right="5.0" />
+               </padding>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="outputFolderText" editable="false" focusTraversable="false" prefHeight="26.0" prefWidth="461.0" HBox.hgrow="ALWAYS" />
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#buttonOutputDirClicked" prefHeight="26.0" prefWidth="53.0" text="..." />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

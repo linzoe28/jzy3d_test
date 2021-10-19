@@ -5,11 +5,17 @@
  */
 package jzy_3d_sample;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import jzy_3d_sample.datafactory.Read_data;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -53,13 +59,10 @@ import jzy_3d_sample.ui.SlicecubeController;
 import jzy_3d_sample.ui.SouthpanelController;
 import jzy_3d_sample.ui.SubCubesColorPainter;
 import jzy_3d_sample.ui.ZoomPanelController;
-import net.lingala.zip4j.ZipFile;
-import net.lingala.zip4j.util.Zip4jUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.complex.Complex;
 import org.jzy3d.colors.Color;
 import org.jzy3d.plot3d.primitives.Point;
-import org.jzy3d.plot3d.primitives.Sphere;
 
 /**
  *
@@ -79,7 +82,7 @@ public class Main extends Application {
     String RCSTotal = "";
     private SouthpanelController southpanelController = null;
     private RCSvalueController rCSvalueController = null;
-    private ZoomPanelController zoomPanelController=null;
+    private ZoomPanelController zoomPanelController = null;
     private Point extremeValuePoint = null;
 
     private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
@@ -150,7 +153,7 @@ public class Main extends Application {
                                         });
                                     } catch (IOException ex) {
                                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                                        
+
                                     }
                                 }
 
@@ -193,6 +196,11 @@ public class Main extends Application {
                                     try {
                                         double[] slice_value = slicecubeController.getslice();
                                         subCubes = renderModel.getBoundingCube().slice(slice_value[0], slice_value[1], slice_value[2]);
+                                        if (TEST) {
+                                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("test.obj")));
+                                            objectOutputStream.writeObject(subCubes);
+                                            objectOutputStream.close();
+                                        }
                                         SubCubesColorPainter colorPainter = new SubCubesColorPainter();
                                         for (int i = 0; i < subCubes.size(); i++) {
                                             Cube cube = subCubes.get(i);
@@ -370,29 +378,44 @@ public class Main extends Application {
             container.setBottom(southpanelRoot);
             legendloader = new FXMLLoader(getClass().getResource("/fxml/legend.fxml"));
             colorLegend = (VBox) legendloader.load();
-            
-            VBox rightToolBarContainer=new VBox();
+
+            VBox rightToolBarContainer = new VBox();
             container.setRight(rightToolBarContainer);
             rightToolBarContainer.getChildren().add(colorLegend);
             colorLegend.setPrefWidth(0);
             colorLegend.setVisible(false);
             colorLegend.setPadding(new Insets(10));
-            
+
             FXMLLoader zoompanelFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/zoompanel.fxml"));
             AnchorPane zoomPanelRoot = (AnchorPane) zoompanelFxmlLoader.load();
-            zoomPanelController=zoompanelFxmlLoader.getController();
-            
+            zoomPanelController = zoompanelFxmlLoader.getController();
+
             rightToolBarContainer.getChildren().add(zoomPanelRoot);
-            
+
             primaryStage.setTitle("CS");
             primaryStage.setScene(scene);
-
             if (TEST) {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            meshs = r.getdata_from_nas(new File("./sample/missile_cone_test/missile_cone_test.nas"), new File("./sample/missile_cone_test/missile_cone_test.os"));
+                            long start = System.currentTimeMillis();
+                            File testObjFile = new File("test.obj");
+                            if (testObjFile.exists()) {
+                                ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream("test.obj")));
+                                List<Cube> cubes = (List<Cube>) objectInputStream.readObject();
+                                objectInputStream.close();
+                                meshs = new ArrayList<>();
+                                System.out.println("read from serializable");
+                                for (Cube cube : cubes) {
+                                    meshs.addAll(cube.getClonedMeshs());
+                                }
+                            } else {
+                                meshs = r.getdata_from_nas(new File("./sample/missile_cone_test/missile_cone_test.nas"), new File("./sample/missile_cone_test/missile_cone_test.os"));
+                                System.out.println("read from source");
+                            }
+                            long ok = System.currentTimeMillis();
+                            System.out.println(ok - start);
                             subCubeRoot = new File(new File("./sample/missile_cone_test/missile_cone_test.nas").getName());
                             renderModel = loadRenderModel(primaryStage, meshs);
                             zoomPanelController.setRenderModel(renderModel);
@@ -419,6 +442,8 @@ public class Main extends Application {
                                 }
                             });
                         } catch (IOException ex) {
+                            ex.printStackTrace();
+                        } catch (ClassNotFoundException ex) {
                             ex.printStackTrace();
                         }
                     }

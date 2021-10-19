@@ -5,6 +5,7 @@
  */
 package jzy_3d_sample.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,8 +20,8 @@ import org.jzy3d.maths.Coord3d;
  *
  * @author lendle
  */
-public class Cube extends BoundingBox3d{
-
+public class Cube extends BoundingBox3d implements Serializable{
+    private static final long serialVersionUID = -1636927109633279805L;
     private List<Mesh> meshs=new ArrayList<>();
     private double rcs;
     

@@ -16,8 +16,17 @@
             <name>Jzy3d Releases</name>
             <url>http://maven.jzy3d.org/releases</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
     <dependencies>
+        <dependency>
+	    <groupId>com.github.lendle1028</groupId>
+	    <artifactId>N2fProxy</artifactId>
+	    <version>-SNAPSHOT</version>
+	</dependency>
         <dependency>
             <groupId>org.jzy3d</groupId>
             <artifactId>jzy3d-javafx</artifactId>
