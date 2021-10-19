@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="322.0" prefWidth="86.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.ZoomPanelController">
+   <children>
+      <Button alignment="CENTER" layoutX="36.0" layoutY="207.0" mnemonicParsing="false" text="U" />
+      <Button layoutX="36.0" layoutY="289.0" mnemonicParsing="false" text="D" />
+      <Button fx:id="buttonZoomL" layoutX="1.0" layoutY="245.0" mnemonicParsing="false" onAction="#onZoomLClicked" text="L" />
+      <Button fx:id="buttonZoomR" layoutX="72.0" layoutY="245.0" mnemonicParsing="false" onAction="#onZoomRClicked" text="R" />
+      <VBox prefHeight="197.0" prefWidth="100.0">
+         <children>
+            <Button fx:id="buttonZoom2X" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onZoom2XClicked" prefHeight="26.0" prefWidth="114.0" text="2X" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

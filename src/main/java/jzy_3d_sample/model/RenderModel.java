@@ -12,11 +12,13 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
+import jzy_3d_sample.datafactory.SurfaceLoader;
 import org.jzy3d.chart.AWTChart;
 import org.jzy3d.chart.Settings;
 import org.jzy3d.javafx.JavaFXChartFactory;
 import org.jzy3d.javafx.controllers.mouse.JavaFXCameraMouseController;
-import org.jzy3d.plot3d.primitives.Polygon;
+import org.jzy3d.maths.BoundingBox3d;
+import org.jzy3d.maths.Coord3d;
 import org.jzy3d.plot3d.primitives.Shape;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
 
@@ -40,10 +42,7 @@ public class RenderModel {
         this.stage = stage;
         Settings.getInstance().setHardwareAccelerated(true);
         //System.out.println(Settings.getInstance().isHardwareAccelerated());
-        surface = new Shape(new ArrayList<Polygon>(meshs));
-        surface.setWireframeDisplayed(true);
-        surface.setFaceDisplayed(true);
-        surface.setWireframeColor(org.jzy3d.colors.Color.BLUE);
+        surface = SurfaceLoader.loadSurface(meshs);
 //        surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new org.jzy3d.colors.Color(1, 1, 1, 1f)));
 
         JavaFXChartFactory factory = new JavaFXChartFactory();
@@ -54,9 +53,17 @@ public class RenderModel {
         chart.getControllers().add(new JavaFXCameraMouseController(chart, view) {
             @Override
             protected void mouseWheelMoved(ScrollEvent e) {
-
+//                BoundingBox3d bounds = chart.getView().getBounds();
+//                bounds.setZmin(1.5f);
+//                bounds.setZmax(1.5f);
+//                bounds.setXmin(1.5f);
+//                bounds.setXmax(1.5f);
+//                bounds.setYmin(1.5f);
+//                bounds.setYmax(1.5f);
+////                chart.render();
+//                chart.getView().shoot();
             }
-            
+
         });
         factory.addSceneSizeChangedListener(chart, scene);
 
@@ -80,16 +87,26 @@ public class RenderModel {
     }
 
     public void zoom(float factor) {
-        chart.getView().zoomX(1 / currentZoom, true);
-        chart.getView().zoomY(1 / currentZoom, true);
-        chart.getView().zoomZ(1 / currentZoom, true);
-        chart.getView().zoomX(factor, true);
-        chart.getView().zoomY(factor, true);
-        chart.getView().zoomZ(factor, true);
-        currentZoom=factor;
-//        chart.getView().setBoundManual(surface.getBounds().scale(new Coord3d(factor, factor, factor)));
-//        chart.getView().shoot();
-        //chart.getView().updateBoundsForceUpdate(true);
+        BoundingBox3d bounds = chart.getView().getBounds();
+        System.out.println(bounds+":"+bounds.getZRange());
+        bounds.setZmin(-0.2f);
+        bounds.setZmax(0f);
+        bounds.setXmin(0f);
+        bounds.setXmax(0.3f);
+        bounds.setYmin(-0.2f);
+        bounds.setYmax(0f);
+        
+        chart.getView().shoot();
+        chart.getView().computeScaledViewBounds();
+//        chart.getView().updateBoundsForceUpdate(true);//don't call this, this will reset rendering
+    }
+    
+    public void moveX(float x){
+        BoundingBox3d bounds = chart.getView().getBounds();
+        bounds.setXmin(bounds.getXmin()+x);
+        bounds.setXmax(bounds.getXmax()+x);
+        chart.getView().shoot();
+        chart.getView().computeScaledViewBounds();
     }
 
     public void repaint() {

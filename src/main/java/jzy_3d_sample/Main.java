@@ -52,6 +52,7 @@ import jzy_3d_sample.ui.RcslistController;
 import jzy_3d_sample.ui.SlicecubeController;
 import jzy_3d_sample.ui.SouthpanelController;
 import jzy_3d_sample.ui.SubCubesColorPainter;
+import jzy_3d_sample.ui.ZoomPanelController;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.util.Zip4jUtil;
 import org.apache.commons.io.FileUtils;
@@ -66,7 +67,7 @@ import org.jzy3d.plot3d.primitives.Sphere;
  */
 public class Main extends Application {
 
-    private static final boolean TEST = false;
+    private static final boolean TEST = true;
     private List<Mesh> meshs = null;
     private RenderModel renderModel = null;
     private Scene scene = null;
@@ -78,6 +79,7 @@ public class Main extends Application {
     String RCSTotal = "";
     private SouthpanelController southpanelController = null;
     private RCSvalueController rCSvalueController = null;
+    private ZoomPanelController zoomPanelController=null;
     private Point extremeValuePoint = null;
 
     private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
@@ -124,19 +126,20 @@ public class Main extends Application {
                                 public void runBeforeWorkerThread() {
                                     southpanelController.setStatus("Rendering......");
                                     if (renderModel != null) {
-                                            container.setCenter(null);
-                                        }
+                                        container.setCenter(null);
+                                    }
                                 }
-                                
+
                                 @Override
                                 public void runInWorkerThread() {
                                     try {
-                                        
+
                                         meshs = r.getdata_from_nas(fileOpenController.getNasFile(), fileOpenController.getOsFile());
                                         subCubeRoot = new File(fileOpenController.getNasFile().getName());
                                         renderModel = loadRenderModel(primaryStage, meshs);
+                                        zoomPanelController.setRenderModel(renderModel);
                                         ScrollPane scrollPane = new ScrollPane();
-                                        
+
                                         Platform.runLater(new Runnable() {
                                             @Override
                                             public void run() {
@@ -144,18 +147,20 @@ public class Main extends Application {
                                                 scrollPane.setContent(renderModel.getView());
                                                 renderModel.repaint();
                                             }
-                                        });     } catch (IOException ex) {
+                                        });
+                                    } catch (IOException ex) {
                                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                                        
                                     }
                                 }
-                                
+
                                 @Override
                                 public void runInUIThread() {
-                                    
+
                                     southpanelController.setStatus("Done");
                                 }
                             }.start();
-                            
+
                         }
                     } catch (IOException ex) {
                         ex.printStackTrace();
@@ -232,6 +237,7 @@ public class Main extends Application {
                 public void handle(ActionEvent t) {
                     new BackgroundRunner(southpanelController) {
                         File researchFile = null;
+
                         public void runBeforeWorkerThread() {
                             southpanelController.setStatus("Outputing research results......");
                         }
@@ -364,11 +370,20 @@ public class Main extends Application {
             container.setBottom(southpanelRoot);
             legendloader = new FXMLLoader(getClass().getResource("/fxml/legend.fxml"));
             colorLegend = (VBox) legendloader.load();
-            container.setRight(colorLegend);
+            
+            VBox rightToolBarContainer=new VBox();
+            container.setRight(rightToolBarContainer);
+            rightToolBarContainer.getChildren().add(colorLegend);
             colorLegend.setPrefWidth(0);
             colorLegend.setVisible(false);
             colorLegend.setPadding(new Insets(10));
-
+            
+            FXMLLoader zoompanelFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/zoompanel.fxml"));
+            AnchorPane zoomPanelRoot = (AnchorPane) zoompanelFxmlLoader.load();
+            zoomPanelController=zoompanelFxmlLoader.getController();
+            
+            rightToolBarContainer.getChildren().add(zoomPanelRoot);
+            
             primaryStage.setTitle("CS");
             primaryStage.setScene(scene);
 
@@ -377,9 +392,10 @@ public class Main extends Application {
                     @Override
                     public void run() {
                         try {
-                            meshs = r.getdata_from_nas(new File("./sample/Missile_RCS_Vpol_MLFMM_10GHz_Efield_YZplane 154deg/Missile_RCS_Vpol_MLFMM_10GHz_Efield_YZplane 154deg.nas"), new File("./sample/Missile_RCS_Vpol_MLFMM_10GHz_Efield_YZplane 154deg/Missile_RCS_Vpol_MLFMM_10GHz_Efield_YZplane 154deg.os"));
+                            meshs = r.getdata_from_nas(new File("./sample/missile_cone_test/missile_cone_test.nas"), new File("./sample/missile_cone_test/missile_cone_test.os"));
                             subCubeRoot = new File(new File("./sample/missile_cone_test/missile_cone_test.nas").getName());
                             renderModel = loadRenderModel(primaryStage, meshs);
+                            zoomPanelController.setRenderModel(renderModel);
                             ScrollPane scrollPane = new ScrollPane();
                             container.setCenter(scrollPane);
                             Platform.runLater(new Runnable() {
@@ -388,6 +404,18 @@ public class Main extends Application {
                                     scrollPane.setContent(renderModel.getView());
 
                                     renderModel.repaint();
+//                                    Thread t = new Thread() {
+//                                            public void run() {
+//                                                try {
+//                                                    Thread.sleep(30);
+//                                                } catch (InterruptedException ex) {
+//                                                    ex.printStackTrace();
+//                                                }
+//                                                System.out.println("zoom executed");
+//                                                renderModel.zoom(30.0f);
+//                                            }
+//                                        };
+//                                        t.start();
                                 }
                             });
                         } catch (IOException ex) {
@@ -396,6 +424,7 @@ public class Main extends Application {
                     }
                 });
             }
+
             primaryStage.show();
 
         } catch (Exception ex) {
