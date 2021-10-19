@@ -17,11 +17,13 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import jzy_3d_sample.datafactory.FastN2fWriter;
 import jzy_3d_sample.datafactory.Read_data;
 import jzy_3d_sample.datafactory.SurfaceLoader;
 import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.ui.BackgroundRunner.ProgressReporter;
+import org.apache.commons.io.FileUtils;
 import org.jzy3d.plot3d.primitives.Shape;
 
 /**
@@ -101,6 +103,17 @@ public class MeshConverterController {
                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(new File(outputDir, "cubes.obj"))));
                     objectOutputStream.writeObject(cubes);
                     objectOutputStream.close();
+                    for (int i = 0; i < cubes.size(); i++) {
+                        Cube c=cubes.get(i);
+                        File subCubeDir = new File(outputDir, "" + i);
+                        if (subCubeDir.exists()) {
+                            FileUtils.deleteDirectory(subCubeDir);
+                        }
+                        FileUtils.forceMkdir(subCubeDir);
+                        FastN2fWriter.writeTriFile(c.getMeshs(), new File(subCubeDir, i + ".tri"));
+                        FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeDir, i + ".curM"));
+                        FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeDir, i + ".curJ"));
+                    }
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
