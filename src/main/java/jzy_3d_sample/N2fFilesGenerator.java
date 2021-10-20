@@ -16,6 +16,7 @@ import jzy_3d_sample.datafactory.Read_data;
 import jzy_3d_sample.datafactory.SurfaceLoader;
 import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.Mesh;
+import jzy_3d_sample.utils.OSFileSplitter;
 import org.apache.commons.io.FileUtils;
 import org.jzy3d.plot3d.primitives.Shape;
 
@@ -35,29 +36,7 @@ public class N2fFilesGenerator {
         File nasFile = new File(args[0]);
         File outputFolder=new File(args[2]);
         //first, split the osFile to temp Folder
-        boolean firstSection = false;
-        List<File> outputFiles = new ArrayList<>();
-        File currentOutputFile = null;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(osFile), "utf-8"))) {
-            String line = reader.readLine();
-            while (true) {
-                if (line != null) {
-                    line = line.trim();
-                    if (line.startsWith("#Configuration")) {
-                        currentOutputFile = File.createTempFile("tempCurrent", ".os");
-                        outputFiles.add(currentOutputFile);
-                        firstSection = true;
-                    }
-                    if (firstSection) {
-                        FileUtils.write(currentOutputFile, line + "\r\n", "utf-8", true);
-                    }
-
-                    line = reader.readLine();
-                } else {
-                    break;
-                }
-            }
-        }
+        List<File> outputFiles = OSFileSplitter.splitByAngle(osFile);
         //////////////////////////
         Read_data r = new Read_data();
         int index=0;

@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,8 +24,13 @@ import jzy_3d_sample.datafactory.SurfaceLoader;
 import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.ui.BackgroundRunner.ProgressReporter;
+import jzy_3d_sample.utils.OSFileSplitter;
 import org.apache.commons.io.FileUtils;
 import org.jzy3d.plot3d.primitives.Shape;
+import rocks.imsofa.n2fproxy.N2fExecutor;
+import rocks.imsofa.n2fproxy.N2fExecutorEvent;
+import rocks.imsofa.n2fproxy.N2fExecutorImpl;
+import rocks.imsofa.n2fproxy.N2fExecutorListener;
 
 /**
  *
@@ -95,26 +101,56 @@ public class MeshConverterController {
             public void runInWorkerThread() {
                 try {
                     Read_data r = new Read_data();
-                    List<Mesh> meshes = r.getdata_from_nas(new File(nasFileText.getText()), new File(osFileText.getText()));
-                    Shape surface = SurfaceLoader.loadSurface(meshes);
-                    Cube boundingCube = new Cube(surface.getBounds(), meshes);
-                    List<Cube> cubes = boundingCube.slice(Double.valueOf(x_value.getText()), Double.valueOf(y_value.getText()), Double.valueOf(z_value.getText()));
+                    File bigOsFile = new File(osFileText.getText());
+                    File nasFile = new File(nasFileText.getText());
+                    List<File> osFiles = OSFileSplitter.splitByAngle(bigOsFile);
                     File outputDir = new File(outputFolderText.getText());
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(new File(outputDir, "cubes.obj"))));
-                    objectOutputStream.writeObject(cubes);
-                    objectOutputStream.close();
-                    for (int i = 0; i < cubes.size(); i++) {
-                        Cube c=cubes.get(i);
-                        File subCubeDir = new File(outputDir, "" + i);
-                        if (subCubeDir.exists()) {
-                            FileUtils.deleteDirectory(subCubeDir);
+                    long x=Long.valueOf(x_value.getText());
+                    long y=Long.valueOf(y_value.getText());
+                    long z=Long.valueOf(z_value.getText());
+                    int index = 0;
+                    N2fExecutor executor = new N2fExecutorImpl(new File("n2ftools"));
+
+                    executor.addN2fExecutorListener(new N2fExecutorListener() {
+                        public void statusUpdated(N2fExecutorEvent e) {
+                            System.out.println(e.getMessage());
                         }
-                        FileUtils.forceMkdir(subCubeDir);
-                        FastN2fWriter.writeTriFile(c.getMeshs(), new File(subCubeDir, i + ".tri"));
-                        FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeDir, i + ".curM"));
-                        FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeDir, i + ".curJ"));
+                    });
+
+                    for (File osFile : osFiles) {
+                        File subOutputFolder = new File(outputDir, "angle" + (index++));
+                        if (subOutputFolder.exists()) {
+                            FileUtils.deleteDirectory(subOutputFolder);
+                        }
+                        FileUtils.forceMkdir(subOutputFolder);
+
+                        List<Mesh> meshes = r.getdata_from_nas(nasFile, osFile);
+                        Shape surface = SurfaceLoader.loadSurface(meshes);
+                        Cube boundingCube = new Cube(surface.getBounds(), meshes);
+                        List<Cube> cubes = boundingCube.slice(x,y,z);
+
+                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(new File(subOutputFolder, "cubes.obj"))));
+                        objectOutputStream.writeObject(cubes);
+                        objectOutputStream.close();
+                        for (int i = 0; i < cubes.size(); i++) {
+                            Cube c = cubes.get(i);
+                            File subCubeDir = new File(subOutputFolder, "" + i);
+                            if (subCubeDir.exists()) {
+                                FileUtils.deleteDirectory(subCubeDir);
+                            }
+                            FileUtils.forceMkdir(subCubeDir);
+                            FastN2fWriter.writeTriFile(c.getMeshs(), new File(subCubeDir, i + ".tri"));
+                            FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeDir, i + ".curM"));
+                            FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeDir, i + ".curJ"));
+                        }
+                        executor.init(subOutputFolder);
+                        executor.execute(x*y*z, 1000, 170, 180);
+                        System.out.println(Arrays.toString(executor.getResults()));
                     }
+                    executor.close();
                 } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }

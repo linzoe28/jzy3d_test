@@ -1,0 +1,10 @@
+num_sub = 0
+num_col = 0
+num_theta = 0
+num_phi = 0
+data_dir = 
+data_dir = /home/lendle/dev/projects/1101/jzy3d_test/n2ftools/results_1634702088535/
+status_dir = [](0x0)
+cmd = grep -n "170 180" /home/lendle/dev/projects/1101/jzy3d_test/n2ftools/results_1634702088535/0.ap | cut -f1 -d:
+data dir=/home/lendle/dev/projects/1101/jzy3d_test/n2ftools/results_1634702088535/, num_sub = 8, num_col= 61551
+finish
