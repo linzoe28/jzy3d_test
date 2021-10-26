@@ -127,6 +127,7 @@ public class Read_data {
         Map<String, OSRecord> osRecords = OSFileParser.readOSFile(osFile);
         List<Mesh> meshs = new ArrayList<>();
         try {
+            int totalNoCurrentMeshes=0;
             CSVReader reader = new CSVReader(new FileReader(pointFile), ',', '\'', 1);
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
@@ -164,6 +165,7 @@ public class Read_data {
 //                        System.out.println("");
 //                    }
 //                    osRecords.remove(oSRecord.getKey());
+                    
                     m.setCurrent(v1, new VertexCurrent(
                             new Complex(Double.valueOf(oSRecord.getReC1X()), Double.valueOf(oSRecord.getImC1X())),
                             new Complex(Double.valueOf(oSRecord.getReC1Y()), Double.valueOf(oSRecord.getImC1Y())),
@@ -179,10 +181,15 @@ public class Read_data {
                             new Complex(Double.valueOf(oSRecord.getReC3Y()), Double.valueOf(oSRecord.getImC3Y())),
                             new Complex(Double.valueOf(oSRecord.getReC3Z()), Double.valueOf(oSRecord.getImC3Z()))
                     ));
+                    if(m.getCurrent(v1).getX().abs()==0 && m.getCurrent(v1).getY().abs()==0 && m.getCurrent(v1).getZ().abs()==0 && 
+                       m.getCurrent(v2).getX().abs()==0 && m.getCurrent(v2).getY().abs()==0 && m.getCurrent(v2).getZ().abs()==0 &&
+                       m.getCurrent(v3).getX().abs()==0 && m.getCurrent(v3).getY().abs()==0 && m.getCurrent(v3).getZ().abs()==0){
+                        totalNoCurrentMeshes++;
+                    }
                 }
                 meshs.add(m);
             }
-
+            System.out.println(""+totalNoCurrentMeshes+"/"+meshs.size());
 //            System.out.println(meshs.toArray());
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Read_data.class.getName()).log(Level.SEVERE, null, ex);

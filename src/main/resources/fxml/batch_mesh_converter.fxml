@@ -123,9 +123,14 @@
       </FlowPane>
       <HBox layoutX="20.0" layoutY="364.0" prefHeight="54.0" prefWidth="479.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0">
          <children>
-            <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="351.0" visible="false" HBox.hgrow="ALWAYS">
+            <Label fx:id="textStatus" maxWidth="250.0" prefHeight="16.0" prefWidth="250.0">
                <HBox.margin>
                   <Insets top="20.0" />
+               </HBox.margin>
+            </Label>
+            <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="300.0" visible="false" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="50.0" right="10.0" top="20.0" />
                </HBox.margin>
             </ProgressBar>
          </children>

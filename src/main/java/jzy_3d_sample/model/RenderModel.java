@@ -5,6 +5,7 @@
  */
 package jzy_3d_sample.model;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
@@ -21,6 +22,7 @@ import org.jzy3d.maths.BoundingBox3d;
 import org.jzy3d.maths.Coord3d;
 import org.jzy3d.plot3d.primitives.Shape;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
+import org.jzy3d.plot3d.rendering.view.AWTRenderer3d;
 
 /**
  * a utility class for constructing rendering related objects
@@ -46,10 +48,12 @@ public class RenderModel {
 //        surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new org.jzy3d.colors.Color(1, 1, 1, 1f)));
 
         JavaFXChartFactory factory = new JavaFXChartFactory();
-        chart = (AWTChart) factory.newChart(Quality.Nicest, "offscreen");
+        chart = (AWTChart) factory.newChart(Quality.Fastest, "offscreen");
+        
         chart.getScene().getGraph().add(surface);
         chart.getView().setSquared(false);
         view = factory.bindImageView(chart);
+        
         chart.getControllers().add(new JavaFXCameraMouseController(chart, view) {
             @Override
             protected void mouseWheelMoved(ScrollEvent e) {
@@ -66,7 +70,21 @@ public class RenderModel {
 
         });
         factory.addSceneSizeChangedListener(chart, scene);
-
+//        Thread t = new Thread() {
+//            public void run() {
+//                try {
+//                    while (true) {
+//                        Thread.sleep(500);
+//                        chart.getView().shoot();
+//                        repaint();
+//                    }
+//                } catch (InterruptedException ex) {
+//                    ex.printStackTrace();
+//                }
+//            }
+//        };
+//        t.setDaemon(true);
+//        t.start();
         this.meshs.addAll(meshs);
     }
 
@@ -88,23 +106,23 @@ public class RenderModel {
 
     public void zoom(float factor) {
         BoundingBox3d bounds = chart.getView().getBounds();
-        System.out.println(bounds+":"+bounds.getZRange());
+        System.out.println(bounds + ":" + bounds.getZRange());
         bounds.setZmin(-0.2f);
         bounds.setZmax(0f);
         bounds.setXmin(0f);
         bounds.setXmax(0.3f);
         bounds.setYmin(-0.2f);
         bounds.setYmax(0f);
-        
+
         chart.getView().shoot();
         chart.getView().computeScaledViewBounds();
 //        chart.getView().updateBoundsForceUpdate(true);//don't call this, this will reset rendering
     }
-    
-    public void moveX(float x){
+
+    public void moveX(float x) {
         BoundingBox3d bounds = chart.getView().getBounds();
-        bounds.setXmin(bounds.getXmin()+x);
-        bounds.setXmax(bounds.getXmax()+x);
+        bounds.setXmin(bounds.getXmin() + x);
+        bounds.setXmax(bounds.getXmax() + x);
         chart.getView().shoot();
         chart.getView().computeScaledViewBounds();
     }

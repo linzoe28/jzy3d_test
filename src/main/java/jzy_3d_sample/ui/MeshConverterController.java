@@ -12,8 +12,10 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
@@ -62,6 +64,9 @@ public class MeshConverterController {
 
     @FXML
     private ProgressBar progressBar;
+    
+    @FXML
+    private Label textStatus;
 
     @FXML
     void buttonCancelClicked(ActionEvent event) {
@@ -113,11 +118,13 @@ public class MeshConverterController {
 
                     executor.addN2fExecutorListener(new N2fExecutorListener() {
                         public void statusUpdated(N2fExecutorEvent e) {
-                            System.out.println(e.getMessage());
+//                            System.out.println(e.getMessage());
+                            setStatusMessage(e.getMessage());
                         }
                     });
 
                     for (File osFile : osFiles) {
+                        setStatusMessage("processing angle "+(index+1)+"/"+osFiles.size());
                         File subOutputFolder = new File(outputDir, "angle" + (index++));
                         if (subOutputFolder.exists()) {
                             FileUtils.deleteDirectory(subOutputFolder);
@@ -162,7 +169,15 @@ public class MeshConverterController {
         r.start();
 
     }
-
+    
+    private void setStatusMessage(String message){
+        Platform.runLater(new Runnable(){
+            public void run(){
+                textStatus.setText(message);
+            }
+        });
+    }
+    
     @FXML
     void buttonOsClicked(ActionEvent event) {
         fileChooser.getExtensionFilters().clear();
