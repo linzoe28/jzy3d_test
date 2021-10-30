@@ -79,9 +79,9 @@ public class Read_data {
                     String Z = null;
                     if ((line = reader.readLine()) != null) {
                         String item1[] = line.split(" +");
-                        if(item1.length<3){
-                            Z=item1[1];
-                        }else{
+                        if (item1.length < 3) {
+                            Z = item1[1];
+                        } else {
                             Z = item1[2];
                         }
                     }
@@ -127,7 +127,7 @@ public class Read_data {
         Map<String, OSRecord> osRecords = OSFileParser.readOSFile(osFile);
         List<Mesh> meshs = new ArrayList<>();
         try {
-            int totalNoCurrentMeshes=0;
+            int totalNoCurrentMeshes = 0;
             CSVReader reader = new CSVReader(new FileReader(pointFile), ',', '\'', 1);
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
@@ -141,55 +141,38 @@ public class Read_data {
                 Vertex v3 = new Vertex(points.get(nextLine[3]));
                 //use the center point of the mesh as the key value to osrecords
                 Mesh m = new Mesh(new Vertex[]{v1, v2, v3});
-                Vertex center=m.getCenter();
-                String key=String.format("%13.4E", (double)center.getX())+
-                            String.format("%13.4E", (double)center.getY())+
-                            String.format("%13.4E", (double)center.getZ());
-                OSRecord oSRecord = osRecords.get(key);
-                if(oSRecord==null){
-                    double minDistance=Double.MAX_VALUE;
-                    OSRecord candidate=null;
-                    for(OSRecord record : osRecords.values()){
-                        double distance=Math.sqrt(Math.pow(record.getX()-center.getX(), 2)+Math.pow(record.getY()-center.getY(), 2)+Math.pow(record.getZ()-center.getZ(), 2));
-                        if(distance<minDistance){
-                            candidate=record;
-                            minDistance=distance;
-                        }
-                    }
-                    oSRecord=candidate;
-//                    System.out.println(key+":"+oSRecord.getKey()+":"+nextLine[0]+":"+oSRecord.getNum());
-                }
-                if (oSRecord != null) {
-                    osRecords.remove(oSRecord.getKey());
-//                    if(nextLine[0].equals(oSRecord.getNum())==false){
-//                        System.out.println("");
+                OSRecord oSRecord=this.getOSRecordForMesh(m, osRecords);
+//                Vertex center = m.getCenter();
+//                String key = String.format("%13.4E", (double) center.getX())
+//                        + String.format("%13.4E", (double) center.getY())
+//                        + String.format("%13.4E", (double) center.getZ());
+//
+//                OSRecord oSRecord = osRecords.get(key);
+//                if (oSRecord == null) {
+//                    double minDistance = Double.MAX_VALUE;
+//                    OSRecord candidate = null;
+//                    for (OSRecord record : osRecords.values()) {
+//                        double distance = Math.sqrt(Math.pow(record.getX() - center.getX(), 2) + Math.pow(record.getY() - center.getY(), 2) + Math.pow(record.getZ() - center.getZ(), 2));
+//                        if (distance < minDistance) {
+//                            candidate = record;
+//                            minDistance = distance;
+//                        }
 //                    }
-//                    osRecords.remove(oSRecord.getKey());
-                    
-                    m.setCurrent(v1, new VertexCurrent(
-                            new Complex(Double.valueOf(oSRecord.getReC1X()), Double.valueOf(oSRecord.getImC1X())),
-                            new Complex(Double.valueOf(oSRecord.getReC1Y()), Double.valueOf(oSRecord.getImC1Y())),
-                            new Complex(Double.valueOf(oSRecord.getReC1Z()), Double.valueOf(oSRecord.getImC1Z()))
-                    ));
-                    m.setCurrent(v2, new VertexCurrent(
-                            new Complex(Double.valueOf(oSRecord.getReC2X()), Double.valueOf(oSRecord.getImC2X())),
-                            new Complex(Double.valueOf(oSRecord.getReC2Y()), Double.valueOf(oSRecord.getImC2Y())),
-                            new Complex(Double.valueOf(oSRecord.getReC2Z()), Double.valueOf(oSRecord.getImC2Z()))
-                    ));
-                    m.setCurrent(v3, new VertexCurrent(
-                            new Complex(Double.valueOf(oSRecord.getReC3X()), Double.valueOf(oSRecord.getImC3X())),
-                            new Complex(Double.valueOf(oSRecord.getReC3Y()), Double.valueOf(oSRecord.getImC3Y())),
-                            new Complex(Double.valueOf(oSRecord.getReC3Z()), Double.valueOf(oSRecord.getImC3Z()))
-                    ));
-                    if(m.getCurrent(v1).getX().abs()==0 && m.getCurrent(v1).getY().abs()==0 && m.getCurrent(v1).getZ().abs()==0 && 
-                       m.getCurrent(v2).getX().abs()==0 && m.getCurrent(v2).getY().abs()==0 && m.getCurrent(v2).getZ().abs()==0 &&
-                       m.getCurrent(v3).getX().abs()==0 && m.getCurrent(v3).getY().abs()==0 && m.getCurrent(v3).getZ().abs()==0){
+//                    oSRecord = candidate;
+//                }
+                if (oSRecord != null) {
+                    m.setOsRecordKey(oSRecord.getKey());
+                    osRecords.remove(oSRecord.getKey());
+                    applyOSRecord2Mesh(m, oSRecord);
+                    if (m.getCurrent(v1).getX().abs() == 0 && m.getCurrent(v1).getY().abs() == 0 && m.getCurrent(v1).getZ().abs() == 0
+                            && m.getCurrent(v2).getX().abs() == 0 && m.getCurrent(v2).getY().abs() == 0 && m.getCurrent(v2).getZ().abs() == 0
+                            && m.getCurrent(v3).getX().abs() == 0 && m.getCurrent(v3).getY().abs() == 0 && m.getCurrent(v3).getZ().abs() == 0) {
                         totalNoCurrentMeshes++;
                     }
                 }
                 meshs.add(m);
             }
-            System.out.println(""+totalNoCurrentMeshes+"/"+meshs.size());
+            System.out.println("" + totalNoCurrentMeshes + "/" + meshs.size());
 //            System.out.println(meshs.toArray());
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Read_data.class.getName()).log(Level.SEVERE, null, ex);
@@ -197,5 +180,61 @@ public class Read_data {
             Logger.getLogger(Read_data.class.getName()).log(Level.SEVERE, null, ex);
         }
         return meshs;
+    }
+
+    private OSRecord getOSRecordForMesh(Mesh mesh, Map<String, OSRecord> osRecordsMap) {
+        if (mesh.getOsRecordKey() == null) {
+            Mesh m=mesh;
+            Vertex center = m.getCenter();
+            String key = String.format("%13.4E", (double) center.getX())
+                        + String.format("%13.4E", (double) center.getY())
+                        + String.format("%13.4E", (double) center.getZ());
+            OSRecord oSRecord = osRecordsMap.get(key);
+            if (oSRecord == null) {
+                double minDistance = Double.MAX_VALUE;
+                OSRecord candidate = null;
+                for (OSRecord record : osRecordsMap.values()) {
+                    double distance = Math.sqrt(Math.pow(record.getX() - center.getX(), 2) + Math.pow(record.getY() - center.getY(), 2) + Math.pow(record.getZ() - center.getZ(), 2));
+                    if (distance < minDistance) {
+                        candidate = record;
+                        minDistance = distance;
+                    }
+                }
+                oSRecord = candidate;
+            }
+            if (oSRecord != null) {
+                m.setOsRecordKey(oSRecord.getKey());
+                return oSRecord;
+            }else{
+                return null;
+            }
+        } else {
+            return osRecordsMap.get(mesh.getOsRecordKey());
+        }
+    }
+    
+    private void applyOSRecord2Mesh(Mesh mesh, OSRecord oSRecord) {
+        mesh.setCurrent(mesh.getVertices()[0], new VertexCurrent(
+                new Complex(Double.valueOf(oSRecord.getReC1X()), Double.valueOf(oSRecord.getImC1X())),
+                new Complex(Double.valueOf(oSRecord.getReC1Y()), Double.valueOf(oSRecord.getImC1Y())),
+                new Complex(Double.valueOf(oSRecord.getReC1Z()), Double.valueOf(oSRecord.getImC1Z()))
+        ));
+        mesh.setCurrent(mesh.getVertices()[1], new VertexCurrent(
+                new Complex(Double.valueOf(oSRecord.getReC2X()), Double.valueOf(oSRecord.getImC2X())),
+                new Complex(Double.valueOf(oSRecord.getReC2Y()), Double.valueOf(oSRecord.getImC2Y())),
+                new Complex(Double.valueOf(oSRecord.getReC2Z()), Double.valueOf(oSRecord.getImC2Z()))
+        ));
+        mesh.setCurrent(mesh.getVertices()[2], new VertexCurrent(
+                new Complex(Double.valueOf(oSRecord.getReC3X()), Double.valueOf(oSRecord.getImC3X())),
+                new Complex(Double.valueOf(oSRecord.getReC3Y()), Double.valueOf(oSRecord.getImC3Y())),
+                new Complex(Double.valueOf(oSRecord.getReC3Z()), Double.valueOf(oSRecord.getImC3Z()))
+        ));
+    }
+    
+    public void applyOStoMeshes(List<Mesh> meshes, Map<String, OSRecord> osRecordsMap) {
+        for(Mesh mesh : meshes){
+            OSRecord oSRecord=this.getOSRecordForMesh(mesh, osRecordsMap);
+            this.applyOSRecord2Mesh(mesh, oSRecord);
+        }
     }
 }

@@ -5,9 +5,12 @@
  */
 package jzy_3d_sample.model;
 
-import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -19,10 +22,10 @@ import org.jzy3d.chart.Settings;
 import org.jzy3d.javafx.JavaFXChartFactory;
 import org.jzy3d.javafx.controllers.mouse.JavaFXCameraMouseController;
 import org.jzy3d.maths.BoundingBox3d;
+import org.jzy3d.maths.Coord2d;
 import org.jzy3d.maths.Coord3d;
 import org.jzy3d.plot3d.primitives.Shape;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
-import org.jzy3d.plot3d.rendering.view.AWTRenderer3d;
 
 /**
  * a utility class for constructing rendering related objects
@@ -53,7 +56,36 @@ public class RenderModel {
         chart.getScene().getGraph().add(surface);
         chart.getView().setSquared(false);
         view = factory.bindImageView(chart);
-        
+        try {
+            Thread t=new Thread(){
+                public void run(){
+                    Coord3d viewPoint=chart.getAWTView().getViewPoint();
+                    System.out.println(viewPoint);
+                    double distance=viewPoint.distance(Coord3d.ORIGIN);
+                    double x=0, y=0, z=0;
+                    for(int i=0; i<360; i++){
+                        chart.getAWTView().setViewPoint(new Coord3d(Math.cos(i*Math.PI/180d), y, Math.sin(i*Math.PI/180d)));
+//                        try {
+//                            chart.screenshot(new File("test"+i+".png"));
+//                        } catch (IOException ex) {
+//                            Logger.getLogger(RenderModel.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(RenderModel.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            };
+            t.setDaemon(true);
+            //t.start();
+//            chart.getAWTView().getCamera().setEye(new Coord3d(0.2, 0.1, 0.1));
+//            chart.getAWTView().rotate(new Coord2d(100, 100));
+            
+        } catch (Exception ex) {
+            Logger.getLogger(RenderModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         chart.getControllers().add(new JavaFXCameraMouseController(chart, view) {
             @Override
             protected void mouseWheelMoved(ScrollEvent e) {

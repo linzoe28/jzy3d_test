@@ -5,12 +5,18 @@
  */
 package jzy_3d_sample.model.os;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Map;
+
 /**
  *
  * @author lendle
  */
-public class OSRecord {
-
+public class OSRecord implements Cloneable, Serializable{
+    private static final long serialVersionUID = -1636927109633279805L;
     private String num = null;
     private String key=null;
     private String reC1X = null, reC2X = null, reC3X = null;
@@ -21,6 +27,13 @@ public class OSRecord {
     private String imC1Z = null, imC2Z = null, imC3Z = null;
     private double x=-1, y=-1, z=-1;
 
+    public static void serialize2File(Map<String, OSRecord> osRecords, File file) throws Exception{
+        try(ObjectOutputStream output=new ObjectOutputStream(new FileOutputStream(file))){
+            output.writeObject(osRecords);
+            output.flush();
+        }
+    }
+    
     public double getX() {
         return x;
     }

@@ -49,6 +49,7 @@ import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
 import jzy_3d_sample.model.Vertex;
 import jzy_3d_sample.model.VertexCurrent;
+import jzy_3d_sample.model.serialized.ProjectModel;
 import jzy_3d_sample.ui.BackgroundRunner;
 import jzy_3d_sample.ui.FileOpenController;
 import jzy_3d_sample.ui.LegendController;
@@ -196,11 +197,7 @@ public class Main extends Application {
                                     try {
                                         double[] slice_value = slicecubeController.getslice();
                                         subCubes = renderModel.getBoundingCube().slice(slice_value[0], slice_value[1], slice_value[2]);
-                                        if (TEST) {
-                                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("test.obj")));
-                                            objectOutputStream.writeObject(subCubes);
-                                            objectOutputStream.close();
-                                        }
+                                        
                                         SubCubesColorPainter colorPainter = new SubCubesColorPainter();
                                         for (int i = 0; i < subCubes.size(); i++) {
                                             Cube cube = subCubes.get(i);
@@ -398,18 +395,21 @@ public class Main extends Application {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
+                        ProjectModel projectModel=null;
                         try {
                             long start = System.currentTimeMillis();
-                            File testObjFile = new File("test.obj");
+                            File testObjFile = new File("/home/lendle/Desktop/test/cubes.obj");
                             if (testObjFile.exists()) {
-                                ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream("test.obj")));
-                                List<Cube> cubes = (List<Cube>) objectInputStream.readObject();
+                                ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(testObjFile)));
+                                projectModel= (ProjectModel) objectInputStream.readObject();
+                                subCubes = projectModel.getCubes();
                                 objectInputStream.close();
                                 meshs = new ArrayList<>();
                                 System.out.println("read from serializable");
-                                for (Cube cube : cubes) {
+                                for (Cube cube : subCubes) {
                                     meshs.addAll(cube.getClonedMeshs());
                                 }
+                                
                             } else {
                                 meshs = r.getdata_from_nas(new File("./sample/missile_cone_test/missile_cone_test.nas"), new File("./sample/missile_cone_test/missile_cone_test.os"));
                                 System.out.println("read from source");
@@ -421,6 +421,17 @@ public class Main extends Application {
                             zoomPanelController.setRenderModel(renderModel);
                             ScrollPane scrollPane = new ScrollPane();
                             container.setCenter(scrollPane);
+                            if (TEST) {
+                                subCubes = renderModel.getBoundingCube().slice(projectModel.getxSlice(), projectModel.getySlice(), projectModel.getzSlice());
+                                SubCubesColorPainter colorPainter = new SubCubesColorPainter();
+                                for (int i = 0; i < subCubes.size(); i++) {
+                                    System.out.println(i);
+                                    Cube cube = subCubes.get(i);
+                                    colorPainter.paint(i, cube);
+                                }
+                                renderModel.getSurface().setWireframeDisplayed(false);
+                            }
+                            
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {

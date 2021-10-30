@@ -7,8 +7,10 @@ package jzy_3d_sample.datafactory;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Map;
 import jzy_3d_sample.model.os.OSRecord;
@@ -18,6 +20,11 @@ import jzy_3d_sample.model.os.OSRecord;
  * @author lendle
  */
 public class OSFileParser {
+    public static Map<String, OSRecord> readSerializedOSFile(File osFile) throws IOException, ClassNotFoundException {
+        try(ObjectInputStream input=new ObjectInputStream(new FileInputStream(osFile))){
+            return (Map<String, OSRecord>) input.readObject();
+        }
+    }
 
     /**
      * read a os file, return a map from mesh number to OSRecord
