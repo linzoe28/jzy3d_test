@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,10 +22,14 @@ import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import jzy_3d_sample.datafactory.FastN2fWriter;
+import jzy_3d_sample.datafactory.OSFileParser;
 import jzy_3d_sample.datafactory.Read_data;
 import jzy_3d_sample.datafactory.SurfaceLoader;
 import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.Mesh;
+import jzy_3d_sample.model.os.OSRecord;
+import jzy_3d_sample.model.serialized.CurrentData;
+import jzy_3d_sample.model.serialized.ProjectModel;
 import jzy_3d_sample.ui.BackgroundRunner.ProgressReporter;
 import jzy_3d_sample.utils.OSFileSplitter;
 import org.apache.commons.io.FileUtils;
@@ -105,16 +110,22 @@ public class MeshConverterController {
 
             public void runInWorkerThread() {
                 try {
+                    ProjectModel projectModel=new ProjectModel();
                     Read_data r = new Read_data();
                     File bigOsFile = new File(osFileText.getText());
                     File nasFile = new File(nasFileText.getText());
                     List<File> osFiles = OSFileSplitter.splitByAngle(bigOsFile);
                     File outputDir = new File(outputFolderText.getText());
+                    if (outputDir.exists()) {
+                        FileUtils.deleteDirectory(outputDir);
+                    }
+                    FileUtils.forceMkdir(outputDir);
                     long x=Long.valueOf(x_value.getText());
                     long y=Long.valueOf(y_value.getText());
                     long z=Long.valueOf(z_value.getText());
                     int index = 0;
                     N2fExecutor executor = new N2fExecutorImpl(new File("n2ftools"));
+//                    executor.init(outputDir);
 
                     executor.addN2fExecutorListener(new N2fExecutorListener() {
                         public void statusUpdated(N2fExecutorEvent e) {
@@ -122,6 +133,26 @@ public class MeshConverterController {
                             setStatusMessage(e.getMessage());
                         }
                     });
+                    //first, output the no-os model
+                    File firstOsFile = osFiles.get(0);
+                    List<Mesh> meshes = r.getdata_from_nas(nasFile, firstOsFile);
+                    {
+                        for(Mesh mesh : meshes){
+                            mesh.emptyCurrent();
+                        }
+                        Shape surface = SurfaceLoader.loadSurface(meshes);
+                        Cube boundingCube = new Cube(surface.getBounds(), meshes);
+                        List<Cube> cubes = boundingCube.slice(x, y, z);
+                        projectModel.setxSlice(x);
+                        projectModel.setySlice(y);
+                        projectModel.setzSlice(z);
+                        projectModel.setCubes(cubes);
+//                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+//                                new BufferedOutputStream(new FileOutputStream(new File(outputDir, "cubes.obj"))));
+//                        objectOutputStream.writeObject(cubes);
+//                        objectOutputStream.close();
+                    }
+                    ///////////////////////////////
 
                     for (File osFile : osFiles) {
                         setStatusMessage("processing angle "+(index+1)+"/"+osFiles.size());
@@ -130,15 +161,19 @@ public class MeshConverterController {
                             FileUtils.deleteDirectory(subOutputFolder);
                         }
                         FileUtils.forceMkdir(subOutputFolder);
-
-                        List<Mesh> meshes = r.getdata_from_nas(nasFile, osFile);
+                        for(Mesh mesh : meshes){
+                            mesh.emptyCurrent();
+                        }
+                        //re-apply different os records to the original mesh
+                        Map<String, OSRecord> osRecords=OSFileParser.readOSFile(osFile);
+                        r.applyOStoMeshes(meshes, osRecords);
                         Shape surface = SurfaceLoader.loadSurface(meshes);
                         Cube boundingCube = new Cube(surface.getBounds(), meshes);
                         List<Cube> cubes = boundingCube.slice(x,y,z);
 
-                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(new File(subOutputFolder, "cubes.obj"))));
-                        objectOutputStream.writeObject(cubes);
-                        objectOutputStream.close();
+//                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(new File(subOutputFolder, "cubes.obj"))));
+//                        objectOutputStream.writeObject(cubes);
+//                        objectOutputStream.close();
                         for (int i = 0; i < cubes.size(); i++) {
                             Cube c = cubes.get(i);
                             File subCubeDir = new File(subOutputFolder, "" + i);
@@ -151,10 +186,22 @@ public class MeshConverterController {
                             FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeDir, i + ".curJ"));
                         }
                         executor.init(subOutputFolder);
-                        executor.execute(x*y*z, 1000, 170, 180);
+                        double theta=170;
+                        double phi=180;
+                        executor.execute(x*y*z, 1000, theta, phi);
                         System.out.println(Arrays.toString(executor.getResults()));
+                        CurrentData currentData=new CurrentData();
+                        currentData.setTheta(theta);
+                        currentData.setPhi(phi);
+                        currentData.setOsRecordsMap(osRecords);
+                        currentData.setRcs(executor.getResults());
+                        projectModel.getCurrentDataList().add(currentData);
+                        executor.close();
                     }
-                    executor.close();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+                                new BufferedOutputStream(new FileOutputStream(new File(outputDir, "cubes.obj"))));
+                    objectOutputStream.writeObject(projectModel);
+                    objectOutputStream.close();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 } catch (Exception ex) {

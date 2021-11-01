@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -49,6 +50,7 @@ import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
 import jzy_3d_sample.model.Vertex;
 import jzy_3d_sample.model.VertexCurrent;
+import jzy_3d_sample.model.serialized.ProjectModel;
 import jzy_3d_sample.ui.BackgroundRunner;
 import jzy_3d_sample.ui.FileOpenController;
 import jzy_3d_sample.ui.LegendController;
@@ -89,6 +91,19 @@ public class Main extends Application {
         this.meshs = meshs;
         this.renderModel = new RenderModel(scene, primaryStage, meshs);
         return this.renderModel;
+    }
+    
+    private RenderModel loadRenderModel(Stage primaryStage, File savedFile) {
+        try {
+            this.renderModel = new RenderModel(scene, primaryStage, savedFile);
+            this.meshs = renderModel.getProjectModel().getMeshes();
+            return this.renderModel;
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override
@@ -196,11 +211,7 @@ public class Main extends Application {
                                     try {
                                         double[] slice_value = slicecubeController.getslice();
                                         subCubes = renderModel.getBoundingCube().slice(slice_value[0], slice_value[1], slice_value[2]);
-                                        if (TEST) {
-                                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("test.obj")));
-                                            objectOutputStream.writeObject(subCubes);
-                                            objectOutputStream.close();
-                                        }
+                                        
                                         SubCubesColorPainter colorPainter = new SubCubesColorPainter();
                                         for (int i = 0; i < subCubes.size(); i++) {
                                             Cube cube = subCubes.get(i);
@@ -398,52 +409,49 @@ public class Main extends Application {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
+                        ProjectModel projectModel=null;
                         try {
                             long start = System.currentTimeMillis();
-                            File testObjFile = new File("test.obj");
+                            File testObjFile = new File("/home/lendle/Desktop/test/cubes.obj");
                             if (testObjFile.exists()) {
-                                ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream("test.obj")));
-                                List<Cube> cubes = (List<Cube>) objectInputStream.readObject();
-                                objectInputStream.close();
-                                meshs = new ArrayList<>();
                                 System.out.println("read from serializable");
-                                for (Cube cube : cubes) {
-                                    meshs.addAll(cube.getClonedMeshs());
-                                }
+//                                ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(testObjFile)));
+//                                projectModel= (ProjectModel) objectInputStream.readObject();
+//                                subCubes = projectModel.getCubes();
+//                                objectInputStream.close();
+//                                meshs = new ArrayList<>();
+//                                System.out.println("read from serializable");
+//                                for (Cube cube : subCubes) {
+////                                    meshs.addAll(cube.getClonedMeshs());
+//                                      meshs.addAll(cube.getMeshs());
+//                                }
+//                                for (Mesh m : meshs) {
+//                                    for (Vertex v : m.getVertices()) {
+//                                        m.add(v);
+//                                    }
+//                                }
+                                renderModel = loadRenderModel(primaryStage, testObjFile);
                             } else {
                                 meshs = r.getdata_from_nas(new File("./sample/missile_cone_test/missile_cone_test.nas"), new File("./sample/missile_cone_test/missile_cone_test.os"));
+                                renderModel = loadRenderModel(primaryStage, meshs);
                                 System.out.println("read from source");
                             }
                             long ok = System.currentTimeMillis();
                             System.out.println(ok - start);
                             subCubeRoot = new File(new File("./sample/missile_cone_test/missile_cone_test.nas").getName());
-                            renderModel = loadRenderModel(primaryStage, meshs);
                             zoomPanelController.setRenderModel(renderModel);
                             ScrollPane scrollPane = new ScrollPane();
                             container.setCenter(scrollPane);
+                            
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
                                     scrollPane.setContent(renderModel.getView());
 
                                     renderModel.repaint();
-//                                    Thread t = new Thread() {
-//                                            public void run() {
-//                                                try {
-//                                                    Thread.sleep(30);
-//                                                } catch (InterruptedException ex) {
-//                                                    ex.printStackTrace();
-//                                                }
-//                                                System.out.println("zoom executed");
-//                                                renderModel.zoom(30.0f);
-//                                            }
-//                                        };
-//                                        t.start();
                                 }
                             });
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        } catch (ClassNotFoundException ex) {
+                        } catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     }

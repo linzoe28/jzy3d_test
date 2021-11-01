@@ -18,6 +18,7 @@ import org.jzy3d.plot3d.primitives.Polygon;
  */
 public class Mesh extends Polygon implements Cloneable, Serializable{
     private static final long serialVersionUID = -1636927109633279805L;
+    private String osRecordKey=null;//used for mapping mesh to its corresponding os record
     private Vertex[] vertices=null;
     private Map<Vertex, VertexCurrent> currentMap=new HashMap<>();
     
@@ -26,6 +27,22 @@ public class Mesh extends Polygon implements Cloneable, Serializable{
         this.vertices=vertices;
         for(Vertex v : vertices){
             super.add(new Point(v));
+        }
+    }
+
+    public String getOsRecordKey() {
+        return osRecordKey;
+    }
+
+    public void setOsRecordKey(String osRecordKey) {
+        this.osRecordKey = osRecordKey;
+    }
+    
+    
+    
+    public void emptyCurrent(){
+        for(Vertex vertex : vertices){
+            this.setCurrent(vertex, new VertexCurrent(new Complex(0, 0), new Complex(0, 0), new Complex(0, 0)));
         }
     }
 
