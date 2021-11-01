@@ -5,13 +5,15 @@
  */
 package jzy_3d_sample.model;
 
+import java.io.Serializable;
 import org.jzy3d.maths.Coord3d;
 
 /**
  *
  * @author user
  */
-public class Vertex extends Coord3d implements Comparable<Vertex>, Cloneable{
+public class Vertex extends Coord3d implements Comparable<Vertex>, Cloneable, Serializable{
+    private static final long serialVersionUID = -1636927109633279805L;
     public Vertex(float x, float y, float z){
         super(x, y, z);
     }

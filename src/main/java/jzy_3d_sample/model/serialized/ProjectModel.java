@@ -9,16 +9,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import jzy_3d_sample.model.Cube;
+import jzy_3d_sample.model.Mesh;
 
 /**
  *
  * @author lendle
  */
-public class ProjectModel implements Cloneable, Serializable{
+public class ProjectModel implements Cloneable, Serializable {
+
     private static final long serialVersionUID = -1636927109633279805L;
-    private List<Cube> cubes=null;
-    private List<CurrentData> currentDataList=new ArrayList<>();
-    private long xSlice=-1, ySlice=-1, zSlice=-1;
+    private List<Cube> cubes = null;
+    private List<CurrentData> currentDataList = new ArrayList<>();
+    private long xSlice = -1, ySlice = -1, zSlice = -1;
 
     public long getxSlice() {
         return xSlice;
@@ -44,9 +46,16 @@ public class ProjectModel implements Cloneable, Serializable{
         this.zSlice = zSlice;
     }
 
-    
     public List<Cube> getCubes() {
         return cubes;
+    }
+
+    public List<Mesh> getMeshes() {
+        List<Mesh> meshes = new ArrayList<>();
+        for (Cube cube : cubes) {
+            meshes.addAll(cube.getMeshs());
+        }
+        return meshes;
     }
 
     public void setCubes(List<Cube> cubes) {
@@ -60,6 +69,5 @@ public class ProjectModel implements Cloneable, Serializable{
     public void setCurrentDataList(List<CurrentData> currentDataList) {
         this.currentDataList = currentDataList;
     }
-    
-    
+
 }

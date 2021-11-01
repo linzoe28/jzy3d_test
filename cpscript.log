@@ -93,7 +93,7 @@ group = 155 / 167
 group = 160 / 167
 group = 165 / 167
 Writing to 1.ap ... 
-Farfield Time(hh:mm:ss) = 0:1:11
+Farfield Time(hh:mm:ss) = 0:1:9
 Reading 2 ... 
 numNodes = 14204
 numAbcTri = 27839
@@ -137,7 +137,7 @@ group = 140 / 155
 group = 145 / 155
 group = 150 / 155
 Writing to 2.ap ... 
-Farfield Time(hh:mm:ss) = 0:1:5
+Farfield Time(hh:mm:ss) = 0:1:8
 Reading 3 ... 
 numNodes = 14041
 numAbcTri = 27512
@@ -182,7 +182,7 @@ group = 145 / 159
 group = 150 / 159
 group = 155 / 159
 Writing to 3.ap ... 
-Farfield Time(hh:mm:ss) = 0:1:9
+Farfield Time(hh:mm:ss) = 0:1:8
 Reading 4 ... 
 numNodes = 3935
 numAbcTri = 7417
@@ -213,7 +213,7 @@ group = 75 / 88
 group = 80 / 88
 group = 85 / 88
 Writing to 4.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:33
+Farfield Time(hh:mm:ss) = 0:0:31
 Reading 5 ... 
 numNodes = 3958
 numAbcTri = 7456
@@ -275,7 +275,7 @@ group = 75 / 87
 group = 80 / 87
 group = 85 / 87
 Writing to 6.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:34
+Farfield Time(hh:mm:ss) = 0:0:33
 Reading 7 ... 
 numNodes = 3986
 numAbcTri = 7488
@@ -306,4 +306,4 @@ group = 75 / 87
 group = 80 / 87
 group = 85 / 87
 Writing to 7.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:30
+Farfield Time(hh:mm:ss) = 0:0:31

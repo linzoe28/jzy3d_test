@@ -5,8 +5,12 @@
  */
 package jzy_3d_sample.model;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -17,12 +21,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 import jzy_3d_sample.datafactory.SurfaceLoader;
+import jzy_3d_sample.model.serialized.ProjectModel;
+import jzy_3d_sample.ui.SubCubesColorPainter;
 import org.jzy3d.chart.AWTChart;
 import org.jzy3d.chart.Settings;
 import org.jzy3d.javafx.JavaFXChartFactory;
 import org.jzy3d.javafx.controllers.mouse.JavaFXCameraMouseController;
 import org.jzy3d.maths.BoundingBox3d;
-import org.jzy3d.maths.Coord2d;
 import org.jzy3d.maths.Coord3d;
 import org.jzy3d.plot3d.primitives.Shape;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
@@ -41,30 +46,80 @@ public class RenderModel {
     private Stage stage = null;
     private AWTChart chart = null;
     private float currentZoom = 1;
+    private ProjectModel projectModel = null;//only a rendermodel built from saved model will have a project model
 
+    /**
+     * load model from pre-defined file
+     *
+     * @param scene
+     * @param stage
+     * @param savedModel
+     */
+    public RenderModel(Scene scene, Stage stage, File savedModel) throws FileNotFoundException, IOException, ClassNotFoundException {
+        this.scene = scene;
+        this.stage = stage;
+        List<Mesh> meshs = loadProjectModel(savedModel).getMeshes();
+        Settings.getInstance().setHardwareAccelerated(true);
+        surface = SurfaceLoader.loadSurface(meshs);
+        this.meshs.addAll(meshs);
+        for (Mesh m : meshs) {
+            for (Vertex v : m.getVertices()) {
+                m.add(v);
+            }
+        }
+        this.init();
+        SubCubesColorPainter colorPainter = new SubCubesColorPainter();
+        for (int i = 0; i < projectModel.getCubes().size(); i++) {
+            System.out.println(i);
+            Cube cube = projectModel.getCubes().get(i);
+            colorPainter.paint(i, cube);
+        }
+        this.getSurface().setWireframeDisplayed(false);
+    }
+
+    private ProjectModel loadProjectModel(File file) throws FileNotFoundException, IOException, ClassNotFoundException {
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+            projectModel = (ProjectModel) objectInputStream.readObject();
+            return projectModel;
+        }
+    }
+
+    public ProjectModel getProjectModel() {
+        return projectModel;
+    }
+
+    /**
+     * load model from meshes
+     *
+     * @param scene
+     * @param stage
+     * @param meshs
+     */
     public RenderModel(Scene scene, Stage stage, List<Mesh> meshs) {
         this.scene = scene;
         this.stage = stage;
         Settings.getInstance().setHardwareAccelerated(true);
-        //System.out.println(Settings.getInstance().isHardwareAccelerated());
         surface = SurfaceLoader.loadSurface(meshs);
-//        surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new org.jzy3d.colors.Color(1, 1, 1, 1f)));
+        this.meshs.addAll(meshs);
+        this.init();
+    }
 
+    private void init() {
         JavaFXChartFactory factory = new JavaFXChartFactory();
         chart = (AWTChart) factory.newChart(Quality.Fastest, "offscreen");
-        
+
         chart.getScene().getGraph().add(surface);
         chart.getView().setSquared(false);
         view = factory.bindImageView(chart);
         try {
-            Thread t=new Thread(){
-                public void run(){
-                    Coord3d viewPoint=chart.getAWTView().getViewPoint();
+            Thread t = new Thread() {
+                public void run() {
+                    Coord3d viewPoint = chart.getAWTView().getViewPoint();
                     System.out.println(viewPoint);
-                    double distance=viewPoint.distance(Coord3d.ORIGIN);
-                    double x=0, y=0, z=0;
-                    for(int i=0; i<360; i++){
-                        chart.getAWTView().setViewPoint(new Coord3d(Math.cos(i*Math.PI/180d), y, Math.sin(i*Math.PI/180d)));
+                    double distance = viewPoint.distance(Coord3d.ORIGIN);
+                    double x = 0, y = 0, z = 0;
+                    for (int i = 0; i < 360; i++) {
+                        chart.getAWTView().setViewPoint(new Coord3d(Math.cos(i * Math.PI / 180d), y, Math.sin(i * Math.PI / 180d)));
 //                        try {
 //                            chart.screenshot(new File("test"+i+".png"));
 //                        } catch (IOException ex) {
@@ -82,7 +137,7 @@ public class RenderModel {
             //t.start();
 //            chart.getAWTView().getCamera().setEye(new Coord3d(0.2, 0.1, 0.1));
 //            chart.getAWTView().rotate(new Coord2d(100, 100));
-            
+
         } catch (Exception ex) {
             Logger.getLogger(RenderModel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -117,7 +172,6 @@ public class RenderModel {
 //        };
 //        t.setDaemon(true);
 //        t.start();
-        this.meshs.addAll(meshs);
     }
 
     public AWTChart getChart() {
