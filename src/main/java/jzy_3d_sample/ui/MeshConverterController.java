@@ -32,6 +32,7 @@ import jzy_3d_sample.model.serialized.CurrentData;
 import jzy_3d_sample.model.serialized.ProjectModel;
 import jzy_3d_sample.ui.BackgroundRunner.ProgressReporter;
 import jzy_3d_sample.utils.OSFileSplitter;
+import jzy_3d_sample.utils.SerializeUtil;
 import org.apache.commons.io.FileUtils;
 import org.jzy3d.plot3d.primitives.Shape;
 import rocks.imsofa.n2fproxy.N2fExecutor;
@@ -156,7 +157,7 @@ public class MeshConverterController {
 
                     for (File osFile : osFiles) {
                         setStatusMessage("processing angle "+(index+1)+"/"+osFiles.size());
-                        File subOutputFolder = new File(outputDir, "angle" + (index++));
+                        File subOutputFolder = new File(outputDir, "angle" + (index));
                         if (subOutputFolder.exists()) {
                             FileUtils.deleteDirectory(subOutputFolder);
                         }
@@ -195,13 +196,14 @@ public class MeshConverterController {
                         currentData.setPhi(phi);
                         currentData.setOsRecordsMap(osRecords);
                         currentData.setRcs(executor.getResults());
-                        projectModel.getCurrentDataList().add(currentData);
+                        File currentObjFile=new File(outputDir, index+".current") ;
+                        SerializeUtil.writeToFile(currentData, currentObjFile);
+//                        projectModel.getCurrentDataList().add(currentData);
                         executor.close();
+                        index++;
                     }
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(
-                                new BufferedOutputStream(new FileOutputStream(new File(outputDir, "cubes.obj"))));
-                    objectOutputStream.writeObject(projectModel);
-                    objectOutputStream.close();
+                    SerializeUtil.writeToFile(projectModel, new File(outputDir, "cubes.obj"));
+                    
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 } catch (Exception ex) {

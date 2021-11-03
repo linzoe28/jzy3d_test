@@ -6,6 +6,8 @@
 package jzy_3d_sample.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 import org.jzy3d.maths.Coord3d;
 
 /**
@@ -111,6 +113,4 @@ public class Vertex extends Coord3d implements Comparable<Vertex>, Cloneable, Se
     public Coord3d clone() {
         return new Vertex(x, y, z);
     }
-    
-    
 }
