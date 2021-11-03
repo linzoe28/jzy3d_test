@@ -21,7 +21,7 @@
                </font>
             </Label>
             <TextField fx:id="objFileText" editable="false" prefHeight="26.0" prefWidth="461.0" HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#FileButtonAction" onMouseClicked="#objFileButtonAction" prefHeight="26.0" prefWidth="53.0" text="..." />
+            <Button mnemonicParsing="false" onAction="#objFileButtonAction" prefHeight="26.0" prefWidth="53.0" text="..." />
          </children>
       </HBox>
       <HBox layoutX="461.0" layoutY="289.0" spacing="5.0" AnchorPane.rightAnchor="14.0">
