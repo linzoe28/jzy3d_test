@@ -25,6 +25,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -50,9 +52,12 @@ import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
 import jzy_3d_sample.model.Vertex;
 import jzy_3d_sample.model.VertexCurrent;
+import jzy_3d_sample.model.serialized.CurrentData;
 import jzy_3d_sample.model.serialized.ProjectModel;
+import jzy_3d_sample.ui.AnglePanelController;
 import jzy_3d_sample.ui.BackgroundRunner;
 import jzy_3d_sample.ui.FileOpenController;
+import jzy_3d_sample.ui.FileOpenObjController;
 import jzy_3d_sample.ui.LegendController;
 import jzy_3d_sample.ui.RCSvalueController;
 import jzy_3d_sample.ui.RainbowColorPainter;
@@ -72,7 +77,7 @@ import org.jzy3d.plot3d.primitives.Point;
  */
 public class Main extends Application {
 
-    private static final boolean TEST = true;
+    private static final boolean TEST = false;
     private List<Mesh> meshs = null;
     private RenderModel renderModel = null;
     private Scene scene = null;
@@ -85,6 +90,7 @@ public class Main extends Application {
     private SouthpanelController southpanelController = null;
     private RCSvalueController rCSvalueController = null;
     private ZoomPanelController zoomPanelController = null;
+    private AnglePanelController anglePanelController = null;
     private Point extremeValuePoint = null;
 
     private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
@@ -92,11 +98,12 @@ public class Main extends Application {
         this.renderModel = new RenderModel(scene, primaryStage, meshs);
         return this.renderModel;
     }
-    
+
     private RenderModel loadRenderModel(Stage primaryStage, File savedFile) {
         try {
             this.renderModel = new RenderModel(scene, primaryStage, savedFile);
             this.meshs = renderModel.getProjectModel().getMeshes();
+            subCubes = renderModel.getProjectModel().getCubes();
             return this.renderModel;
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -113,10 +120,8 @@ public class Main extends Application {
             MenuBar menuBar = new MenuBar();
             menuBar.setStyle("-fx-font-size: 11pt;");
             Menu fileMenu = new Menu("File");
-            MenuItem fileOpenMenuItem = new MenuItem("Open");
-            fileMenu.getItems().add(fileOpenMenuItem);
-            MenuItem fileSliceMenuItem = new MenuItem("子空間切割");
-            fileMenu.getItems().add(fileSliceMenuItem);
+            MenuItem fileOpenObjItem = new MenuItem("Open Obj");
+            fileMenu.getItems().add(fileOpenObjItem);
             MenuItem fileRCSMenuItem = new MenuItem("RCS資料輸入");
             fileMenu.getItems().add(fileRCSMenuItem);
             MenuItem researchMenuItem = new MenuItem("研改輸出");
@@ -125,124 +130,51 @@ public class Main extends Application {
             MenuItem fileExitMenuItem = new MenuItem("Exit");
             fileMenu.getItems().add(fileExitMenuItem);
 
-            fileOpenMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            fileOpenObjItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event) {
+                public void handle(ActionEvent t) {
                     try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/fileopen.fxml"));
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/fileopen_obj.fxml"));
                         Parent root1 = (Parent) fxmlLoader.load();
-                        FileOpenController fileOpenController = fxmlLoader.getController();
+                        FileOpenObjController fileOpenObjController = fxmlLoader.getController();
                         Stage stage = new Stage();
                         stage.initModality(Modality.APPLICATION_MODAL);
                         stage.initStyle(StageStyle.UNDECORATED);
                         stage.setTitle("Open File...");
                         stage.setScene(new Scene(root1));
                         stage.showAndWait();
-                        if (fileOpenController.isOk()) {
-                            new BackgroundRunner(southpanelController) {
-                                @Override
-                                public void runBeforeWorkerThread() {
-                                    southpanelController.setStatus("Rendering......");
-                                    if (renderModel != null) {
-                                        container.setCenter(null);
-                                    }
+                        if (fileOpenObjController.isOk()) {
+                            File testObjFile = fileOpenObjController.getobjFile();
+                            renderModel = loadRenderModel(primaryStage, testObjFile);
+                            zoomPanelController.setRenderModel(renderModel);
+                            ScrollPane scrollPane = new ScrollPane();
+                            container.setCenter(scrollPane);
+                            ObservableList angleList = FXCollections.observableArrayList();
+                            int angle = 0;
+                            for (CurrentData currentData : renderModel.getProjectModel().getCurrentDataList()) {
+                                angleList.add("angle" + (angle++));
+
+                                //處理讀進來的 rcs 清單
+                                for (int i = 0; i < currentData.getRcs().length - 1; i++) {
+                                    subCubes.get(i).setRcs(Double.valueOf(currentData.getRcs()[i]));
                                 }
+//                            RCSTotal =  currentData.getRcs()[ currentData.getRcs().length - 1];
+                                southpanelController.setTextBeforeValue(RCSTotal);
+                                sortCube(subCubes);
+                                resetColor(Double.valueOf(rCSvalueController.getThreshold()));
+                                colorLegend.setPrefWidth(63);
+                                colorLegend.setVisible(true);
+                                renderModel.repaint();
+                            }
+                            anglePanelController.getAnglelist().setItems(angleList);
 
+                            Platform.runLater(new Runnable() {
                                 @Override
-                                public void runInWorkerThread() {
-                                    try {
-
-                                        meshs = r.getdata_from_nas(fileOpenController.getNasFile(), fileOpenController.getOsFile());
-                                        subCubeRoot = new File(fileOpenController.getNasFile().getName());
-                                        renderModel = loadRenderModel(primaryStage, meshs);
-                                        zoomPanelController.setRenderModel(renderModel);
-                                        ScrollPane scrollPane = new ScrollPane();
-
-                                        Platform.runLater(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                container.setCenter(scrollPane);
-                                                scrollPane.setContent(renderModel.getView());
-                                                renderModel.repaint();
-                                            }
-                                        });
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-
-                                    }
+                                public void run() {
+                                    scrollPane.setContent(renderModel.getView());
+                                    renderModel.repaint();
                                 }
-
-                                @Override
-                                public void runInUIThread() {
-
-                                    southpanelController.setStatus("Done");
-                                }
-                            }.start();
-
-                        }
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            });
-
-            fileSliceMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/slicecube.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        SlicecubeController slicecubeController = fxmlLoader.getController();
-                        Stage stage = new Stage();
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.initStyle(StageStyle.UTILITY);
-                        stage.setTitle("Paste Slice Values......");
-                        stage.setScene(new Scene(root1));
-                        stage.showAndWait();
-                        if (slicecubeController.isOk()) {
-                            new BackgroundRunner(southpanelController) {
-                                @Override
-                                public void runBeforeWorkerThread() {
-                                    southpanelController.setStatus("Slicing cubes......");
-                                }
-
-                                @Override
-                                public void runInWorkerThread() {
-                                    try {
-                                        double[] slice_value = slicecubeController.getslice();
-                                        subCubes = renderModel.getBoundingCube().slice(slice_value[0], slice_value[1], slice_value[2]);
-                                        
-                                        SubCubesColorPainter colorPainter = new SubCubesColorPainter();
-                                        for (int i = 0; i < subCubes.size(); i++) {
-                                            Cube cube = subCubes.get(i);
-                                            colorPainter.paint(i, cube);
-                                        }
-                                        renderModel.getSurface().setWireframeDisplayed(false);
-                                        renderModel.repaint();
-                                        southpanelController.setStatus("Output fast_n2f files......");
-                                        FileUtils.deleteDirectory(subCubeRoot);
-                                        FileUtils.forceMkdir(subCubeRoot);
-                                        for (int i = 0; i < subCubes.size(); i++) {
-                                            Cube c = subCubes.get(i);
-                                            File subCubeFolder = new File(subCubeRoot, "" + i);
-                                            FileUtils.forceMkdir(subCubeFolder);
-                                            FastN2fWriter.writeTriFile(c.getMeshs(), new File(subCubeFolder, i + ".tri"));
-                                            FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeFolder, i + ".curM"));
-                                            FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeFolder, i + ".curJ"));
-                                        }
-//                                        ZipFile zipFile = new ZipFile(new File(subCubeRoot.getName() + ".zip"));
-//                                        zipFile.addFolder(subCubeRoot);
-//                                        FileUtils.deleteDirectory(subCubeRoot);
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
-                                }
-
-                                @Override
-                                public void runInUIThread() {
-                                    southpanelController.setStatus("Done");
-                                }
-                            }.start();
+                            });
 
                         }
                     } catch (IOException ex) {
@@ -383,6 +315,11 @@ public class Main extends Application {
                 }
             });
 
+            FXMLLoader anglepanelFXMLLoader = new FXMLLoader(getClass().getResource("/fxml/anglepanel.fxml"));
+            AnchorPane anglepanelRoot = (AnchorPane) anglepanelFXMLLoader.load();
+            anglePanelController = anglepanelFXMLLoader.getController();
+            container.setLeft(anglepanelRoot);
+
             FXMLLoader southpanelFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/southpanel.fxml"));
             AnchorPane southpanelRoot = (AnchorPane) southpanelFxmlLoader.load();
             southpanelController = southpanelFxmlLoader.getController();
@@ -409,10 +346,10 @@ public class Main extends Application {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        ProjectModel projectModel=null;
+                        ProjectModel projectModel = null;
                         try {
                             long start = System.currentTimeMillis();
-                            File testObjFile = new File("/home/lendle/Desktop/test/cubes.obj");
+                            File testObjFile = new File("C:\\Users\\70938\\Desktop\\test\\cubes.obj");
                             if (testObjFile.exists()) {
                                 System.out.println("read from serializable");
 //                                ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(testObjFile)));
@@ -442,7 +379,7 @@ public class Main extends Application {
                             zoomPanelController.setRenderModel(renderModel);
                             ScrollPane scrollPane = new ScrollPane();
                             container.setCenter(scrollPane);
-                            
+
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
