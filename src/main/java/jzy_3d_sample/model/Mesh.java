@@ -6,7 +6,9 @@
 package jzy_3d_sample.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.math3.complex.Complex;
 import org.jzy3d.plot3d.primitives.Point;
@@ -98,5 +100,11 @@ public class Mesh extends Polygon implements Cloneable, Serializable{
         return newMesh;
     }
     
-    
+    public List<Edge> getEdges(){
+        return Arrays.asList(
+                new Edge(this.vertices[0], this.vertices[1]),
+                new Edge(this.vertices[0], this.vertices[2]),
+                new Edge(this.vertices[1], this.vertices[2])
+        );
+    }
 }
