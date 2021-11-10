@@ -7,10 +7,10 @@
             </packagings>
             <goals>
                 <goal>process-classes</goal>
-                <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:3.0.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Dprism.verbose=true -Dprism.order=es2,d3d,sw -Xmx3G -classpath %classpath jzy_3d_sample.Main</exec.args>
+                <exec.args>-Xmx8G -XX:+UseG1GC -classpath %classpath jzy_3d_sample.MeshConverter</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
@@ -21,10 +21,10 @@
             </packagings>
             <goals>
                 <goal>process-classes</goal>
-                <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:3.0.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} -Dprism.verbose=true -Dprism.order=es2,d3d,sw -Xmx3G -classpath %classpath jzy_3d_sample.Main</exec.args>
+                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} -Xmx8G -XX:+UseG1GC -classpath %classpath jzy_3d_sample.MeshConverter</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
@@ -36,18 +36,11 @@
             </packagings>
             <goals>
                 <goal>process-classes</goal>
-                <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:3.0.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Dprism.verbose=true -Dprism.order=es2,d3d,sw -Xmx3G -classpath %classpath jzy_3d_sample.Main</exec.args>
+                <exec.args>-Xmx8G -XX:+UseG1GC -classpath %classpath jzy_3d_sample.MeshConverter</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
-        </action>
-        <action>
-            <actionName>CUSTOM-assembly:single</actionName>
-            <displayName>assembly:single</displayName>
-            <goals>
-                <goal>assembly:single</goal>
-            </goals>
         </action>
     </actions>

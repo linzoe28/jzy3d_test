@@ -151,21 +151,28 @@ public class Main extends Application {
                             container.setCenter(scrollPane);
                             ObservableList angleList = FXCollections.observableArrayList();
                             int angle = 0;
-                            for (CurrentData currentData : renderModel.getProjectModel().getCurrentDataList()) {
-                                angleList.add("angle" + (angle++));
+                            for (String currentData : renderModel.getProjectModel().getCurrentDataList()) {
+                                System.out.println("processing current data: " + angle);
+                                angleList.add("angle" + (angle));
 
                                 //處理讀進來的 rcs 清單
-                                for (int i = 0; i < currentData.getRcs().length - 1; i++) {
-                                    subCubes.get(i).setRcs(Double.valueOf(currentData.getRcs()[i]));
+                                //需要改成 ondemand 的方式
+                                if (angle == 0) {
+                                    CurrentData cd = renderModel.getProjectModel().getCurrentData("angle" + (angle));
+                                    for (int i = 0; angle == 0 && i < cd.getRcs().length - 1; i++) {
+                                        subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
+                                    }
                                 }
+                                angle++;
 //                            RCSTotal =  currentData.getRcs()[ currentData.getRcs().length - 1];
                                 southpanelController.setTextBeforeValue(RCSTotal);
                                 sortCube(subCubes);
-                                resetColor(Double.valueOf(rCSvalueController.getThreshold()));
+
                                 colorLegend.setPrefWidth(63);
                                 colorLegend.setVisible(true);
                                 renderModel.repaint();
                             }
+                            resetColor(Double.valueOf(rCSvalueController.getThreshold()));
                             anglePanelController.getAnglelist().setItems(angleList);
 
                             Platform.runLater(new Runnable() {
@@ -178,6 +185,8 @@ public class Main extends Application {
 
                         }
                     } catch (IOException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
@@ -445,10 +454,13 @@ public class Main extends Application {
                 }
             }
         });
-        meshs.get(meshs.size() - 1).setColor(Color.WHITE);
-        this.extremeValuePoint = new Point(meshs.get(meshs.size() - 1).getCenter(), Color.WHITE, 10);
-        southpanelController.setExtremePointPosition(meshs.get(meshs.size() - 1).getCenter());
-        renderModel.getChart().getScene().add(extremeValuePoint);
+        //to be fixed
+        if (meshs.size() > 0) {
+            meshs.get(meshs.size() - 1).setColor(Color.WHITE);
+            this.extremeValuePoint = new Point(meshs.get(meshs.size() - 1).getCenter(), Color.WHITE, 10);
+            southpanelController.setExtremePointPosition(meshs.get(meshs.size() - 1).getCenter());
+            renderModel.getChart().getScene().add(extremeValuePoint);
+        }
     }
 
     private void sortCube(List<Cube> Cubes) {

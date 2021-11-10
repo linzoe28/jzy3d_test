@@ -24,7 +24,7 @@ public class ProjectModel implements Cloneable, Serializable {
     transient private File homeFolder=null;
     private static final long serialVersionUID = -1636927109633279805L;
     private List<Cube> cubes = null;
-    transient private List<CurrentData> currentDataList = new ArrayList<>();
+    private List<String> currentDataList = new ArrayList<>();
     private long xSlice = -1, ySlice = -1, zSlice = -1;
 
     public File getHomeFolder() {
@@ -78,15 +78,16 @@ public class ProjectModel implements Cloneable, Serializable {
         this.cubes = cubes;
     }
 
-    public CurrentData getCurrentData(int angleIndex) throws Exception{
-        return (CurrentData) SerializeUtil.readFromFile(new File(this.homeFolder, angleIndex+".current"));
+    public CurrentData getCurrentData(String label) throws Exception{
+        return (CurrentData) SerializeUtil.readFromFile(new File(this.homeFolder, label+".current"));
     }
-//    public List<CurrentData> getCurrentDataList() {
-//        return currentDataList;
-//    }
-//
-//    public void setCurrentDataList(List<CurrentData> currentDataList) {
-//        this.currentDataList = currentDataList;
-//    }
+    
+    public List<String> getCurrentDataList() {
+        return currentDataList;
+    }
+
+    public void setCurrentDataList(List<String> currentDataList) {
+        this.currentDataList = currentDataList;
+    }
 
 }

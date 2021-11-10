@@ -5,14 +5,10 @@
  */
 package jzy_3d_sample.ui;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,7 +23,7 @@ import jzy_3d_sample.datafactory.Read_data;
 import jzy_3d_sample.datafactory.SurfaceLoader;
 import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.Mesh;
-import jzy_3d_sample.model.os.OSRecord;
+import jzy_3d_sample.model.os.OSRecordMap;
 import jzy_3d_sample.model.serialized.CurrentData;
 import jzy_3d_sample.model.serialized.ProjectModel;
 import jzy_3d_sample.ui.BackgroundRunner.ProgressReporter;
@@ -110,17 +106,29 @@ public class MeshConverterController {
             }
 
             public void runInWorkerThread() {
+                File tempFolder=new File("tempOSFolder");
+                tempFolder.mkdir();
+                
                 try {
                     ProjectModel projectModel=new ProjectModel();
-                    Read_data r = new Read_data();
                     File bigOsFile = new File(osFileText.getText());
                     File nasFile = new File(nasFileText.getText());
+                    setStatusMessage("splitting os files");
                     List<File> osFiles = OSFileSplitter.splitByAngle(bigOsFile);
+//                    File [] _testFiles=new File("/home/lendle/remote_dir/Missile15m_delta90").listFiles();
+//                    List<File> osFiles = new ArrayList<>();
+//                    for(File f : _testFiles){
+//                        if(f.getName().startsWith("tempCurrent")){
+//                            osFiles.add(f);
+//                        }
+//                    }
+//                    
                     File outputDir = new File(outputFolderText.getText());
                     if (outputDir.exists()) {
                         FileUtils.deleteDirectory(outputDir);
                     }
                     FileUtils.forceMkdir(outputDir);
+                    Read_data r = new Read_data(outputDir, "angle0");
                     long x=Long.valueOf(x_value.getText());
                     long y=Long.valueOf(y_value.getText());
                     long z=Long.valueOf(z_value.getText());
@@ -136,12 +144,12 @@ public class MeshConverterController {
                     });
                     //first, output the no-os model
                     File firstOsFile = osFiles.get(0);
+                    setStatusMessage("processing mesh");
                     List<Mesh> meshes = r.getdata_from_nas(nasFile, firstOsFile);
+                    setStatusMessage("done loading mesh definition");
                     {
-                        for(Mesh mesh : meshes){
-                            mesh.emptyCurrent();
-                        }
                         Shape surface = SurfaceLoader.loadSurface(meshes);
+                        setStatusMessage("done loading surface");
                         Cube boundingCube = new Cube(surface.getBounds(), meshes);
                         List<Cube> cubes = boundingCube.slice(x, y, z);
                         projectModel.setxSlice(x);
@@ -154,27 +162,28 @@ public class MeshConverterController {
 //                        objectOutputStream.close();
                     }
                     ///////////////////////////////
-
-                    for (File osFile : osFiles) {
+                    index=0;//angle 0 was already processed when loading meshes
+                    for (int n=0; n<osFiles.size(); n++) {
+                        File osFile=osFiles.get(n);
                         setStatusMessage("processing angle "+(index+1)+"/"+osFiles.size());
                         File subOutputFolder = new File(outputDir, "angle" + (index));
                         if (subOutputFolder.exists()) {
                             FileUtils.deleteDirectory(subOutputFolder);
                         }
                         FileUtils.forceMkdir(subOutputFolder);
-                        for(Mesh mesh : meshes){
-                            mesh.emptyCurrent();
-                        }
+                        
                         //re-apply different os records to the original mesh
-                        Map<String, OSRecord> osRecords=OSFileParser.readOSFile(osFile);
-                        r.applyOStoMeshes(meshes, osRecords);
+                        OSRecordMap osRecords=null;
+                        if(n==0){
+                            osRecords=r.getLastOSRecordMap();
+//                            r.applyOStoMeshes(meshes, osRecords);
+                        }else{
+                            osRecords=OSFileParser.readOSFile(outputDir, osFile, "angle" + (index));
+                            r.applyOStoMeshes(meshes, osRecords);
+                        }
                         Shape surface = SurfaceLoader.loadSurface(meshes);
                         Cube boundingCube = new Cube(surface.getBounds(), meshes);
                         List<Cube> cubes = boundingCube.slice(x,y,z);
-
-//                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(new File(subOutputFolder, "cubes.obj"))));
-//                        objectOutputStream.writeObject(cubes);
-//                        objectOutputStream.close();
                         for (int i = 0; i < cubes.size(); i++) {
                             Cube c = cubes.get(i);
                             File subCubeDir = new File(subOutputFolder, "" + i);
@@ -196,11 +205,16 @@ public class MeshConverterController {
                         currentData.setPhi(phi);
                         currentData.setOsRecordsMap(osRecords);
                         currentData.setRcs(executor.getResults());
-                        File currentObjFile=new File(outputDir, index+".current") ;
+                        File currentObjFile=new File(outputDir, "angle"+index+".current") ;
                         SerializeUtil.writeToFile(currentData, currentObjFile);
-//                        projectModel.getCurrentDataList().add(currentData);
+                        projectModel.getCurrentDataList().add("angle"+index);
                         executor.close();
                         index++;
+                        FileUtils.forceDelete(osFile);
+                        System.out.println("hit: "+osRecords.getHit()+", miss: "+osRecords.getMiss());
+                    }
+                    for (Mesh mesh : meshes) {
+                        mesh.emptyCurrent();
                     }
                     SerializeUtil.writeToFile(projectModel, new File(outputDir, "cubes.obj"));
                     
@@ -208,6 +222,8 @@ public class MeshConverterController {
                     ex.printStackTrace();
                 } catch (Exception ex) {
                     ex.printStackTrace();
+                }finally{
+                    FileUtils.deleteQuietly(tempFolder);
                 }
             }
 
@@ -252,5 +268,9 @@ public class MeshConverterController {
                 ex.printStackTrace();
             }
         }
+    }
+    
+    private void log(File logFile, String message){
+        
     }
 }

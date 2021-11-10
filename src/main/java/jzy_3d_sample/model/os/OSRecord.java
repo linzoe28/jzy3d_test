@@ -19,6 +19,7 @@ public class OSRecord implements Cloneable, Serializable{
     private static final long serialVersionUID = -1636927109633279805L;
     private String num = null;
     private String key=null;
+    private String fuzzyKey=null;
     private String reC1X = null, reC2X = null, reC3X = null;
     private String imC1X = null, imC2X = null, imC3X = null;
     private String reC1Y = null, reC2Y = null, reC3Y = null;
@@ -33,6 +34,16 @@ public class OSRecord implements Cloneable, Serializable{
             output.flush();
         }
     }
+
+    public String getFuzzyKey() {
+        return fuzzyKey;
+    }
+
+    public void setFuzzyKey(String fuzzyKey) {
+        this.fuzzyKey = fuzzyKey;
+    }
+    
+    
     
     public double getX() {
         return x;

@@ -18,30 +18,63 @@ import org.apache.commons.io.FileUtils;
  * @author lendle
  */
 public class OSFileSplitter {
-    public static List<File> splitByAngle(File osFile) throws Exception{
+
+    public static List<File> splitByAngle(File osFile, Callback callback) throws Exception {
         boolean firstSection = false;
         List<File> outputFiles = new ArrayList<>();
         File currentOutputFile = null;
+        StringBuilder sb = new StringBuilder();
+        int count = 0;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(osFile), "utf-8"))) {
             String line = reader.readLine();
             while (true) {
                 if (line != null) {
                     line = line.trim();
                     if (line.startsWith("#Configuration")) {
-                        currentOutputFile = File.createTempFile("tempCurrent", ".os");
+                        if (sb.length() > 0) {
+                            FileUtils.write(currentOutputFile, sb.toString(), "utf-8", true);
+                            if (callback != null) {
+                                callback.osFileGenerated(currentOutputFile);
+                            }
+                            count = 0;
+                            sb = new StringBuilder();
+                        }
+                        currentOutputFile = File.createTempFile("tempCurrent", ".os", osFile.getParentFile());
+                        System.out.println("output os file: " + currentOutputFile.getAbsolutePath());
                         outputFiles.add(currentOutputFile);
                         firstSection = true;
                     }
                     if (firstSection) {
-                        FileUtils.write(currentOutputFile, line + "\r\n", "utf-8", true);
+                        sb.append(line + "\r\n");
+                        count++;
                     }
-
+                    if (count >= MAX_BUFFER) {
+                        FileUtils.write(currentOutputFile, sb.toString(), "utf-8", true);
+                        count = 0;
+                        sb = new StringBuilder();
+                    }
                     line = reader.readLine();
                 } else {
                     break;
                 }
             }
+            if (sb.length() > 0) {
+                FileUtils.write(currentOutputFile, sb.toString(), "utf-8", true);
+            }
+            if (callback != null) {
+                callback.osFileGenerated(currentOutputFile);
+            }
         }
         return outputFiles;
+    }
+
+    public static List<File> splitByAngle(File osFile) throws Exception {
+        return splitByAngle(osFile, null);
+    }
+    private static final int MAX_BUFFER = 100000;
+
+    public static interface Callback {
+
+        public void osFileGenerated(File file);
     }
 }

@@ -1,9 +1,9 @@
 Your Number of Subspace: 8
 Your Operating Frequency(MHz): 1000
-Root Directory: /home/lendle/Desktop/test/angle0
+Root Directory: /home/lendle/remote_dir/largesampleobj1/angle90
 Reading 0 ... 
-numNodes = 14888
-numAbcTri = 29234
+numNodes = 44876
+numAbcTri = 88939
 Reading 0.curJ ... 
 Loading ... 0.curJ
 Done loading 0.curJ. First order.
@@ -12,44 +12,70 @@ Loading ... 0.curM
 Done loading 0.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 164
-group = 5 / 164
-group = 10 / 164
-group = 15 / 164
-group = 20 / 164
-group = 25 / 164
-group = 30 / 164
-group = 35 / 164
-group = 40 / 164
-group = 45 / 164
-group = 50 / 164
-group = 55 / 164
-group = 60 / 164
-group = 65 / 164
-group = 70 / 164
-group = 75 / 164
-group = 80 / 164
-group = 85 / 164
-group = 90 / 164
-group = 95 / 164
-group = 100 / 164
-group = 105 / 164
-group = 110 / 164
-group = 115 / 164
-group = 120 / 164
-group = 125 / 164
-group = 130 / 164
-group = 135 / 164
-group = 140 / 164
-group = 145 / 164
-group = 150 / 164
-group = 155 / 164
-group = 160 / 164
+group = 0 / 290
+group = 5 / 290
+group = 10 / 290
+group = 15 / 290
+group = 20 / 290
+group = 25 / 290
+group = 30 / 290
+group = 35 / 290
+group = 40 / 290
+group = 45 / 290
+group = 50 / 290
+group = 55 / 290
+group = 60 / 290
+group = 65 / 290
+group = 70 / 290
+group = 75 / 290
+group = 80 / 290
+group = 85 / 290
+group = 90 / 290
+group = 95 / 290
+group = 100 / 290
+group = 105 / 290
+group = 110 / 290
+group = 115 / 290
+group = 120 / 290
+group = 125 / 290
+group = 130 / 290
+group = 135 / 290
+group = 140 / 290
+group = 145 / 290
+group = 150 / 290
+group = 155 / 290
+group = 160 / 290
+group = 165 / 290
+group = 170 / 290
+group = 175 / 290
+group = 180 / 290
+group = 185 / 290
+group = 190 / 290
+group = 195 / 290
+group = 200 / 290
+group = 205 / 290
+group = 210 / 290
+group = 215 / 290
+group = 220 / 290
+group = 225 / 290
+group = 230 / 290
+group = 235 / 290
+group = 240 / 290
+group = 245 / 290
+group = 250 / 290
+group = 255 / 290
+group = 260 / 290
+group = 265 / 290
+group = 270 / 290
+group = 275 / 290
+group = 280 / 290
+group = 285 / 290
 Writing to 0.ap ... 
-Farfield Time(hh:mm:ss) = 0:1:9
+Farfield Time(hh:mm:ss) = 0:6:53
+sed: preserving permissions for ‘./sedCdITss’: Operation not permitted
 Reading 1 ... 
-numNodes = 14624
-numAbcTri = 28697
+numNodes = 3719
+numAbcTri = 7162
 Reading 1.curJ ... 
 Loading ... 1.curJ
 Done loading 1.curJ. First order.
@@ -58,45 +84,28 @@ Loading ... 1.curM
 Done loading 1.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 167
-group = 5 / 167
-group = 10 / 167
-group = 15 / 167
-group = 20 / 167
-group = 25 / 167
-group = 30 / 167
-group = 35 / 167
-group = 40 / 167
-group = 45 / 167
-group = 50 / 167
-group = 55 / 167
-group = 60 / 167
-group = 65 / 167
-group = 70 / 167
-group = 75 / 167
-group = 80 / 167
-group = 85 / 167
-group = 90 / 167
-group = 95 / 167
-group = 100 / 167
-group = 105 / 167
-group = 110 / 167
-group = 115 / 167
-group = 120 / 167
-group = 125 / 167
-group = 130 / 167
-group = 135 / 167
-group = 140 / 167
-group = 145 / 167
-group = 150 / 167
-group = 155 / 167
-group = 160 / 167
-group = 165 / 167
+group = 0 / 78
+group = 5 / 78
+group = 10 / 78
+group = 15 / 78
+group = 20 / 78
+group = 25 / 78
+group = 30 / 78
+group = 35 / 78
+group = 40 / 78
+group = 45 / 78
+group = 50 / 78
+group = 55 / 78
+group = 60 / 78
+group = 65 / 78
+group = 70 / 78
+group = 75 / 78
 Writing to 1.ap ... 
-Farfield Time(hh:mm:ss) = 0:1:9
+Farfield Time(hh:mm:ss) = 0:0:41
+sed: preserving permissions for ‘./sedtDb6SZ’: Operation not permitted
 Reading 2 ... 
-numNodes = 14204
-numAbcTri = 27839
+numNodes = 19473
+numAbcTri = 38296
 Reading 2.curJ ... 
 Loading ... 2.curJ
 Done loading 2.curJ. First order.
@@ -105,42 +114,52 @@ Loading ... 2.curM
 Done loading 2.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 155
-group = 5 / 155
-group = 10 / 155
-group = 15 / 155
-group = 20 / 155
-group = 25 / 155
-group = 30 / 155
-group = 35 / 155
-group = 40 / 155
-group = 45 / 155
-group = 50 / 155
-group = 55 / 155
-group = 60 / 155
-group = 65 / 155
-group = 70 / 155
-group = 75 / 155
-group = 80 / 155
-group = 85 / 155
-group = 90 / 155
-group = 95 / 155
-group = 100 / 155
-group = 105 / 155
-group = 110 / 155
-group = 115 / 155
-group = 120 / 155
-group = 125 / 155
-group = 130 / 155
-group = 135 / 155
-group = 140 / 155
-group = 145 / 155
-group = 150 / 155
+group = 0 / 200
+group = 5 / 200
+group = 10 / 200
+group = 15 / 200
+group = 20 / 200
+group = 25 / 200
+group = 30 / 200
+group = 35 / 200
+group = 40 / 200
+group = 45 / 200
+group = 50 / 200
+group = 55 / 200
+group = 60 / 200
+group = 65 / 200
+group = 70 / 200
+group = 75 / 200
+group = 80 / 200
+group = 85 / 200
+group = 90 / 200
+group = 95 / 200
+group = 100 / 200
+group = 105 / 200
+group = 110 / 200
+group = 115 / 200
+group = 120 / 200
+group = 125 / 200
+group = 130 / 200
+group = 135 / 200
+group = 140 / 200
+group = 145 / 200
+group = 150 / 200
+group = 155 / 200
+group = 160 / 200
+group = 165 / 200
+group = 170 / 200
+group = 175 / 200
+group = 180 / 200
+group = 185 / 200
+group = 190 / 200
+group = 195 / 200
 Writing to 2.ap ... 
-Farfield Time(hh:mm:ss) = 0:1:6
+Farfield Time(hh:mm:ss) = 0:3:22
+sed: preserving permissions for ‘./sedXOSxOE’: Operation not permitted
 Reading 3 ... 
-numNodes = 14041
-numAbcTri = 27512
+numNodes = 0
+numAbcTri = 0
 Reading 3.curJ ... 
 Loading ... 3.curJ
 Done loading 3.curJ. First order.
@@ -149,43 +168,12 @@ Loading ... 3.curM
 Done loading 3.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 159
-group = 5 / 159
-group = 10 / 159
-group = 15 / 159
-group = 20 / 159
-group = 25 / 159
-group = 30 / 159
-group = 35 / 159
-group = 40 / 159
-group = 45 / 159
-group = 50 / 159
-group = 55 / 159
-group = 60 / 159
-group = 65 / 159
-group = 70 / 159
-group = 75 / 159
-group = 80 / 159
-group = 85 / 159
-group = 90 / 159
-group = 95 / 159
-group = 100 / 159
-group = 105 / 159
-group = 110 / 159
-group = 115 / 159
-group = 120 / 159
-group = 125 / 159
-group = 130 / 159
-group = 135 / 159
-group = 140 / 159
-group = 145 / 159
-group = 150 / 159
-group = 155 / 159
 Writing to 3.ap ... 
-Farfield Time(hh:mm:ss) = 0:1:9
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed0ZJ6w2’: Operation not permitted
 Reading 4 ... 
-numNodes = 3935
-numAbcTri = 7417
+numNodes = 44963
+numAbcTri = 89110
 Reading 4.curJ ... 
 Loading ... 4.curJ
 Done loading 4.curJ. First order.
@@ -194,29 +182,70 @@ Loading ... 4.curM
 Done loading 4.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 88
-group = 5 / 88
-group = 10 / 88
-group = 15 / 88
-group = 20 / 88
-group = 25 / 88
-group = 30 / 88
-group = 35 / 88
-group = 40 / 88
-group = 45 / 88
-group = 50 / 88
-group = 55 / 88
-group = 60 / 88
-group = 65 / 88
-group = 70 / 88
-group = 75 / 88
-group = 80 / 88
-group = 85 / 88
+group = 0 / 290
+group = 5 / 290
+group = 10 / 290
+group = 15 / 290
+group = 20 / 290
+group = 25 / 290
+group = 30 / 290
+group = 35 / 290
+group = 40 / 290
+group = 45 / 290
+group = 50 / 290
+group = 55 / 290
+group = 60 / 290
+group = 65 / 290
+group = 70 / 290
+group = 75 / 290
+group = 80 / 290
+group = 85 / 290
+group = 90 / 290
+group = 95 / 290
+group = 100 / 290
+group = 105 / 290
+group = 110 / 290
+group = 115 / 290
+group = 120 / 290
+group = 125 / 290
+group = 130 / 290
+group = 135 / 290
+group = 140 / 290
+group = 145 / 290
+group = 150 / 290
+group = 155 / 290
+group = 160 / 290
+group = 165 / 290
+group = 170 / 290
+group = 175 / 290
+group = 180 / 290
+group = 185 / 290
+group = 190 / 290
+group = 195 / 290
+group = 200 / 290
+group = 205 / 290
+group = 210 / 290
+group = 215 / 290
+group = 220 / 290
+group = 225 / 290
+group = 230 / 290
+group = 235 / 290
+group = 240 / 290
+group = 245 / 290
+group = 250 / 290
+group = 255 / 290
+group = 260 / 290
+group = 265 / 290
+group = 270 / 290
+group = 275 / 290
+group = 280 / 290
+group = 285 / 290
 Writing to 4.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:36
+Farfield Time(hh:mm:ss) = 0:7:22
+sed: preserving permissions for ‘./sedt4f4g2’: Operation not permitted
 Reading 5 ... 
-numNodes = 3958
-numAbcTri = 7456
+numNodes = 3733
+numAbcTri = 7190
 Reading 5.curJ ... 
 Loading ... 5.curJ
 Done loading 5.curJ. First order.
@@ -225,29 +254,28 @@ Loading ... 5.curM
 Done loading 5.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 88
-group = 5 / 88
-group = 10 / 88
-group = 15 / 88
-group = 20 / 88
-group = 25 / 88
-group = 30 / 88
-group = 35 / 88
-group = 40 / 88
-group = 45 / 88
-group = 50 / 88
-group = 55 / 88
-group = 60 / 88
-group = 65 / 88
-group = 70 / 88
-group = 75 / 88
-group = 80 / 88
-group = 85 / 88
+group = 0 / 78
+group = 5 / 78
+group = 10 / 78
+group = 15 / 78
+group = 20 / 78
+group = 25 / 78
+group = 30 / 78
+group = 35 / 78
+group = 40 / 78
+group = 45 / 78
+group = 50 / 78
+group = 55 / 78
+group = 60 / 78
+group = 65 / 78
+group = 70 / 78
+group = 75 / 78
 Writing to 5.ap ... 
 Farfield Time(hh:mm:ss) = 0:0:40
+sed: preserving permissions for ‘./sedjoaR6U’: Operation not permitted
 Reading 6 ... 
-numNodes = 3976
-numAbcTri = 7467
+numNodes = 19453
+numAbcTri = 38253
 Reading 6.curJ ... 
 Loading ... 6.curJ
 Done loading 6.curJ. First order.
@@ -256,29 +284,52 @@ Loading ... 6.curM
 Done loading 6.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 87
-group = 5 / 87
-group = 10 / 87
-group = 15 / 87
-group = 20 / 87
-group = 25 / 87
-group = 30 / 87
-group = 35 / 87
-group = 40 / 87
-group = 45 / 87
-group = 50 / 87
-group = 55 / 87
-group = 60 / 87
-group = 65 / 87
-group = 70 / 87
-group = 75 / 87
-group = 80 / 87
-group = 85 / 87
+group = 0 / 200
+group = 5 / 200
+group = 10 / 200
+group = 15 / 200
+group = 20 / 200
+group = 25 / 200
+group = 30 / 200
+group = 35 / 200
+group = 40 / 200
+group = 45 / 200
+group = 50 / 200
+group = 55 / 200
+group = 60 / 200
+group = 65 / 200
+group = 70 / 200
+group = 75 / 200
+group = 80 / 200
+group = 85 / 200
+group = 90 / 200
+group = 95 / 200
+group = 100 / 200
+group = 105 / 200
+group = 110 / 200
+group = 115 / 200
+group = 120 / 200
+group = 125 / 200
+group = 130 / 200
+group = 135 / 200
+group = 140 / 200
+group = 145 / 200
+group = 150 / 200
+group = 155 / 200
+group = 160 / 200
+group = 165 / 200
+group = 170 / 200
+group = 175 / 200
+group = 180 / 200
+group = 185 / 200
+group = 190 / 200
+group = 195 / 200
 Writing to 6.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:39
+Farfield Time(hh:mm:ss) = 0:3:19
+sed: preserving permissions for ‘./sedQ4nOrw’: Operation not permitted
 Reading 7 ... 
-numNodes = 3986
-numAbcTri = 7488
+numNodes = 0
+numAbcTri = 0
 Reading 7.curJ ... 
 Loading ... 7.curJ
 Done loading 7.curJ. First order.
@@ -287,23 +338,6 @@ Loading ... 7.curM
 Done loading 7.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 87
-group = 5 / 87
-group = 10 / 87
-group = 15 / 87
-group = 20 / 87
-group = 25 / 87
-group = 30 / 87
-group = 35 / 87
-group = 40 / 87
-group = 45 / 87
-group = 50 / 87
-group = 55 / 87
-group = 60 / 87
-group = 65 / 87
-group = 70 / 87
-group = 75 / 87
-group = 80 / 87
-group = 85 / 87
 Writing to 7.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:36
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedftVYhR’: Operation not permitted
