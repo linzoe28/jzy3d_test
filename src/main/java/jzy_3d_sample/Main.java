@@ -152,8 +152,8 @@ public class Main extends Application {
                             ObservableList angleList = FXCollections.observableArrayList();
                             int angle = 0;
                             for (String currentData : renderModel.getProjectModel().getCurrentDataList()) {
-                                System.out.println("processing current data: " + angle);
-                                angleList.add("angle" + (angle));
+//                                System.out.println("processing current data: " + angle);
+                                angleList.add(currentData);
 
                                 //處理讀進來的 rcs 清單
                                 //需要改成 ondemand 的方式
@@ -417,14 +417,14 @@ public class Main extends Application {
             renderModel.getChart().getScene().remove(extremeValuePoint);
         }
         List<Cube> colorCubes = new ArrayList<>(subCubes);
-        for (Cube c : colorCubes) {
-            if (c.getRcs() != 0) {
-                System.out.println(c.getRcs());
-            }
-        }
-        System.out.println("MIN" + colorCubes.get(0).getRcs() + ",MAX" + colorCubes.get(colorCubes.size() - 1).getRcs());
+//        for (Cube c : colorCubes) {
+//            if (c.getRcs() != 0) {
+//                System.out.println(c.getRcs());
+//            }
+//        }
+//        System.out.println("MIN" + colorCubes.get(0).getRcs() + ",MAX" + colorCubes.get(colorCubes.size() - 1).getRcs());
         double gap = (rcsThreshold - colorCubes.get(0).getRcs()) / 5;
-        System.out.println("gap" + gap);
+//        System.out.println("gap" + gap);
         LegendController legendController = legendloader.getController();
         legendController.getRedValue().setText(String.format("%06.4f", rcsThreshold));
         legendController.getoValue().setText(String.format("%06.4f", rcsThreshold - gap));

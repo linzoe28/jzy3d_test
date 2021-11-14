@@ -8,9 +8,12 @@ package jzy_3d_sample.utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -19,12 +22,13 @@ import org.apache.commons.io.FileUtils;
  */
 public class OSFileSplitter {
 
-    public static List<File> splitByAngle(File osFile, Callback callback) throws Exception {
+    public static List<File> splitByAngle(File osFile, OutputFileCreator outputFileCreator, Callback callback) throws Exception {
         boolean firstSection = false;
         List<File> outputFiles = new ArrayList<>();
         File currentOutputFile = null;
         StringBuilder sb = new StringBuilder();
         int count = 0;
+        int index=0;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(osFile), "utf-8"))) {
             String line = reader.readLine();
             while (true) {
@@ -39,7 +43,8 @@ public class OSFileSplitter {
                             count = 0;
                             sb = new StringBuilder();
                         }
-                        currentOutputFile = File.createTempFile("tempCurrent", ".os", osFile.getParentFile());
+                        //currentOutputFile = File.createTempFile("tempCurrent", ".os", osFile.getParentFile());
+                        currentOutputFile=outputFileCreator.createFile(osFile.getParentFile(), index++);
                         System.out.println("output os file: " + currentOutputFile.getAbsolutePath());
                         outputFiles.add(currentOutputFile);
                         firstSection = true;
@@ -69,12 +74,24 @@ public class OSFileSplitter {
     }
 
     public static List<File> splitByAngle(File osFile) throws Exception {
-        return splitByAngle(osFile, null);
+        return splitByAngle(osFile, new OutputFileCreator(){
+            public File createFile(File osFile, long index){
+                try {
+                    return File.createTempFile("tempCurrent", ".os", osFile.getParentFile());
+                } catch (IOException ex) {
+                    Logger.getLogger(OSFileSplitter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return null;
+            }
+        },null);
     }
     private static final int MAX_BUFFER = 100000;
-
+    
+    public static interface OutputFileCreator{
+        public File createFile(File osFile, long index);
+    }
+    
     public static interface Callback {
-
         public void osFileGenerated(File file);
     }
 }
