@@ -3,9 +3,8 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="jzy_3d_sample.ui.AnglePanelController">
+<AnchorPane id="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.AnglePanelController">
    <children>
-      <ListView fx:id="anglelist" prefHeight="200.0" prefWidth="200.0" />
+      <ListView fx:id="anglelist" prefWidth="200.0" />
    </children>
 </AnchorPane>

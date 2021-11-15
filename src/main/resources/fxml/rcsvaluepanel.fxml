@@ -12,7 +12,7 @@
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" prefHeight="44.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.RCSvalueController">
    <children>
-      <BorderPane prefHeight="38.0" prefWidth="611.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="15.0">
+      <BorderPane prefHeight="38.0" prefWidth="611.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
          <left>
             <HBox alignment="CENTER" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
@@ -32,7 +32,7 @@
             </HBox>
          </left>
          <center>
-            <Slider fx:id="sliderRCS" majorTickUnit="0.01" max="1.0" prefHeight="47.0" prefWidth="392.0" showTickLabels="true" showTickMarks="true" BorderPane.alignment="CENTER">
+            <Slider fx:id="sliderRCS" majorTickUnit="0.01" max="1.0" prefHeight="47.0" showTickLabels="true" showTickMarks="true" BorderPane.alignment="CENTER">
                <padding>
                   <Insets left="5.0" right="8.0" top="10.0" />
                </padding>
