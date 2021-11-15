@@ -8,6 +8,7 @@ package jzy_3d_sample.model.serialized;
 import java.io.Serializable;
 import java.util.Map;
 import jzy_3d_sample.model.os.OSRecord;
+import jzy_3d_sample.model.os.OSRecordMap;
 
 /**
  *
@@ -16,7 +17,7 @@ import jzy_3d_sample.model.os.OSRecord;
 public class CurrentData implements Cloneable, Serializable{
     private static final long serialVersionUID = -1636927109633279805L;
     private double theta=-1, phi=-1;
-    private Map<String, OSRecord> osRecordsMap=null;
+    private OSRecordMap osRecordsMap=null;
     private double [] rcs=null;
 
     public double[] getRcs() {
@@ -45,11 +46,11 @@ public class CurrentData implements Cloneable, Serializable{
         this.phi = phi;
     }
 
-    public Map<String, OSRecord> getOsRecordsMap() {
+    public OSRecordMap getOsRecordsMap() {
         return osRecordsMap;
     }
 
-    public void setOsRecordsMap(Map<String, OSRecord> osRecordsMap) {
+    public void setOsRecordsMap(OSRecordMap osRecordsMap) {
         this.osRecordsMap = osRecordsMap;
     }
     

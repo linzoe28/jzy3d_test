@@ -6,12 +6,11 @@
 package jzy_3d_sample.model.serialized;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import jzy_3d_sample.datafactory.AngleLabelMapGenerator;
+import jzy_3d_sample.datafactory.model.AngleIndexThetaPhiMap;
 import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.utils.SerializeUtil;
@@ -21,10 +20,13 @@ import jzy_3d_sample.utils.SerializeUtil;
  * @author lendle
  */
 public class ProjectModel implements Cloneable, Serializable {
-    transient private File homeFolder=null;
+
+    transient private File homeFolder = null;
+    transient private AngleIndexThetaPhiMap angleIndexThetaPhiMap = null;
     private static final long serialVersionUID = -1636927109633279805L;
     private List<Cube> cubes = null;
-    transient private List<CurrentData> currentDataList = new ArrayList<>();
+    private List<String> currentDataList = new ArrayList<>();
+    transient private List<String> currentThetaPhiList = null;
     private long xSlice = -1, ySlice = -1, zSlice = -1;
 
     public File getHomeFolder() {
@@ -35,9 +37,6 @@ public class ProjectModel implements Cloneable, Serializable {
         this.homeFolder = homeFolder;
     }
 
-    
-    
-    
     public long getxSlice() {
         return xSlice;
     }
@@ -78,15 +77,44 @@ public class ProjectModel implements Cloneable, Serializable {
         this.cubes = cubes;
     }
 
-    public CurrentData getCurrentData(int angleIndex) throws Exception{
-        return (CurrentData) SerializeUtil.readFromFile(new File(this.homeFolder, angleIndex+".current"));
+    public CurrentData getCurrentData(String label) throws Exception {
+        initAngleIndexThetaPhiMap();
+        File file = new File(this.homeFolder, label + ".current");
+        if (!file.exists()) {
+            label = angleIndexThetaPhiMap.getAngleIndex(label);
+            file = new File(this.homeFolder, label + ".current");
+        }
+        return (CurrentData) SerializeUtil.readFromFile(file);
     }
-//    public List<CurrentData> getCurrentDataList() {
-//        return currentDataList;
-//    }
-//
-//    public void setCurrentDataList(List<CurrentData> currentDataList) {
-//        this.currentDataList = currentDataList;
-//    }
+
+    private void initAngleIndexThetaPhiMap() {
+        if (angleIndexThetaPhiMap == null) {
+            angleIndexThetaPhiMap = AngleLabelMapGenerator.createAngleIndex2ThetaPhiMap(this);
+        }
+    }
+
+    public List<String> getCurrentDataList(boolean angleIndex) {
+        if (angleIndex == true) {
+            return this.currentDataList;
+        } else {
+            if (currentThetaPhiList == null) {
+                currentThetaPhiList = new ArrayList<>();
+                initAngleIndexThetaPhiMap();
+                for (String _angleIndex : currentDataList) {
+                    currentThetaPhiList.add(angleIndexThetaPhiMap.getThetaPhi(_angleIndex));
+                    System.out.println(angleIndexThetaPhiMap.getThetaPhi(_angleIndex));
+                }
+            }
+            return currentThetaPhiList;
+        }
+    }
+
+    public List<String> getCurrentDataList() {
+        return this.getCurrentDataList(false);
+    }
+
+    public void setCurrentDataList(List<String> currentDataList) {
+        this.currentDataList = currentDataList;
+    }
 
 }

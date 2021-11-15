@@ -11,18 +11,21 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import jzy_3d_sample.model.os.OSRecord;
+import jzy_3d_sample.model.os.OSRecordMap;
+import jzy_3d_sample.utils.SerializeUtil;
 
 /**
  *
  * @author lendle
  */
 public class OSFileParser {
-    public static Map<String, OSRecord> readSerializedOSFile(File osFile) throws IOException, ClassNotFoundException {
-        try(ObjectInputStream input=new ObjectInputStream(new FileInputStream(osFile))){
-            return (Map<String, OSRecord>) input.readObject();
+    public static OSRecordMap readSerializedOSFile(File osMapFile) throws IOException, ClassNotFoundException {
+        try(ObjectInputStream input=new ObjectInputStream(new FileInputStream(osMapFile))){
+            return (OSRecordMap) input.readObject();
         }
     }
 
@@ -31,12 +34,17 @@ public class OSFileParser {
      *
      * @return
      */
-    public static Map<String, OSRecord> readOSFile(File osFile) throws IOException {
-
-        Map<String, OSRecord> ret = new HashMap<>();
+    public static OSRecordMap readOSFile(File outputFolder, File osFile, String outputPrefix) throws IOException {
+        OSRecordMap oSRecordMap=new OSRecordMap();
+        oSRecordMap.setHomeFolder(outputFolder);
+        HashMap<String, OSRecord> ret = new HashMap<>();
         if (osFile == null) {
-            return ret;
+            return oSRecordMap;
         }
+        int osRecordMapIndex=0;
+        String currentFileName=outputPrefix+"_"+osRecordMapIndex+".osRecordMap";
+        System.out.println("currentFileName="+currentFileName);
+        oSRecordMap.getOsRecordFileNames().add(currentFileName);
         try (BufferedReader input = new BufferedReader(new FileReader(osFile))) {
             String line = null;
             boolean firstRecordGot = false;
@@ -49,7 +57,25 @@ public class OSFileParser {
                     String key=String.format("%13.4E", Double.valueOf(row[1]))+
                             String.format("%13.4E", Double.valueOf(row[2]))+
                             String.format("%13.4E", Double.valueOf(row[3]));
+                    String fuzzyCenterKeyString=String.format("%13.4E", Double.valueOf(row[1])).substring(0, 4)+
+                            String.format("%13.4E", Double.valueOf(row[2])).substring(0, 4)+String.format("%13.4E", Double.valueOf(row[3])).substring(0, 4);
                     record.setKey(key);
+                    record.setFuzzyKey(fuzzyCenterKeyString);
+                    oSRecordMap.getKey2FileNameMap().put(key, currentFileName);
+                    Map<String,String> realKeyList=oSRecordMap.getFuzzyKey2RealKeyMap().get(fuzzyCenterKeyString);
+                    if(realKeyList==null){
+                        realKeyList=new HashMap<>();
+                        oSRecordMap.getFuzzyKey2RealKeyMap().put(fuzzyCenterKeyString, realKeyList);
+                    }
+                    if(realKeyList.containsKey(key)==false){
+                        realKeyList.put(key, "");
+                        if(realKeyList.size()>FAST_ACCESS_THRESHOLD){
+                            if(oSRecordMap.getFastAccessMap().size()<OSMAP_MAX_ENTRIES){
+                                //then put this into fast access
+                                oSRecordMap.getFastAccessMap().put(key, record);
+                            }
+                        }
+                    }
                     record.setX(Double.valueOf(row[1]));
                     record.setY(Double.valueOf(row[2]));
                     record.setZ(Double.valueOf(row[3]));
@@ -76,7 +102,14 @@ public class OSFileParser {
                     record.setImC3Z(row[30]);
                     
                     ret.put(record.getKey(), record);
-                    
+                    //System.out.println("ret.size="+ret.size());
+                    if(ret.size()>OSMAP_MAX_ENTRIES){
+                        SerializeUtil.writeToFile(ret, new File(outputFolder, currentFileName));
+                        ret = new HashMap<>();
+                        osRecordMapIndex++;
+                        currentFileName=outputPrefix+"_"+osRecordMapIndex+".osRecordMap";
+                        oSRecordMap.getOsRecordFileNames().add(currentFileName);
+                    }
                 } else {
                     if (firstRecordGot) {
                         break;
@@ -84,6 +117,11 @@ public class OSFileParser {
                 }
             }
         }
-        return ret;
+        SerializeUtil.writeToFile(ret, new File(outputFolder, currentFileName));
+        //there is no need to output the index file since it is included in CurrentData
+//        SerializeUtil.writeToFile(oSRecordMap, new File(outputFolder, outputPrefix+".osRecordIndex"));
+        return oSRecordMap;
     }
+    private static final int FAST_ACCESS_THRESHOLD = 100;
+    private static final int OSMAP_MAX_ENTRIES = 400000;
 }

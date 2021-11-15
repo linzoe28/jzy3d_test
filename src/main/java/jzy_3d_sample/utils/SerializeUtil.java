@@ -5,6 +5,8 @@
  */
 package jzy_3d_sample.utils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,14 +24,14 @@ public class SerializeUtil {
 
     public static Object readFromFile(File file) throws FileNotFoundException, IOException, ClassNotFoundException {
         try (ObjectInputStream objectInputStreamCurrent
-                = new ObjectInputStream(new FileInputStream(file))) {
+                = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
             return objectInputStreamCurrent.readObject();
         }
     }
 
     public static void writeToFile(Serializable obj, File file) throws IOException {
         try (ObjectOutputStream objectOutputStreamCurrent
-                = new ObjectOutputStream(new FileOutputStream(file))) {
+                = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
             objectOutputStreamCurrent.writeObject(obj);
             objectOutputStreamCurrent.flush();
         }

@@ -5,12 +5,9 @@
  */
 package jzy_3d_sample.model;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -40,7 +37,7 @@ import org.jzy3d.plot3d.rendering.canvas.Quality;
  */
 public class RenderModel {
 
-    private Shape surface = null;
+    private Shape surface = null, surfaceLight=null;
     private ImageView view = null;
     private Scene scene = null;
     private List<Mesh> meshs = new ArrayList<>();
@@ -61,6 +58,9 @@ public class RenderModel {
         this.stage = stage;
         List<Mesh> meshs = loadProjectModel(savedModel).getMeshes();
         Settings.getInstance().setHardwareAccelerated(true);
+//        Shape [] surfaces=SurfaceLoader.loadSurfaces(meshs);
+//        surface=surfaces[0];
+//        surfaceLight=surfaces[1];
         surface = SurfaceLoader.loadSurface(meshs);
         this.meshs.addAll(meshs);
 
@@ -70,13 +70,12 @@ public class RenderModel {
             }
         }
         this.init();
-//        SubCubesColorPainter colorPainter = new SubCubesColorPainter();
-//        for (int i = 0; i < projectModel.getCubes().size(); i++) {
-//            System.out.println(i);
-//            Cube cube = projectModel.getCubes().get(i);
-//            colorPainter.paint(i, cube);
-//        }
-//        this.getSurface().setWireframeDisplayed(false);
+        SubCubesColorPainter colorPainter = new SubCubesColorPainter();
+        for (int i = 0; i < projectModel.getCubes().size(); i++) {
+            Cube cube = projectModel.getCubes().get(i);
+            colorPainter.paint(i, cube);
+        }
+        this.getSurface().setWireframeDisplayed(false);
     }
 
     private ProjectModel loadProjectModel(File file) throws FileNotFoundException, IOException, ClassNotFoundException {
@@ -108,10 +107,29 @@ public class RenderModel {
     private void init() {
         JavaFXChartFactory factory = new JavaFXChartFactory();
         chart = (AWTChart) factory.newChart(Quality.Fastest, "offscreen");
-        System.out.println(chart.getScene() + ":" + scene);
+        //chart.getScene().getGraph().add(surfaceLight);
         chart.getScene().getGraph().add(surface);
         chart.getView().setSquared(false);
         view = factory.bindImageView(chart);
+        try {
+            Thread t = new Thread() {
+                public void run() {
+                    try {
+                        Thread.sleep(60*3*1000);
+                        System.out.println("replacing");
+                        chart.getScene().getGraph().remove(surfaceLight);
+                        chart.getScene().getGraph().add(surface);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(RenderModel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            };
+            t.setDaemon(true);
+            //t.start();
+
+        } catch (Exception ex) {
+            Logger.getLogger(RenderModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try {
             Thread t = new Thread() {
                 public void run() {

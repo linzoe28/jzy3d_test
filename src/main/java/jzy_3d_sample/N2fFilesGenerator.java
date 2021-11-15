@@ -31,7 +31,6 @@ public class N2fFilesGenerator {
      * file path args[2]=target folder
      */
     public static void main(String[] args) throws Exception {
-        // TODO code application logic here
         File osFile = new File(args[1]);
         File nasFile = new File(args[0]);
         File outputFolder=new File(args[2]);
