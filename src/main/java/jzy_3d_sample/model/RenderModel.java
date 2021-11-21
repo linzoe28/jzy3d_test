@@ -37,7 +37,7 @@ import org.jzy3d.plot3d.rendering.canvas.Quality;
  */
 public class RenderModel {
 
-    private Shape surface = null, surfaceLight=null;
+    private Shape surface = null, surfaceLight = null;
     private ImageView view = null;
     private Scene scene = null;
     private List<Mesh> meshs = new ArrayList<>();
@@ -95,6 +95,9 @@ public class RenderModel {
      * @param stage
      * @param meshs
      */
+    private float maxX = 0, minX = 0, maxY = 0, minY = 0, maxZ = 0, minZ = 0, xcenter = 0, ycenter = 0, zcenter = 0;
+    private Coord3d range;
+
     public RenderModel(Scene scene, Stage stage, List<Mesh> meshs) {
         this.scene = scene;
         this.stage = stage;
@@ -104,7 +107,7 @@ public class RenderModel {
         this.init();
     }
 
-    private void init() {
+private void init() {
         JavaFXChartFactory factory = new JavaFXChartFactory();
         chart = (AWTChart) factory.newChart(Quality.Fastest, "offscreen");
         //chart.getScene().getGraph().add(surfaceLight);
@@ -130,6 +133,17 @@ public class RenderModel {
         } catch (Exception ex) {
             Logger.getLogger(RenderModel.class.getName()).log(Level.SEVERE, null, ex);
         }
+	maxX = chart.getView().getBounds().getXmax();
+        minX = chart.getView().getBounds().getXmin();
+        maxY = chart.getView().getBounds().getYmax();
+        minY = chart.getView().getBounds().getYmin();
+        maxZ = chart.getView().getBounds().getZmax();
+        minZ = chart.getView().getBounds().getZmin();
+        xcenter = chart.getView().getBounds().getCenter().x;
+        ycenter = chart.getView().getBounds().getCenter().y;
+        zcenter = chart.getView().getBounds().getCenter().z;
+        range = (chart.getView().getBounds().getRange());
+
         try {
             Thread t = new Thread() {
                 public void run() {
@@ -190,6 +204,22 @@ public class RenderModel {
 //        t.start();
     }
 
+    public float getMinX() {
+        return minX;
+    }
+
+    public float getMinY() {
+        return minY;
+    }
+
+    public float getMinZ() {
+        return minZ;
+    }
+
+    public Coord3d getRange() {
+        return range;
+    }
+
     public AWTChart getChart() {
         return chart;
     }
@@ -207,24 +237,70 @@ public class RenderModel {
     }
 
     public void zoom(float factor) {
+        float zoom = factor / currentZoom;
         BoundingBox3d bounds = chart.getView().getBounds();
         System.out.println(bounds + ":" + bounds.getZRange());
-        bounds.setZmin(-0.2f);
-        bounds.setZmax(0f);
-        bounds.setXmin(0f);
-        bounds.setXmax(0.3f);
-        bounds.setYmin(-0.2f);
-        bounds.setYmax(0f);
-
+        float xlen = (bounds.getRange().x) / zoom / 2;
+//        float xcenter = bounds.getCenter().x;
+        float ylen = (bounds.getRange().y) / zoom / 2;
+//        float ycenter = bounds.getCenter().y;
+        float zlen = (bounds.getRange().z) / zoom / 2;
+//        float zcenter = bounds.getCenter().z;
+        bounds.setZmin(-zlen);
+        bounds.setZmax(zlen);
+        bounds.setXmin(xcenter - xlen);
+        bounds.setXmax(xcenter + xlen);
+        bounds.setYmin(ycenter - ylen);
+        bounds.setYmax(ycenter + ylen);
+        currentZoom = factor;
         chart.getView().shoot();
         chart.getView().computeScaledViewBounds();
 //        chart.getView().updateBoundsForceUpdate(true);//don't call this, this will reset rendering
     }
 
-    public void moveX(float x) {
+    public void moveX(float dir) {
         BoundingBox3d bounds = chart.getView().getBounds();
-        bounds.setXmin(bounds.getXmin() + x);
-        bounds.setXmax(bounds.getXmax() + x);
+        float x = bounds.getRange().x / 10 * dir;
+        if (!(bounds.getCenter().x > maxX && dir > 0) && !(bounds.getCenter().x < minX && dir < 0)) {
+            bounds.setXmin(bounds.getXmin() + x);
+            bounds.setXmax(bounds.getXmax() + x);
+            chart.getView().shoot();
+            chart.getView().computeScaledViewBounds();
+        }
+    }
+
+    public void moveY(float dir) {
+        BoundingBox3d bounds = chart.getView().getBounds();
+        float y = bounds.getRange().y / 10 * dir;
+        if (!(bounds.getCenter().y > maxY && dir > 0) && !(bounds.getCenter().y < minY && dir < 0)) {
+            bounds.setYmin(bounds.getYmin() + y);
+            bounds.setYmax(bounds.getYmax() + y);
+            chart.getView().shoot();
+            chart.getView().computeScaledViewBounds();
+        }
+
+    }
+
+    public void moveZ(float dir) {
+        BoundingBox3d bounds = chart.getView().getBounds();
+        float z = bounds.getRange().z / 10 * dir;
+        if (!(bounds.getCenter().z > maxZ && dir > 0) && !(bounds.getCenter().z < minZ && dir < 0)) {
+            bounds.setZmin(bounds.getZmin() + z);
+            bounds.setZmax(bounds.getZmax() + z);
+            chart.getView().shoot();
+            chart.getView().computeScaledViewBounds();
+        }
+    }
+
+    public void move(float x, float y, float z) {
+        BoundingBox3d bounds = chart.getView().getBounds();
+        Coord3d range_ = bounds.getRange();
+        bounds.setXmin(minX + range.x * x - range_.x / 2);
+        bounds.setXmax(minX + range.x * x + range_.x / 2);
+        bounds.setYmin(minY + range.y * y - range_.y / 2);
+        bounds.setYmax(minY + range.y * y + range_.y / 2);
+        bounds.setZmin(minZ + range.z * z - range_.z / 2);
+        bounds.setZmax(minZ + range.z * z + range_.z / 2);
         chart.getView().shoot();
         chart.getView().computeScaledViewBounds();
     }
