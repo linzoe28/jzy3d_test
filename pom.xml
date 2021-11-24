@@ -25,7 +25,7 @@
         <dependency>
 	    <groupId>com.github.lendle1028</groupId>
 	    <artifactId>N2fProxy</artifactId>
-	    <version>fd41939505</version>
+	    <version>a8d9eba7ad</version>
 	</dependency>
         <dependency>
             <groupId>org.jzy3d</groupId>

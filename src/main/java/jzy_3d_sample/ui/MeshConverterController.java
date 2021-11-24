@@ -227,6 +227,7 @@ public class MeshConverterController {
                             currentData.setTheta(theta);
                             currentData.setPhi(phi);
                             currentData.setRcs(executor.getResults());
+                            currentData.setRcsTotal(executor.getRCSTotal());
                             File currentObjFile = new File(outputDir, "angle" + index + ".current");
                             SerializeUtil.writeToFile(currentData, currentObjFile);
                             executor.close();

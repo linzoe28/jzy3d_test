@@ -19,6 +19,17 @@ public class CurrentData implements Cloneable, Serializable{
     private double theta=-1, phi=-1;
     private OSRecordMap osRecordsMap=null;
     private double [] rcs=null;
+    private double rcsTotal=-1;
+
+    public double getRcsTotal() {
+        return rcsTotal;
+    }
+
+    public void setRcsTotal(double rcsTotal) {
+        this.rcsTotal = rcsTotal;
+    }
+    
+    
 
     public double[] getRcs() {
         return rcs;
