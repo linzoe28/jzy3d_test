@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
@@ -14,7 +15,7 @@
    <children>
       <BorderPane AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
          <left>
-            <HBox alignment="CENTER" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
                <children>
                   <Label text="RCS 臨界值：">
                      <font>
@@ -27,14 +28,18 @@
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
                   </TextField>
+                  <CheckBox fx:id="to_db_check" mnemonicParsing="false" text="db" />
                </children>
             </HBox>
          </left>
          <center>
             <Slider fx:id="sliderRCS" majorTickUnit="0.01" max="1.0" showTickLabels="true" showTickMarks="true" BorderPane.alignment="CENTER">
                <padding>
-                  <Insets left="5.0" right="8.0" top="10.0" />
+                  <Insets left="5.0" right="5.0" top="10.0" />
                </padding>
             </Slider>
          </center>
@@ -46,6 +51,9 @@
                <font>
                   <Font size="15.0" />
                </font>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
             </Button>
          </right>
       </BorderPane>

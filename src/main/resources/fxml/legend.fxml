@@ -18,7 +18,7 @@
       </Label>
       <BorderPane>
          <center>
-            <Label fx:id="rValue" minWidth="-Infinity" style="-fx-background-color: red;" text="1111" textFill="#f20606" BorderPane.alignment="CENTER">
+            <Label fx:id="rValue" minWidth="-Infinity" style="-fx-background-color: #f20606;" text="1111" textFill="#f20606" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets right="2.0" />
                </BorderPane.margin>
