@@ -262,7 +262,7 @@ private void init() {
     public void moveX(float dir) {
         BoundingBox3d bounds = chart.getView().getBounds();
         float x = bounds.getRange().x / 10 * dir;
-        if (!(bounds.getCenter().x > maxX && dir > 0) && !(bounds.getCenter().x < minX && dir < 0)) {
+        if (1==1 || (!(bounds.getCenter().x > maxX && dir > 0) && !(bounds.getCenter().x < minX && dir < 0))) {
             bounds.setXmin(bounds.getXmin() + x);
             bounds.setXmax(bounds.getXmax() + x);
             chart.getView().shoot();
@@ -314,6 +314,13 @@ private void init() {
                 stage.requestFocus();
 //                System.out.println(System.currentTimeMillis()+":before render");
                 chart.render();
+                if(stage.isMaximized()){
+                    double maximizedWidth=stage.getWidth();
+                    double maxmizedHeight=stage.getHeight();
+                    stage.setMaximized(false);
+                    stage.setWidth(maximizedWidth-1);
+                    stage.setHeight(maxmizedHeight);
+                }
 //                System.out.println(System.currentTimeMillis()+":after render");
                 if (stage.getWidth() % 10 == 0) {
                     stage.setWidth(stage.getWidth() - 1);
