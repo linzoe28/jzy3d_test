@@ -150,3 +150,160 @@ Done loading 3.curM. First order.
 Done reading files.
 Partitioning mesh ... 
 group = 0 / 159
+group = 5 / 159
+group = 10 / 159
+group = 15 / 159
+group = 20 / 159
+group = 25 / 159
+group = 30 / 159
+group = 35 / 159
+group = 40 / 159
+group = 45 / 159
+group = 50 / 159
+group = 55 / 159
+group = 60 / 159
+group = 65 / 159
+group = 70 / 159
+group = 75 / 159
+group = 80 / 159
+group = 85 / 159
+group = 90 / 159
+group = 95 / 159
+group = 100 / 159
+group = 105 / 159
+group = 110 / 159
+group = 115 / 159
+group = 120 / 159
+group = 125 / 159
+group = 130 / 159
+group = 135 / 159
+group = 140 / 159
+group = 145 / 159
+group = 150 / 159
+group = 155 / 159
+Writing to 3.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:8
+Reading 4 ... 
+numNodes = 3935
+numAbcTri = 7417
+Reading 4.curJ ... 
+Loading ... 4.curJ
+Done loading 4.curJ. First order.
+Reading 4.curM ... 
+Loading ... 4.curM
+Done loading 4.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 88
+group = 5 / 88
+group = 10 / 88
+group = 15 / 88
+group = 20 / 88
+group = 25 / 88
+group = 30 / 88
+group = 35 / 88
+group = 40 / 88
+group = 45 / 88
+group = 50 / 88
+group = 55 / 88
+group = 60 / 88
+group = 65 / 88
+group = 70 / 88
+group = 75 / 88
+group = 80 / 88
+group = 85 / 88
+Writing to 4.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:31
+Reading 5 ... 
+numNodes = 3958
+numAbcTri = 7456
+Reading 5.curJ ... 
+Loading ... 5.curJ
+Done loading 5.curJ. First order.
+Reading 5.curM ... 
+Loading ... 5.curM
+Done loading 5.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 88
+group = 5 / 88
+group = 10 / 88
+group = 15 / 88
+group = 20 / 88
+group = 25 / 88
+group = 30 / 88
+group = 35 / 88
+group = 40 / 88
+group = 45 / 88
+group = 50 / 88
+group = 55 / 88
+group = 60 / 88
+group = 65 / 88
+group = 70 / 88
+group = 75 / 88
+group = 80 / 88
+group = 85 / 88
+Writing to 5.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:31
+Reading 6 ... 
+numNodes = 3976
+numAbcTri = 7467
+Reading 6.curJ ... 
+Loading ... 6.curJ
+Done loading 6.curJ. First order.
+Reading 6.curM ... 
+Loading ... 6.curM
+Done loading 6.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 87
+group = 5 / 87
+group = 10 / 87
+group = 15 / 87
+group = 20 / 87
+group = 25 / 87
+group = 30 / 87
+group = 35 / 87
+group = 40 / 87
+group = 45 / 87
+group = 50 / 87
+group = 55 / 87
+group = 60 / 87
+group = 65 / 87
+group = 70 / 87
+group = 75 / 87
+group = 80 / 87
+group = 85 / 87
+Writing to 6.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:31
+Reading 7 ... 
+numNodes = 3986
+numAbcTri = 7488
+Reading 7.curJ ... 
+Loading ... 7.curJ
+Done loading 7.curJ. First order.
+Reading 7.curM ... 
+Loading ... 7.curM
+Done loading 7.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 87
+group = 5 / 87
+group = 10 / 87
+group = 15 / 87
+group = 20 / 87
+group = 25 / 87
+group = 30 / 87
+group = 35 / 87
+group = 40 / 87
+group = 45 / 87
+group = 50 / 87
+group = 55 / 87
+group = 60 / 87
+group = 65 / 87
+group = 70 / 87
+group = 75 / 87
+group = 80 / 87
+group = 85 / 87
+Writing to 7.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:31

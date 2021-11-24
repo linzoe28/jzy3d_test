@@ -366,7 +366,6 @@ public class Main extends Application {
             zoomPanelController = zoompanelFxmlLoader.getController();
 
             rightToolBarContainer.getChildren().add(zoomPanelRoot);
-
             primaryStage.setTitle("CS");
             primaryStage.setScene(scene);
             if (TEST) {
