@@ -171,15 +171,15 @@ public class Main extends Application {
                                                 for (int i = 0; angle == 0 && i < cd.getRcs().length - 1; i++) {
                                                     subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
                                                 }
+                                                //設定RCS總值
+                                                RCSTotal = ""+cd.getRcsTotal();
+                                                System.out.println(RCSTotal);
+                                                southpanelController.setTextBeforeValue(RCSTotal);
                                             } catch (Exception ex) {
                                                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                                             }
                                         }
-//                                        angle++;
-//                                        設定RCS總值
-//                                        RCSTotal =  currentData.getRcs()[ currentData.getRcs().length - 1];
-//                                        southpanelController.setTextBeforeValue(RCSTotal);
-                                        
+                                        angle++;
 
                                         colorLegend.setPrefWidth(63);
                                         colorLegend.setVisible(true);

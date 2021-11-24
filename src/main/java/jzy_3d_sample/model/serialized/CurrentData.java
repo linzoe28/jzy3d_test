@@ -6,6 +6,7 @@
 package jzy_3d_sample.model.serialized;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Map;
 import jzy_3d_sample.model.os.OSRecord;
 import jzy_3d_sample.model.os.OSRecordMap;
