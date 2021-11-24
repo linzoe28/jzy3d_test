@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -144,43 +145,61 @@ public class Main extends Application {
                         stage.setScene(new Scene(root1));
                         stage.showAndWait();
                         if (fileOpenObjController.isOk()) {
-                            File testObjFile = fileOpenObjController.getobjFile();
-                            renderModel = loadRenderModel(primaryStage, testObjFile);
-                            zoomPanelController.setRenderModel(renderModel);
-                            ScrollPane scrollPane = new ScrollPane();
-                            container.setCenter(scrollPane);
-                            ObservableList angleList = FXCollections.observableArrayList();
-                            int angle = 0;
-                            for (String currentData : renderModel.getProjectModel().getCurrentDataList()) {
-//                                System.out.println("processing current data: " + angle);
-                                angleList.add(currentData);
 
-                                //處理讀進來的 rcs 清單
-                                //需要改成 ondemand 的方式
-                                if (angle == 0) {
-                                    CurrentData cd = renderModel.getProjectModel().getCurrentData("angle" + (angle));
-                                    for (int i = 0; angle == 0 && i < cd.getRcs().length - 1; i++) {
-                                        subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
-                                    }
-                                }
-                                angle++;
-//                            RCSTotal =  currentData.getRcs()[ currentData.getRcs().length - 1];
-                                southpanelController.setTextBeforeValue(RCSTotal);
-                                sortCube(subCubes);
-
-                                colorLegend.setPrefWidth(63);
-                                colorLegend.setVisible(true);
-//                                renderModel.repaint();
-                            }
-                            resetColor(Double.valueOf(rCSvalueController.getThreshold()));
-                            anglePanelController.getAnglelist().setItems(angleList);
-                            Platform.runLater(new Runnable() {
+                            new BackgroundRunner(southpanelController) {
                                 @Override
-                                public void run() {
+                                public void runBeforeWorkerThread() {
+                                    southpanelController.setStatus("Open data......");
+                                }
+
+                                @Override
+                                public void runInWorkerThread() {
+                                    File ObjFile = fileOpenObjController.getobjFile();
+                                    renderModel = loadRenderModel(primaryStage, ObjFile);
+                                    zoomPanelController.setRenderModel(renderModel);
+                                    ObservableList angleList = FXCollections.observableArrayList();
+                                    int angle = 0;
+                                    for (String currentData : renderModel.getProjectModel().getCurrentDataList()) {
+//                                System.out.println("processing current data: " + angle);
+                                        angleList.add(currentData);
+
+                                        //處理讀進來的 rcs 清單
+                                        //需要改成 ondemand 的方式
+                                        if (angle == 0) {
+                                            try {
+                                                CurrentData cd = renderModel.getProjectModel().getCurrentData("angle" + (angle));
+                                                for (int i = 0; angle == 0 && i < cd.getRcs().length - 1; i++) {
+                                                    subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
+                                                }
+                                            } catch (Exception ex) {
+                                                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                                            }
+                                        }
+//                                        angle++;
+//                                        設定RCS總值
+//                                        RCSTotal =  currentData.getRcs()[ currentData.getRcs().length - 1];
+//                                        southpanelController.setTextBeforeValue(RCSTotal);
+                                        
+
+                                        colorLegend.setPrefWidth(63);
+                                        colorLegend.setVisible(true);
+                                        renderModel.repaint();
+                                    }
+                                    anglePanelController.getAnglelist().setItems(angleList);
+                                }
+
+                                @Override
+                                public void runInUIThread() {
+                                    ScrollPane scrollPane = new ScrollPane();
+                                    container.setCenter(scrollPane);
                                     scrollPane.setContent(renderModel.getView());
                                     renderModel.repaint();
+                                    southpanelController.setStatus("Done");
+                                    resetColor(Double.valueOf(rCSvalueController.getThreshold()));
+                                    sortCube(subCubes);
+
                                 }
-                            });
+                            }.start();
 
                         }
                     } catch (IOException ex) {
