@@ -195,7 +195,7 @@ public class MeshConverterController {
                         currentData.setOsRecordsMap(osRecords);
                         File currentObjFile = new File(outputDir, "angle" + index + ".current");
                         SerializeUtil.writeToFile(currentData, currentObjFile);
-                        projectModel.getCurrentDataList().add("angle" + index);
+                        projectModel.getCurrentDataList(true).add("angle" + index);
                         index++;
 
                         //FileUtils.forceDelete(osFile);

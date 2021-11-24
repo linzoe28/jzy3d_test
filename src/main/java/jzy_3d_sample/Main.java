@@ -170,11 +170,10 @@ public class Main extends Application {
 
                                 colorLegend.setPrefWidth(63);
                                 colorLegend.setVisible(true);
-                                renderModel.repaint();
+//                                renderModel.repaint();
                             }
                             resetColor(Double.valueOf(rCSvalueController.getThreshold()));
                             anglePanelController.getAnglelist().setItems(angleList);
-
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {

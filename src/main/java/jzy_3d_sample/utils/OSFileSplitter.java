@@ -85,7 +85,7 @@ public class OSFileSplitter {
             }
         },null);
     }
-    private static final int MAX_BUFFER = 100000;
+    private static final int MAX_BUFFER = 1000000;
     
     public static interface OutputFileCreator{
         public File createFile(File osFile, long index);

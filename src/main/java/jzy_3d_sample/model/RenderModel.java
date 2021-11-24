@@ -37,7 +37,7 @@ import org.jzy3d.plot3d.rendering.canvas.Quality;
  */
 public class RenderModel {
 
-    private Shape surface = null, surfaceLight=null;
+    private Shape surface = null;
     private ImageView view = null;
     private Scene scene = null;
     private List<Mesh> meshs = new ArrayList<>();
@@ -61,7 +61,7 @@ public class RenderModel {
 //        Shape [] surfaces=SurfaceLoader.loadSurfaces(meshs);
 //        surface=surfaces[0];
 //        surfaceLight=surfaces[1];
-        surface = SurfaceLoader.loadSurface(meshs);
+        surface = SurfaceLoader.loadSurface(meshs, 1.0);
         this.meshs.addAll(meshs);
 
         for (Mesh m : meshs) {
@@ -115,17 +115,18 @@ public class RenderModel {
             Thread t = new Thread() {
                 public void run() {
                     try {
-                        Thread.sleep(60*3*1000);
-                        System.out.println("replacing");
-                        chart.getScene().getGraph().remove(surfaceLight);
-                        chart.getScene().getGraph().add(surface);
+                        Thread.sleep(60000*3);
+                        Shape detailedSurface=SurfaceLoader.loadSurface(meshs);
+                        chart.getScene().getGraph().remove(surface);
+                        chart.getScene().getGraph().add(detailedSurface);
+                        surface=detailedSurface;
                     } catch (InterruptedException ex) {
                         Logger.getLogger(RenderModel.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             };
             t.setDaemon(true);
-            //t.start();
+//            t.start();
 
         } catch (Exception ex) {
             Logger.getLogger(RenderModel.class.getName()).log(Level.SEVERE, null, ex);
@@ -235,7 +236,9 @@ public class RenderModel {
             @Override
             public void run() {
                 stage.requestFocus();
+//                System.out.println(System.currentTimeMillis()+":before render");
                 chart.render();
+//                System.out.println(System.currentTimeMillis()+":after render");
                 if (stage.getWidth() % 10 == 0) {
                     stage.setWidth(stage.getWidth() - 1);
                 } else {

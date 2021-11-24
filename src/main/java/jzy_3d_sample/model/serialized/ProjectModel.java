@@ -78,6 +78,7 @@ public class ProjectModel implements Cloneable, Serializable {
     }
 
     public CurrentData getCurrentData(String label) throws Exception {
+        System.out.println("label="+label);
         initAngleIndexThetaPhiMap();
         File file = new File(this.homeFolder, label + ".current");
         if (!file.exists()) {
@@ -102,7 +103,7 @@ public class ProjectModel implements Cloneable, Serializable {
                 initAngleIndexThetaPhiMap();
                 for (String _angleIndex : currentDataList) {
                     currentThetaPhiList.add(angleIndexThetaPhiMap.getThetaPhi(_angleIndex));
-                    System.out.println(angleIndexThetaPhiMap.getThetaPhi(_angleIndex));
+//                    System.out.println(angleIndexThetaPhiMap.getThetaPhi(_angleIndex));
                 }
             }
             return currentThetaPhiList;

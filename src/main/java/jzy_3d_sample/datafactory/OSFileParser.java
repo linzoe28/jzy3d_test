@@ -24,9 +24,10 @@ import jzy_3d_sample.utils.SerializeUtil;
  */
 public class OSFileParser {
     public static OSRecordMap readSerializedOSFile(File osMapFile) throws IOException, ClassNotFoundException {
-        try(ObjectInputStream input=new ObjectInputStream(new FileInputStream(osMapFile))){
-            return (OSRecordMap) input.readObject();
-        }
+        return (OSRecordMap) SerializeUtil.readFromFile(osMapFile);
+//        try(ObjectInputStream input=new ObjectInputStream(new FileInputStream(osMapFile))){
+//            return (OSRecordMap) input.readObject();
+//        }
     }
 
     /**

@@ -5,6 +5,9 @@
  */
 package jzy_3d_sample.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +23,7 @@ import org.jzy3d.maths.Coord3d;
  *
  * @author lendle
  */
-public class Cube implements Serializable{
+public class Cube1 implements Serializable{
     private static final long serialVersionUID = -1636927109633279805L;
     private List<Mesh> meshs=new ArrayList<>();
     private double rcs;
@@ -29,7 +32,7 @@ public class Cube implements Serializable{
     public BoundingBox3d getBox3d() {
         return box3d;
     }
-
+    
     public double getRcs() {
         return rcs;
     }
@@ -40,21 +43,21 @@ public class Cube implements Serializable{
     /**
      * @param vertices must be of length 8
      */
-    public Cube(List<Vertex> vertices, List<Mesh> meshs) {
+    public Cube1(List<Vertex> vertices, List<Mesh> meshs) {
         box3d=new BoundingBox3d(new ArrayList<Coord3d>(vertices));
         this.meshs.addAll(meshs);
     }
     
-    public Cube(BoundingBox3d box, List<Mesh> meshs) {
+    public Cube1(BoundingBox3d box, List<Mesh> meshs) {
         box3d=new BoundingBox3d(box);
         this.meshs.addAll(meshs);
     }
     
-    public Cube(List<Vertex> vertices) {
+    public Cube1(List<Vertex> vertices) {
         this(vertices, new ArrayList<Mesh>());
     }
     
-    public Cube(BoundingBox3d box) {
+    public Cube1(BoundingBox3d box) {
         this(box, new ArrayList<Mesh>());
     }
 
@@ -111,7 +114,7 @@ public class Cube implements Serializable{
         return new Vertex(x, y, z);
     }
     
-    public List<Cube> slice(double xParts, double yParts, double zParts){
+    public List<Cube1> slice(double xParts, double yParts, double zParts){
         double xLength=box3d.getRange().x;
         double yLength=box3d.getRange().y;
         double zLength=box3d.getRange().z;
@@ -138,7 +141,7 @@ public class Cube implements Serializable{
                 }
             }
         });
-        List<Cube> subCubes = new ArrayList<>();
+        List<Cube1> subCubes = new ArrayList<>();
         for(int i=0; i<xParts; i++){
             for(int j=0; j<yParts; j++){
                 for(int k=0; k<zParts; k++){
@@ -153,25 +156,25 @@ public class Cube implements Serializable{
                             createVertexInCube(origin[0]+xUnit, origin[1], origin[2]+zUnit),
                             createVertexInCube(origin[0]+xUnit, origin[1]+yUnit, origin[2]+zUnit)
                     );
-                    subCubes.add(new Cube(subVertices));
+                    subCubes.add(new Cube1(subVertices));
                 }
             }
         }
-        Cube lastCube=null;
-        List<Cube> lastFewCubes=new ArrayList<>();
+        Cube1 lastCube=null;
+        List<Cube1> lastFewCubes=new ArrayList<>();
         outer: for(Mesh mesh : localMeshs){
             if(lastCube!=null && lastCube.box3d.contains(mesh.getCenter())){
                 lastCube.getMeshs().add(mesh);
                 continue;
             }
-            for(Cube cube : lastFewCubes){
+            for(Cube1 cube : lastFewCubes){
                 if(cube.box3d.contains(mesh.getCenter())){
                     lastCube=cube;
                     cube.getMeshs().add(mesh);
                     continue outer;
                 }
             }
-            for(Cube cube : subCubes){
+            for(Cube1 cube : subCubes){
                 if(cube.box3d.contains(mesh.getCenter())){
                     cube.getMeshs().add(mesh);
                     if(lastFewCubes.size()>(xParts*yParts*zParts)/5){
@@ -278,7 +281,7 @@ public class Cube implements Serializable{
             try {
                 ret.add(m.clone());
             } catch (CloneNotSupportedException ex) {
-                Logger.getLogger(Cube.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Cube1.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return ret;
@@ -287,15 +290,30 @@ public class Cube implements Serializable{
     public String toString() {
         return (Arrays.deepToString(getVerticesVertexs().toArray()));
     }
+    
+    private void readObject(ObjectInputStream aInputStream) throws ClassNotFoundException, IOException 
+    {       
+        meshs = (List<Mesh>) aInputStream.readObject();
+        rcs = aInputStream.readDouble();
+        List<Coord3d> list = (List<Coord3d>) aInputStream.readObject();
+        this.box3d=new BoundingBox3d(list);
+    }
 
+    private void writeObject(ObjectOutputStream aOutputStream) throws IOException 
+    {
+        aOutputStream.writeObject(this.meshs);
+        aOutputStream.writeDouble(this.rcs);
+        aOutputStream.writeObject(box3d.getVertices());
+    }
+    
     public static void main(String[] args) throws Exception {
         List<Vertex> list = Arrays.asList(
                 new Vertex(0, 0, 0),
                 new Vertex(2, 0, 0), new Vertex(0, 2, 0), new Vertex(0, 0, 2),
                 new Vertex(0, 2, 2), new Vertex(2, 0, 2), new Vertex(2, 2, 0),
                 new Vertex(2, 2, 2));
-        Cube cube = new Cube(list, new ArrayList<>());
-        List<Cube> subCubes = cube.slice(1, 1, 1);
+        Cube1 cube = new Cube1(list, new ArrayList<>());
+        List<Cube1> subCubes = cube.slice(1, 1, 1);
         System.out.println(subCubes.size());
         System.out.println(Arrays.deepToString(subCubes.toArray()));
     }

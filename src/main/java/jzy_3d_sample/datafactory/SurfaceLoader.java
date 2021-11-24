@@ -16,41 +16,29 @@ import org.jzy3d.plot3d.primitives.Shape;
  * @author lendle
  */
 public class SurfaceLoader {
-    public static Shape[] loadSurfaces(List<Mesh> meshes) {
-        List<Mesh> preserved=new ArrayList<>();
-        for(Mesh mesh : meshes){
-            if(Math.random()>0.5){
-                preserved.add(mesh);
-            }
-        }
-        Shape surface = new Shape(new ArrayList<Polygon>(meshes));
-//        Shape surface = new Shape(new ArrayList<Polygon>(preserved));
-        surface.setWireframeDisplayed(true);
-        surface.setFaceDisplayed(true);
-        surface.setWireframeColor(org.jzy3d.colors.Color.BLUE);
-        
-//        Shape surface = new Shape(new ArrayList<Polygon>(meshes));
-        Shape surfaceLight = new Shape(new ArrayList<Polygon>(preserved));
-        surfaceLight.setWireframeDisplayed(true);
-        surfaceLight.setFaceDisplayed(true);
-        surfaceLight.setWireframeColor(org.jzy3d.colors.Color.BLUE);
-        
-        return new Shape[]{surface, surfaceLight};
-    }
+
     public static Shape loadSurface(List<Mesh> meshes) {
-        List<Mesh> preserved=new ArrayList<>();
-        for(Mesh mesh : meshes){
-            if(Math.random()>0.7){
-                preserved.add(mesh);
+        return loadSurface(meshes, 1);
+    }
+
+    public static Shape loadSurface(List<Mesh> meshes, double level) {
+        List<Polygon> preserved = null;
+        if (level == 1) {
+            preserved = new ArrayList<Polygon>(meshes);
+
+        } else {
+            preserved = new ArrayList<>();
+            for (Mesh mesh : meshes) {
+                if (Math.random() > (1.0d-level)) {
+                    preserved.add(mesh);
+                }
             }
         }
-        Shape surface = new Shape(new ArrayList<Polygon>(meshes));
-//        Shape surface = new Shape(new ArrayList<Polygon>(preserved));
+        Shape surface = new Shape(preserved);
         surface.setWireframeDisplayed(true);
         surface.setFaceDisplayed(true);
         surface.setWireframeColor(org.jzy3d.colors.Color.BLUE);
-        
-        
+
         return surface;
     }
 }
