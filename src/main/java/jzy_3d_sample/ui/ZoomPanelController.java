@@ -8,7 +8,9 @@ package jzy_3d_sample.ui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import jzy_3d_sample.model.RenderModel;
+import org.jzy3d.maths.BoundingBox3d;
 
 /**
  *
@@ -16,7 +18,42 @@ import jzy_3d_sample.model.RenderModel;
  */
 public class ZoomPanelController {
     @FXML
-    private Button buttonZoom2X;
+    private Button buttonZoomF;
+
+    @FXML
+    private Button buttonZoomB;
+
+    @FXML
+    private Button buttonZoomL;
+
+    @FXML
+    private Button buttonZoomR;
+
+    @FXML
+    private Slider zoomSlider;
+
+    @FXML
+    private Button buttonZoom;
+
+    @FXML
+    private Button buttonZoomU;
+
+    @FXML
+    private Button buttonZoomD;
+    
+        @FXML
+    private Slider xSlider;
+
+    @FXML
+    private Slider ySlider;
+
+    @FXML
+    private Slider zSlider;
+
+    @FXML
+    private Button movebutton;
+
+    
     private RenderModel renderModel=null;
 
     public RenderModel getRenderModel() {
@@ -28,20 +65,69 @@ public class ZoomPanelController {
     }
     
     @FXML
-    void onZoom2XClicked(ActionEvent event) {
-        renderModel.zoom(2.0f);
+    void onMoveClicked(ActionEvent event) {
+        renderModel.move((float)xSlider.getValue()/100, (float)ySlider.getValue()/100, (float)zSlider.getValue()/100);
         renderModel.repaint();
+    }
+    
+    @FXML
+    void onZoomClicked(ActionEvent event) {
+        System.err.println(zoomSlider.getValue());
+        renderModel.zoom((float) zoomSlider.getValue());
+        renderModel.repaint();
+        setslider();
     }
     
     @FXML
     void onZoomLClicked(ActionEvent event) {
-        renderModel.moveX(0.3f);
+        renderModel.moveX(-1f);
         renderModel.repaint();
+        setslider();
     }
     
     @FXML
     void onZoomRClicked(ActionEvent event) {
-        renderModel.moveX(-0.3f);
+        renderModel.moveX(1f);
         renderModel.repaint();
+        setslider();
     }
+    
+    @FXML
+    void onZoomUClicked(ActionEvent event) {
+        renderModel.moveZ(-1f);
+        renderModel.repaint();
+        setslider();
+    }
+    
+    @FXML
+    void onZoomDClicked(ActionEvent event) {
+        renderModel.moveZ(1f);
+        renderModel.repaint();
+        setslider();
+    }
+    
+    @FXML
+    void onZoomFClicked(ActionEvent event) {
+        renderModel.moveY(-1f);
+        renderModel.repaint();
+        setslider();
+    }
+    
+    @FXML
+    void onZoomBClicked(ActionEvent event) {
+        renderModel.moveY(1f);
+        renderModel.repaint();
+        setslider();
+    }
+    
+    void setslider(){
+        BoundingBox3d bounds = renderModel.getChart().getView().getBounds();
+        float x = (bounds.getCenter().x-renderModel.getMinX())/renderModel.getRange().x;
+        float y = (bounds.getCenter().y-renderModel.getMinY())/renderModel.getRange().y;
+        float z = (bounds.getCenter().z-renderModel.getMinZ())/renderModel.getRange().z;
+        xSlider.setValue(x*100);
+        ySlider.setValue(y*100);
+        zSlider.setValue(z*100);
+    }
+    
 }
