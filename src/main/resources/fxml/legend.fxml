@@ -28,7 +28,7 @@
             </Label>
          </center>
          <right>
-            <Label fx:id="redValue" contentDisplay="RIGHT" prefWidth="70.0" text="0.000" textAlignment="CENTER" BorderPane.alignment="CENTER">
+            <Label fx:id="redValue" contentDisplay="RIGHT" prefWidth="70.0" text="0.00" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -37,7 +37,7 @@
       </BorderPane>
       <BorderPane>
          <right>
-            <Label fx:id="oValue" contentDisplay="RIGHT" prefWidth="70.0" text="0.000" textAlignment="CENTER" BorderPane.alignment="CENTER">
+            <Label fx:id="oValue" contentDisplay="RIGHT" prefWidth="70.0" text="0.00" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -56,7 +56,7 @@
       </BorderPane>
       <BorderPane>
          <right>
-            <Label fx:id="yValue" contentDisplay="RIGHT" prefWidth="70.0" text="0.000" textAlignment="CENTER" BorderPane.alignment="CENTER">
+            <Label fx:id="yValue" contentDisplay="RIGHT" prefWidth="70.0" text="0.00" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -75,7 +75,7 @@
       </BorderPane>
       <BorderPane>
          <right>
-            <Label fx:id="gValue" contentDisplay="RIGHT" prefWidth="70.0" text="0.000" textAlignment="CENTER" BorderPane.alignment="CENTER">
+            <Label fx:id="gValue" contentDisplay="RIGHT" prefWidth="70.0" text="0.00" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -94,7 +94,7 @@
       </BorderPane>
       <BorderPane>
          <right>
-            <Label fx:id="bValue" contentDisplay="RIGHT" prefWidth="70.0" text="0.000" textAlignment="CENTER" BorderPane.alignment="CENTER">
+            <Label fx:id="bValue" contentDisplay="RIGHT" prefWidth="70.0" text="0.00" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -113,7 +113,7 @@
       </BorderPane>
       <BorderPane>
          <right>
-            <Label fx:id="bValue1" contentDisplay="RIGHT" prefWidth="70.0" text="0.000" textAlignment="CENTER" BorderPane.alignment="CENTER">
+            <Label fx:id="bValue1" contentDisplay="RIGHT" prefWidth="70.0" text="0.00" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
