@@ -119,7 +119,7 @@
       <FlowPane alignment="BOTTOM_RIGHT" layoutX="428.0" layoutY="300.0" prefHeight="54.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="20.0">
          <children>
             <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#buttonOkClicked" text="OK" />
-            <Button mnemonicParsing="false" onAction="#buttonCancelClicked" text="Cancel" />
+            <Button mnemonicParsing="false" onAction="#buttonCancelClicked" text="Exit" />
          </children>
       </FlowPane>
       <HBox layoutX="20.0" layoutY="364.0" prefHeight="54.0" prefWidth="479.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0">

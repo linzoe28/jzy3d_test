@@ -27,6 +27,10 @@ public class SerializeUtil {
                 = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
             return objectInputStreamCurrent.readObject();
         }
+//        FSTConfiguration conf=FSTConfiguration.createDefaultConfiguration().setForceSerializable(true);
+//        try (FSTObjectInput in = conf.getObjectInput(new BufferedInputStream(new FileInputStream(file)))) {
+//            return in.readObject();
+//        }
     }
 
     public static void writeToFile(Serializable obj, File file) throws IOException {
@@ -35,5 +39,11 @@ public class SerializeUtil {
             objectOutputStreamCurrent.writeObject(obj);
             objectOutputStreamCurrent.flush();
         }
+//        FSTConfiguration conf=FSTConfiguration.createDefaultConfiguration().setForceSerializable(true);
+//        try (FSTObjectOutput objectOutputStreamCurrent
+//                = conf.getObjectOutput(new BufferedOutputStream(new FileOutputStream(file)))) {
+//            objectOutputStreamCurrent.writeObject(obj);
+//            objectOutputStreamCurrent.flush();
+//        }
     }
 }

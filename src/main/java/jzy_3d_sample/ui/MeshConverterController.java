@@ -19,6 +19,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import jzy_3d_sample.datafactory.FastN2fWriter;
 import jzy_3d_sample.datafactory.OSFileParser;
 import jzy_3d_sample.datafactory.Read_data;
@@ -77,7 +78,7 @@ public class MeshConverterController {
 
     @FXML
     void buttonCancelClicked(ActionEvent event) {
-
+        ((Stage)nasFileText.getScene().getWindow()).close();
     }
 
     @FXML
@@ -195,7 +196,7 @@ public class MeshConverterController {
                         currentData.setOsRecordsMap(osRecords);
                         File currentObjFile = new File(outputDir, "angle" + index + ".current");
                         SerializeUtil.writeToFile(currentData, currentObjFile);
-                        projectModel.getCurrentDataList().add("angle" + index);
+                        projectModel.getCurrentDataList(true).add("angle" + index);
                         index++;
 
                         //FileUtils.forceDelete(osFile);

@@ -36,6 +36,7 @@ public class AngleLabelMapGenerator {
     }
     public static AngleIndexThetaPhiMap createAngleIndex2ThetaPhiMap(ProjectModel projectModel){
         AngleIndexThetaPhiMap ret=new AngleIndexThetaPhiMap();
+        System.out.println(projectModel.getCurrentDataList(true).size());
         int delta=Integer.valueOf(angleCount2DeltaMap.get(""+(projectModel.getCurrentDataList(true).size())));
         System.out.println("delta="+delta);
         int index=0;
