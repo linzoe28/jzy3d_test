@@ -172,7 +172,7 @@ public class Main extends Application {
                                                     subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
                                                 }
                                                 //設定RCS總值
-                                                RCSTotal = ""+cd.getRcsTotal();
+                                                RCSTotal = "" + cd.getRcsTotal();
                                                 System.out.println(RCSTotal);
                                                 southpanelController.setTextBeforeValue(RCSTotal);
                                             } catch (Exception ex) {
@@ -196,7 +196,29 @@ public class Main extends Application {
                                     renderModel.repaint();
                                     southpanelController.setStatus("Done");
                                     resetColor(Double.valueOf(rCSvalueController.getThreshold()));
-                                    sortCube(subCubes);
+                                    //設定Slider值
+                                    List<Cube> Cubes = sortCube(subCubes);
+                                    rCSvalueController.getTo_db_check().setOnAction(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent event) {
+                                            System.out.println(rCSvalueController.get_to_db_checkisOK());
+                                            if (!rCSvalueController.get_to_db_checkisOK()) {
+                                                rCSvalueController.setSlidermax(Cubes.get(Cubes.size() - 1).getRcs());
+                                                rCSvalueController.setSlidermin(Cubes.get(0).getRcs());
+                                                rCSvalueController.setSlidervalue(Cubes.get(0).getRcs());
+                                                double majortick = ((Cubes.get(Cubes.size() - 1).getRcs()) - (Cubes.get(0).getRcs())) / 20;
+                                                rCSvalueController.setSliderMajorTickUnit(majortick);
+                                            } else {
+                                                double rcs_max = rCSvalueController.to_dbvalue(Cubes.get(Cubes.size() - 1).getRcs());
+                                                double rcs_min = rCSvalueController.to_dbvalue(Cubes.get(0).getRcs());
+                                                rCSvalueController.setSlidermax(rcs_max);
+                                                rCSvalueController.setSlidermin(rcs_min);
+                                                rCSvalueController.setSlidervalue(rcs_min);
+                                                double majortick = (rcs_max - rcs_min) / 20;
+                                                rCSvalueController.setSliderMajorTickUnit(majortick);
+                                            }
+                                        }
+                                    });
 
                                 }
                             }.start();
@@ -443,12 +465,12 @@ public class Main extends Application {
         double gap = (rcsThreshold - colorCubes.get(0).getRcs()) / 5;
 //        System.out.println("gap" + gap);
         LegendController legendController = legendloader.getController();
-        legendController.getRedValue().setText(String.format("%06.4f", rcsThreshold));
-        legendController.getoValue().setText(String.format("%06.4f", rcsThreshold - gap));
-        legendController.getyValue().setText(String.format("%06.4f", rcsThreshold - 2 * gap));
-        legendController.getgValue().setText(String.format("%06.4f", rcsThreshold - 3 * gap));
-        legendController.getbValue().setText(String.format("%06.4f", rcsThreshold - 4 * gap));
-        legendController.getbValue1().setText(String.format("%06.4f", rcsThreshold - 5 * gap));
+        legendController.getRedValue().setText(String.format("%06.2f", rcsThreshold));
+        legendController.getoValue().setText(String.format("%06.2f", rcsThreshold - gap));
+        legendController.getyValue().setText(String.format("%06.2f", rcsThreshold - 2 * gap));
+        legendController.getgValue().setText(String.format("%06.2f", rcsThreshold - 3 * gap));
+        legendController.getbValue().setText(String.format("%06.2f", rcsThreshold - 4 * gap));
+        legendController.getbValue1().setText(String.format("%06.2f", rcsThreshold - 5 * gap));
 //        System.out.println(Arrays.deepToString(colors));
         RainbowColorPainter painter = new RainbowColorPainter(rcsThreshold, gap);
         for (int i = 0; i < colorCubes.size(); i++) {
@@ -480,7 +502,7 @@ public class Main extends Application {
         }
     }
 
-    private void sortCube(List<Cube> Cubes) {
+    private List<Cube> sortCube(List<Cube> Cubes) {
         Collections.sort(Cubes, new Comparator<Cube>() {
 
             @Override
@@ -494,11 +516,9 @@ public class Main extends Application {
                 }
             }
         });
-        rCSvalueController.setSlidermax(Cubes.get(Cubes.size() - 1).getRcs());
-        rCSvalueController.setSlidermin(Cubes.get(0).getRcs());
-        rCSvalueController.setSlidervalue(Cubes.get(0).getRcs());
-        double majortick = ((Cubes.get(Cubes.size() - 1).getRcs()) - (Cubes.get(0).getRcs())) / 20;
-        rCSvalueController.setSliderMajorTickUnit(majortick);
+
+        return Cubes;
+
     }
 
     /**

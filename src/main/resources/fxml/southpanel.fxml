@@ -11,7 +11,7 @@
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" prefHeight="41.0" prefWidth="790.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.SouthpanelController">
    <children>
-      <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="502.0" spacing="3.0" AnchorPane.leftAnchor="5.0">
+      <HBox alignment="CENTER_RIGHT" prefWidth="502.0" spacing="3.0" AnchorPane.leftAnchor="5.0">
          <children>
             <Label prefHeight="20.0" prefWidth="78.0" text="RCS 總值：">
                <font>
