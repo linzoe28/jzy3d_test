@@ -32,6 +32,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -216,21 +217,8 @@ public class Main extends Application {
                                             rCSvalueController.repaint();
 //                                            System.out.println(rCSvalueController.get_to_db_checkisOK());
                                             if (!rCSvalueController.get_to_db_checkisOK()) {
-//                                                rCSvalueController.setSlidermax(Cubes.get(Cubes.size() - 1).getRcs());
-//                                                rCSvalueController.setSlidermin(Cubes.get(0).getRcs());
-//                                                rCSvalueController.setSlidervalue(Cubes.get(0).getRcs());
-//                                                double majortick = ((Cubes.get(Cubes.size() - 1).getRcs()) - (Cubes.get(0).getRcs())) / 20;
-//                                                rCSvalueController.setSliderMajorTickUnit(majortick);
                                                 southpanelController.setTextBeforeValue(RCSTotal);
                                             } else {
-//                                                System.out.println("rcs_min=" + Cubes.get(0).getRcs());
-//                                                double rcs_max = rCSvalueController.to_dbvalue(Cubes.get(Cubes.size() - 1).getRcs());
-//                                                double rcs_min = rCSvalueController.to_dbvalue(Cubes.get(0).getRcs());
-//                                                rCSvalueController.setSlidermax(rcs_max);
-//                                                rCSvalueController.setSlidermin(rcs_min);
-//                                                rCSvalueController.setSlidervalue(rcs_min);
-//                                                double majortick = (rcs_max - rcs_min) / 20;
-//                                                rCSvalueController.setSliderMajorTickUnit(majortick);
                                                 southpanelController.setTextBeforeValue("" + rCSvalueController.to_dbvalue(Double.valueOf(RCSTotal)));
                                             }
                                         }
@@ -480,12 +468,12 @@ public class Main extends Application {
         double gap = (rcsThreshold - colorCubes.get(0).getRcs()) / 5;
 //        System.out.println("gap" + gap);
         LegendController legendController = legendloader.getController();
-        legendController.getRedValue().setText(String.format("%06.2f", rcsThreshold));
-        legendController.getoValue().setText(String.format("%06.2f", rcsThreshold - gap));
-        legendController.getyValue().setText(String.format("%06.2f", rcsThreshold - 2 * gap));
-        legendController.getgValue().setText(String.format("%06.2f", rcsThreshold - 3 * gap));
-        legendController.getbValue().setText(String.format("%06.2f", rcsThreshold - 4 * gap));
-        legendController.getbValue1().setText(String.format("%06.2f", rcsThreshold - 5 * gap));
+        legendController.getRedValue().setText(String.format("%06.3f", rcsThreshold));
+        legendController.getoValue().setText(String.format("%06.3f", rcsThreshold - gap));
+        legendController.getyValue().setText(String.format("%06.3f", rcsThreshold - 2 * gap));
+        legendController.getgValue().setText(String.format("%06.3f", rcsThreshold - 3 * gap));
+        legendController.getbValue().setText(String.format("%06.3f", rcsThreshold - 4 * gap));
+        legendController.getbValue1().setText(String.format("%06.3f", rcsThreshold - 5 * gap));
 //        System.out.println(Arrays.deepToString(colors));
         RainbowColorPainter painter = new RainbowColorPainter(rcsThreshold, gap);
         for (int i = 0; i < colorCubes.size(); i++) {
