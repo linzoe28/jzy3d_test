@@ -231,6 +231,7 @@ public class MeshConverterController {
                             File currentObjFile = new File(outputDir, "angle" + index + ".current");
                             SerializeUtil.writeToFile(currentData, currentObjFile);
                             executor.close();
+                            index++;
                         }
                     }
                     for (Mesh mesh : meshes) {

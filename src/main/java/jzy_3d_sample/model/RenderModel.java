@@ -322,6 +322,8 @@ private void init() {
                     stage.setMaximized(false);
                     stage.setWidth(maximizedWidth-1);
                     stage.setHeight(maxmizedHeight);
+                    stage.setX(0);
+                    stage.setY(0);
                 }
 //                System.out.println(System.currentTimeMillis()+":after render");
                 if (stage.getWidth() % 10 == 0) {

@@ -1,9 +1,9 @@
-Your Number of Subspace: 8
+Your Number of Subspace: 125
 Your Operating Frequency(MHz): 1000
-Root Directory: /home/lendle/Desktop/test/angle0
+Root Directory: /home/lendle/remote_dir/largesampleobj2/angle90
 Reading 0 ... 
-numNodes = 14888
-numAbcTri = 29234
+numNodes = 0
+numAbcTri = 0
 Reading 0.curJ ... 
 Loading ... 0.curJ
 Done loading 0.curJ. First order.
@@ -12,44 +12,12 @@ Loading ... 0.curM
 Done loading 0.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 164
-group = 5 / 164
-group = 10 / 164
-group = 15 / 164
-group = 20 / 164
-group = 25 / 164
-group = 30 / 164
-group = 35 / 164
-group = 40 / 164
-group = 45 / 164
-group = 50 / 164
-group = 55 / 164
-group = 60 / 164
-group = 65 / 164
-group = 70 / 164
-group = 75 / 164
-group = 80 / 164
-group = 85 / 164
-group = 90 / 164
-group = 95 / 164
-group = 100 / 164
-group = 105 / 164
-group = 110 / 164
-group = 115 / 164
-group = 120 / 164
-group = 125 / 164
-group = 130 / 164
-group = 135 / 164
-group = 140 / 164
-group = 145 / 164
-group = 150 / 164
-group = 155 / 164
-group = 160 / 164
 Writing to 0.ap ... 
-Farfield Time(hh:mm:ss) = 0:1:7
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedQmSIxm’: Operation not permitted
 Reading 1 ... 
-numNodes = 14624
-numAbcTri = 28697
+numNodes = 0
+numAbcTri = 0
 Reading 1.curJ ... 
 Loading ... 1.curJ
 Done loading 1.curJ. First order.
@@ -58,45 +26,12 @@ Loading ... 1.curM
 Done loading 1.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 167
-group = 5 / 167
-group = 10 / 167
-group = 15 / 167
-group = 20 / 167
-group = 25 / 167
-group = 30 / 167
-group = 35 / 167
-group = 40 / 167
-group = 45 / 167
-group = 50 / 167
-group = 55 / 167
-group = 60 / 167
-group = 65 / 167
-group = 70 / 167
-group = 75 / 167
-group = 80 / 167
-group = 85 / 167
-group = 90 / 167
-group = 95 / 167
-group = 100 / 167
-group = 105 / 167
-group = 110 / 167
-group = 115 / 167
-group = 120 / 167
-group = 125 / 167
-group = 130 / 167
-group = 135 / 167
-group = 140 / 167
-group = 145 / 167
-group = 150 / 167
-group = 155 / 167
-group = 160 / 167
-group = 165 / 167
 Writing to 1.ap ... 
-Farfield Time(hh:mm:ss) = 0:1:8
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed3HuTAP’: Operation not permitted
 Reading 2 ... 
-numNodes = 14204
-numAbcTri = 27839
+numNodes = 0
+numAbcTri = 0
 Reading 2.curJ ... 
 Loading ... 2.curJ
 Done loading 2.curJ. First order.
@@ -105,42 +40,12 @@ Loading ... 2.curM
 Done loading 2.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 155
-group = 5 / 155
-group = 10 / 155
-group = 15 / 155
-group = 20 / 155
-group = 25 / 155
-group = 30 / 155
-group = 35 / 155
-group = 40 / 155
-group = 45 / 155
-group = 50 / 155
-group = 55 / 155
-group = 60 / 155
-group = 65 / 155
-group = 70 / 155
-group = 75 / 155
-group = 80 / 155
-group = 85 / 155
-group = 90 / 155
-group = 95 / 155
-group = 100 / 155
-group = 105 / 155
-group = 110 / 155
-group = 115 / 155
-group = 120 / 155
-group = 125 / 155
-group = 130 / 155
-group = 135 / 155
-group = 140 / 155
-group = 145 / 155
-group = 150 / 155
 Writing to 2.ap ... 
-Farfield Time(hh:mm:ss) = 0:1:6
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed6sCQZc’: Operation not permitted
 Reading 3 ... 
-numNodes = 14041
-numAbcTri = 27512
+numNodes = 0
+numAbcTri = 0
 Reading 3.curJ ... 
 Loading ... 3.curJ
 Done loading 3.curJ. First order.
@@ -149,43 +54,12 @@ Loading ... 3.curM
 Done loading 3.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 159
-group = 5 / 159
-group = 10 / 159
-group = 15 / 159
-group = 20 / 159
-group = 25 / 159
-group = 30 / 159
-group = 35 / 159
-group = 40 / 159
-group = 45 / 159
-group = 50 / 159
-group = 55 / 159
-group = 60 / 159
-group = 65 / 159
-group = 70 / 159
-group = 75 / 159
-group = 80 / 159
-group = 85 / 159
-group = 90 / 159
-group = 95 / 159
-group = 100 / 159
-group = 105 / 159
-group = 110 / 159
-group = 115 / 159
-group = 120 / 159
-group = 125 / 159
-group = 130 / 159
-group = 135 / 159
-group = 140 / 159
-group = 145 / 159
-group = 150 / 159
-group = 155 / 159
 Writing to 3.ap ... 
-Farfield Time(hh:mm:ss) = 0:1:8
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedZRmmSx’: Operation not permitted
 Reading 4 ... 
-numNodes = 3935
-numAbcTri = 7417
+numNodes = 0
+numAbcTri = 0
 Reading 4.curJ ... 
 Loading ... 4.curJ
 Done loading 4.curJ. First order.
@@ -194,29 +68,12 @@ Loading ... 4.curM
 Done loading 4.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 88
-group = 5 / 88
-group = 10 / 88
-group = 15 / 88
-group = 20 / 88
-group = 25 / 88
-group = 30 / 88
-group = 35 / 88
-group = 40 / 88
-group = 45 / 88
-group = 50 / 88
-group = 55 / 88
-group = 60 / 88
-group = 65 / 88
-group = 70 / 88
-group = 75 / 88
-group = 80 / 88
-group = 85 / 88
 Writing to 4.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:31
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedTgPchZ’: Operation not permitted
 Reading 5 ... 
-numNodes = 3958
-numAbcTri = 7456
+numNodes = 6724
+numAbcTri = 13262
 Reading 5.curJ ... 
 Loading ... 5.curJ
 Done loading 5.curJ. First order.
@@ -225,29 +82,34 @@ Loading ... 5.curM
 Done loading 5.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 88
-group = 5 / 88
-group = 10 / 88
-group = 15 / 88
-group = 20 / 88
-group = 25 / 88
-group = 30 / 88
-group = 35 / 88
-group = 40 / 88
-group = 45 / 88
-group = 50 / 88
-group = 55 / 88
-group = 60 / 88
-group = 65 / 88
-group = 70 / 88
-group = 75 / 88
-group = 80 / 88
-group = 85 / 88
+group = 0 / 106
+group = 5 / 106
+group = 10 / 106
+group = 15 / 106
+group = 20 / 106
+group = 25 / 106
+group = 30 / 106
+group = 35 / 106
+group = 40 / 106
+group = 45 / 106
+group = 50 / 106
+group = 55 / 106
+group = 60 / 106
+group = 65 / 106
+group = 70 / 106
+group = 75 / 106
+group = 80 / 106
+group = 85 / 106
+group = 90 / 106
+group = 95 / 106
+group = 100 / 106
+group = 105 / 106
 Writing to 5.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:31
+Farfield Time(hh:mm:ss) = 0:0:59
+sed: preserving permissions for ‘./sed9XULGz’: Operation not permitted
 Reading 6 ... 
-numNodes = 3976
-numAbcTri = 7467
+numNodes = 0
+numAbcTri = 0
 Reading 6.curJ ... 
 Loading ... 6.curJ
 Done loading 6.curJ. First order.
@@ -256,29 +118,12 @@ Loading ... 6.curM
 Done loading 6.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 87
-group = 5 / 87
-group = 10 / 87
-group = 15 / 87
-group = 20 / 87
-group = 25 / 87
-group = 30 / 87
-group = 35 / 87
-group = 40 / 87
-group = 45 / 87
-group = 50 / 87
-group = 55 / 87
-group = 60 / 87
-group = 65 / 87
-group = 70 / 87
-group = 75 / 87
-group = 80 / 87
-group = 85 / 87
 Writing to 6.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:31
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedVO2G75’: Operation not permitted
 Reading 7 ... 
-numNodes = 3986
-numAbcTri = 7488
+numNodes = 0
+numAbcTri = 0
 Reading 7.curJ ... 
 Loading ... 7.curJ
 Done loading 7.curJ. First order.
@@ -287,23 +132,2165 @@ Loading ... 7.curM
 Done loading 7.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 87
-group = 5 / 87
-group = 10 / 87
-group = 15 / 87
-group = 20 / 87
-group = 25 / 87
-group = 30 / 87
-group = 35 / 87
-group = 40 / 87
-group = 45 / 87
-group = 50 / 87
-group = 55 / 87
-group = 60 / 87
-group = 65 / 87
-group = 70 / 87
-group = 75 / 87
-group = 80 / 87
-group = 85 / 87
 Writing to 7.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedXSRgkr’: Operation not permitted
+Reading 8 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 8.curJ ... 
+Loading ... 8.curJ
+Done loading 8.curJ. First order.
+Reading 8.curM ... 
+Loading ... 8.curM
+Done loading 8.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 8.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedEzdYzO’: Operation not permitted
+Reading 9 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 9.curJ ... 
+Loading ... 9.curJ
+Done loading 9.curJ. First order.
+Reading 9.curM ... 
+Loading ... 9.curM
+Done loading 9.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 9.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed0n67Pc’: Operation not permitted
+Reading 10 ... 
+numNodes = 901
+numAbcTri = 1686
+Reading 10.curJ ... 
+Loading ... 10.curJ
+Done loading 10.curJ. First order.
+Reading 10.curM ... 
+Loading ... 10.curM
+Done loading 10.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 41
+group = 5 / 41
+group = 10 / 41
+group = 15 / 41
+group = 20 / 41
+group = 25 / 41
+group = 30 / 41
+group = 35 / 41
+group = 40 / 41
+Writing to 10.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:15
+sed: preserving permissions for ‘./sedeyeKk4’: Operation not permitted
+Reading 11 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 11.curJ ... 
+Loading ... 11.curJ
+Done loading 11.curJ. First order.
+Reading 11.curM ... 
+Loading ... 11.curM
+Done loading 11.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 11.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedRJJVMx’: Operation not permitted
+Reading 12 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 12.curJ ... 
+Loading ... 12.curJ
+Done loading 12.curJ. First order.
+Reading 12.curM ... 
+Loading ... 12.curM
+Done loading 12.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 12.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed3LJxvX’: Operation not permitted
+Reading 13 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 13.curJ ... 
+Loading ... 13.curJ
+Done loading 13.curJ. First order.
+Reading 13.curM ... 
+Loading ... 13.curM
+Done loading 13.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 13.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed2eA9Gj’: Operation not permitted
+Reading 14 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 14.curJ ... 
+Loading ... 14.curJ
+Done loading 14.curJ. First order.
+Reading 14.curM ... 
+Loading ... 14.curM
+Done loading 14.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 14.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedKSaWxE’: Operation not permitted
+Reading 15 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 15.curJ ... 
+Loading ... 15.curJ
+Done loading 15.curJ. First order.
+Reading 15.curM ... 
+Loading ... 15.curM
+Done loading 15.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 15.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed0kwYb3’: Operation not permitted
+Reading 16 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 16.curJ ... 
+Loading ... 16.curJ
+Done loading 16.curJ. First order.
+Reading 16.curM ... 
+Loading ... 16.curM
+Done loading 16.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 16.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedlnAHHp’: Operation not permitted
+Reading 17 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 17.curJ ... 
+Loading ... 17.curJ
+Done loading 17.curJ. First order.
+Reading 17.curM ... 
+Loading ... 17.curM
+Done loading 17.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 17.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedPkWRaP’: Operation not permitted
+Reading 18 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 18.curJ ... 
+Loading ... 18.curJ
+Done loading 18.curJ. First order.
+Reading 18.curM ... 
+Loading ... 18.curM
+Done loading 18.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 18.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedO6PRgb’: Operation not permitted
+Reading 19 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 19.curJ ... 
+Loading ... 19.curJ
+Done loading 19.curJ. First order.
+Reading 19.curM ... 
+Loading ... 19.curM
+Done loading 19.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 19.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./seducofDB’: Operation not permitted
+Reading 20 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 20.curJ ... 
+Loading ... 20.curJ
+Done loading 20.curJ. First order.
+Reading 20.curM ... 
+Loading ... 20.curM
+Done loading 20.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 20.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedkBfIIY’: Operation not permitted
+Reading 21 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 21.curJ ... 
+Loading ... 21.curJ
+Done loading 21.curJ. First order.
+Reading 21.curM ... 
+Loading ... 21.curM
+Done loading 21.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 21.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedNBjdfi’: Operation not permitted
+Reading 22 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 22.curJ ... 
+Loading ... 22.curJ
+Done loading 22.curJ. First order.
+Reading 22.curM ... 
+Loading ... 22.curM
+Done loading 22.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 22.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedEhgLmI’: Operation not permitted
+Reading 23 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 23.curJ ... 
+Loading ... 23.curJ
+Done loading 23.curJ. First order.
+Reading 23.curM ... 
+Loading ... 23.curM
+Done loading 23.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 23.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedSupit4’: Operation not permitted
+Reading 24 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 24.curJ ... 
+Loading ... 24.curJ
+Done loading 24.curJ. First order.
+Reading 24.curM ... 
+Loading ... 24.curM
+Done loading 24.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 24.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed39XiCq’: Operation not permitted
+Reading 25 ... 
+numNodes = 1977
+numAbcTri = 3768
+Reading 25.curJ ... 
+Loading ... 25.curJ
+Done loading 25.curJ. First order.
+Reading 25.curM ... 
+Loading ... 25.curM
+Done loading 25.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 56
+group = 5 / 56
+group = 10 / 56
+group = 15 / 56
+group = 20 / 56
+group = 25 / 56
+group = 30 / 56
+group = 35 / 56
+group = 40 / 56
+group = 45 / 56
+group = 50 / 56
+group = 55 / 56
+Writing to 25.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:28
+sed: preserving permissions for ‘./sedpbhQa4’: Operation not permitted
+Reading 26 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 26.curJ ... 
+Loading ... 26.curJ
+Done loading 26.curJ. First order.
+Reading 26.curM ... 
+Loading ... 26.curM
+Done loading 26.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 26.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedbGdj1p’: Operation not permitted
+Reading 27 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 27.curJ ... 
+Loading ... 27.curJ
+Done loading 27.curJ. First order.
+Reading 27.curM ... 
+Loading ... 27.curM
+Done loading 27.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 27.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedcbIm6N’: Operation not permitted
+Reading 28 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 28.curJ ... 
+Loading ... 28.curJ
+Done loading 28.curJ. First order.
+Reading 28.curM ... 
+Loading ... 28.curM
+Done loading 28.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 28.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sediWUKkb’: Operation not permitted
+Reading 29 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 29.curJ ... 
+Loading ... 29.curJ
+Done loading 29.curJ. First order.
+Reading 29.curM ... 
+Loading ... 29.curM
+Done loading 29.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 29.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedxLJ41F’: Operation not permitted
+Reading 30 ... 
+numNodes = 8807
+numAbcTri = 17106
+Reading 30.curJ ... 
+Loading ... 30.curJ
+Done loading 30.curJ. First order.
+Reading 30.curM ... 
+Loading ... 30.curM
+Done loading 30.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 127
+group = 5 / 127
+group = 10 / 127
+group = 15 / 127
+group = 20 / 127
+group = 25 / 127
+group = 30 / 127
+group = 35 / 127
+group = 40 / 127
+group = 45 / 127
+group = 50 / 127
+group = 55 / 127
+group = 60 / 127
+group = 65 / 127
+group = 70 / 127
+group = 75 / 127
+group = 80 / 127
+group = 85 / 127
+group = 90 / 127
+group = 95 / 127
+group = 100 / 127
+group = 105 / 127
+group = 110 / 127
+group = 115 / 127
+group = 120 / 127
+group = 125 / 127
+Writing to 30.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:17
+sed: preserving permissions for ‘./sedwcCfQp’: Operation not permitted
+Reading 31 ... 
+numNodes = 372
+numAbcTri = 593
+Reading 31.curJ ... 
+Loading ... 31.curJ
+Done loading 31.curJ. First order.
+Reading 31.curM ... 
+Loading ... 31.curM
+Done loading 31.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 23
+group = 5 / 23
+group = 10 / 23
+group = 15 / 23
+group = 20 / 23
+Writing to 31.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:9
+sed: preserving permissions for ‘./sedMD76ZY’: Operation not permitted
+Reading 32 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 32.curJ ... 
+Loading ... 32.curJ
+Done loading 32.curJ. First order.
+Reading 32.curM ... 
+Loading ... 32.curM
+Done loading 32.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 32.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed4MIDGk’: Operation not permitted
+Reading 33 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 33.curJ ... 
+Loading ... 33.curJ
+Done loading 33.curJ. First order.
+Reading 33.curM ... 
+Loading ... 33.curM
+Done loading 33.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 33.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedrdnbOJ’: Operation not permitted
+Reading 34 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 34.curJ ... 
+Loading ... 34.curJ
+Done loading 34.curJ. First order.
+Reading 34.curM ... 
+Loading ... 34.curM
+Done loading 34.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 34.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedI9xF14’: Operation not permitted
+Reading 35 ... 
+numNodes = 8673
+numAbcTri = 16869
+Reading 35.curJ ... 
+Loading ... 35.curJ
+Done loading 35.curJ. First order.
+Reading 35.curM ... 
+Loading ... 35.curM
+Done loading 35.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 130
+group = 5 / 130
+group = 10 / 130
+group = 15 / 130
+group = 20 / 130
+group = 25 / 130
+group = 30 / 130
+group = 35 / 130
+group = 40 / 130
+group = 45 / 130
+group = 50 / 130
+group = 55 / 130
+group = 60 / 130
+group = 65 / 130
+group = 70 / 130
+group = 75 / 130
+group = 80 / 130
+group = 85 / 130
+group = 90 / 130
+group = 95 / 130
+group = 100 / 130
+group = 105 / 130
+group = 110 / 130
+group = 115 / 130
+group = 120 / 130
+group = 125 / 130
+Writing to 35.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:14
+sed: preserving permissions for ‘./sedLqgVYM’: Operation not permitted
+Reading 36 ... 
+numNodes = 644
+numAbcTri = 1019
+Reading 36.curJ ... 
+Loading ... 36.curJ
+Done loading 36.curJ. First order.
+Reading 36.curM ... 
+Loading ... 36.curM
+Done loading 36.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 29
+group = 5 / 29
+group = 10 / 29
+group = 15 / 29
+group = 20 / 29
+group = 25 / 29
+Writing to 36.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:13
+sed: preserving permissions for ‘./sedv2xYxl’: Operation not permitted
+Reading 37 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 37.curJ ... 
+Loading ... 37.curJ
+Done loading 37.curJ. First order.
+Reading 37.curM ... 
+Loading ... 37.curM
+Done loading 37.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 37.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed8Vuo7I’: Operation not permitted
+Reading 38 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 38.curJ ... 
+Loading ... 38.curJ
+Done loading 38.curJ. First order.
+Reading 38.curM ... 
+Loading ... 38.curM
+Done loading 38.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 38.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedRbys14’: Operation not permitted
+Reading 39 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 39.curJ ... 
+Loading ... 39.curJ
+Done loading 39.curJ. First order.
+Reading 39.curM ... 
+Loading ... 39.curM
+Done loading 39.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 39.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedyeZyVD’: Operation not permitted
+Reading 40 ... 
+numNodes = 205
+numAbcTri = 344
+Reading 40.curJ ... 
+Loading ... 40.curJ
+Done loading 40.curJ. First order.
+Reading 40.curM ... 
+Loading ... 40.curM
+Done loading 40.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 19
+group = 5 / 19
+group = 10 / 19
+group = 15 / 19
+Writing to 40.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:9
+sed: preserving permissions for ‘./sedo8azdf’: Operation not permitted
+Reading 41 ... 
+numNodes = 36
+numAbcTri = 43
+Reading 41.curJ ... 
+Loading ... 41.curJ
+Done loading 41.curJ. First order.
+Reading 41.curM ... 
+Loading ... 41.curM
+Done loading 41.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 7
+group = 5 / 7
+Writing to 41.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:3
+sed: preserving permissions for ‘./sedHuAabO’: Operation not permitted
+Reading 42 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 42.curJ ... 
+Loading ... 42.curJ
+Done loading 42.curJ. First order.
+Reading 42.curM ... 
+Loading ... 42.curM
+Done loading 42.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 42.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedNvknvC’: Operation not permitted
+Reading 43 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 43.curJ ... 
+Loading ... 43.curJ
+Done loading 43.curJ. First order.
+Reading 43.curM ... 
+Loading ... 43.curM
+Done loading 43.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 43.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedCFZff2’: Operation not permitted
+Reading 44 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 44.curJ ... 
+Loading ... 44.curJ
+Done loading 44.curJ. First order.
+Reading 44.curM ... 
+Loading ... 44.curM
+Done loading 44.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 44.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed4Wkitn’: Operation not permitted
+Reading 45 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 45.curJ ... 
+Loading ... 45.curJ
+Done loading 45.curJ. First order.
+Reading 45.curM ... 
+Loading ... 45.curM
+Done loading 45.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 45.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed1m8yXK’: Operation not permitted
+Reading 46 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 46.curJ ... 
+Loading ... 46.curJ
+Done loading 46.curJ. First order.
+Reading 46.curM ... 
+Loading ... 46.curM
+Done loading 46.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 46.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedD9E2y7’: Operation not permitted
+Reading 47 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 47.curJ ... 
+Loading ... 47.curJ
+Done loading 47.curJ. First order.
+Reading 47.curM ... 
+Loading ... 47.curM
+Done loading 47.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 47.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedQ27MFy’: Operation not permitted
+Reading 48 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 48.curJ ... 
+Loading ... 48.curJ
+Done loading 48.curJ. First order.
+Reading 48.curM ... 
+Loading ... 48.curM
+Done loading 48.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 48.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedTZ3QsU’: Operation not permitted
+Reading 49 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 49.curJ ... 
+Loading ... 49.curJ
+Done loading 49.curJ. First order.
+Reading 49.curM ... 
+Loading ... 49.curM
+Done loading 49.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 49.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedPscGCi’: Operation not permitted
+Reading 50 ... 
+numNodes = 8174
+numAbcTri = 15955
+Reading 50.curJ ... 
+Loading ... 50.curJ
+Done loading 50.curJ. First order.
+Reading 50.curM ... 
+Loading ... 50.curM
+Done loading 50.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 115
+group = 5 / 115
+group = 10 / 115
+group = 15 / 115
+group = 20 / 115
+group = 25 / 115
+group = 30 / 115
+group = 35 / 115
+group = 40 / 115
+group = 45 / 115
+group = 50 / 115
+group = 55 / 115
+group = 60 / 115
+group = 65 / 115
+group = 70 / 115
+group = 75 / 115
+group = 80 / 115
+group = 85 / 115
+group = 90 / 115
+group = 95 / 115
+group = 100 / 115
+group = 105 / 115
+group = 110 / 115
+Writing to 50.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:20
+sed: preserving permissions for ‘./sed2CBq9R’: Operation not permitted
+Reading 51 ... 
+numNodes = 8316
+numAbcTri = 16021
+Reading 51.curJ ... 
+Loading ... 51.curJ
+Done loading 51.curJ. First order.
+Reading 51.curM ... 
+Loading ... 51.curM
+Done loading 51.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 118
+group = 5 / 118
+group = 10 / 118
+group = 15 / 118
+group = 20 / 118
+group = 25 / 118
+group = 30 / 118
+group = 35 / 118
+group = 40 / 118
+group = 45 / 118
+group = 50 / 118
+group = 55 / 118
+group = 60 / 118
+group = 65 / 118
+group = 70 / 118
+group = 75 / 118
+group = 80 / 118
+group = 85 / 118
+group = 90 / 118
+group = 95 / 118
+group = 100 / 118
+group = 105 / 118
+group = 110 / 118
+group = 115 / 118
+Writing to 51.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:20
+sed: preserving permissions for ‘./sedLNLXkz’: Operation not permitted
+Reading 52 ... 
+numNodes = 3821
+numAbcTri = 7152
+Reading 52.curJ ... 
+Loading ... 52.curJ
+Done loading 52.curJ. First order.
+Reading 52.curM ... 
+Loading ... 52.curM
+Done loading 52.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 68
+group = 5 / 68
+group = 10 / 68
+group = 15 / 68
+group = 20 / 68
+group = 25 / 68
+group = 30 / 68
+group = 35 / 68
+group = 40 / 68
+group = 45 / 68
+group = 50 / 68
+group = 55 / 68
+group = 60 / 68
+group = 65 / 68
+Writing to 52.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:34
+sed: preserving permissions for ‘./sedDj22Sl’: Operation not permitted
+Reading 53 ... 
+numNodes = 3420
+numAbcTri = 6555
+Reading 53.curJ ... 
+Loading ... 53.curJ
+Done loading 53.curJ. First order.
+Reading 53.curM ... 
+Loading ... 53.curM
+Done loading 53.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 78
+group = 5 / 78
+group = 10 / 78
+group = 15 / 78
+group = 20 / 78
+group = 25 / 78
+group = 30 / 78
+group = 35 / 78
+group = 40 / 78
+group = 45 / 78
+group = 50 / 78
+group = 55 / 78
+group = 60 / 78
+group = 65 / 78
+group = 70 / 78
+group = 75 / 78
+Writing to 53.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:34
+sed: preserving permissions for ‘./sedwXBT81’: Operation not permitted
+Reading 54 ... 
+numNodes = 1992
+numAbcTri = 3861
+Reading 54.curJ ... 
+Loading ... 54.curJ
+Done loading 54.curJ. First order.
+Reading 54.curM ... 
+Loading ... 54.curM
+Done loading 54.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 65
+group = 5 / 65
+group = 10 / 65
+group = 15 / 65
+group = 20 / 65
+group = 25 / 65
+group = 30 / 65
+group = 35 / 65
+group = 40 / 65
+group = 45 / 65
+group = 50 / 65
+group = 55 / 65
+group = 60 / 65
+Writing to 54.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:25
+sed: preserving permissions for ‘./sedTPzB1z’: Operation not permitted
+Reading 55 ... 
+numNodes = 6660
+numAbcTri = 12719
+Reading 55.curJ ... 
+Loading ... 55.curJ
+Done loading 55.curJ. First order.
+Reading 55.curM ... 
+Loading ... 55.curM
+Done loading 55.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 128
+group = 5 / 128
+group = 10 / 128
+group = 15 / 128
+group = 20 / 128
+group = 25 / 128
+group = 30 / 128
+group = 35 / 128
+group = 40 / 128
+group = 45 / 128
+group = 50 / 128
+group = 55 / 128
+group = 60 / 128
+group = 65 / 128
+group = 70 / 128
+group = 75 / 128
+group = 80 / 128
+group = 85 / 128
+group = 90 / 128
+group = 95 / 128
+group = 100 / 128
+group = 105 / 128
+group = 110 / 128
+group = 115 / 128
+group = 120 / 128
+group = 125 / 128
+Writing to 55.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:10
+sed: preserving permissions for ‘./sedO6v9cb’: Operation not permitted
+Reading 56 ... 
+numNodes = 7849
+numAbcTri = 15098
+Reading 56.curJ ... 
+Loading ... 56.curJ
+Done loading 56.curJ. First order.
+Reading 56.curM ... 
+Loading ... 56.curM
+Done loading 56.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 119
+group = 5 / 119
+group = 10 / 119
+group = 15 / 119
+group = 20 / 119
+group = 25 / 119
+group = 30 / 119
+group = 35 / 119
+group = 40 / 119
+group = 45 / 119
+group = 50 / 119
+group = 55 / 119
+group = 60 / 119
+group = 65 / 119
+group = 70 / 119
+group = 75 / 119
+group = 80 / 119
+group = 85 / 119
+group = 90 / 119
+group = 95 / 119
+group = 100 / 119
+group = 105 / 119
+group = 110 / 119
+group = 115 / 119
+Writing to 56.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:17
+sed: preserving permissions for ‘./sedGnJtIN’: Operation not permitted
+Reading 57 ... 
+numNodes = 1664
+numAbcTri = 3050
+Reading 57.curJ ... 
+Loading ... 57.curJ
+Done loading 57.curJ. First order.
+Reading 57.curM ... 
+Loading ... 57.curM
+Done loading 57.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 62
+group = 5 / 62
+group = 10 / 62
+group = 15 / 62
+group = 20 / 62
+group = 25 / 62
+group = 30 / 62
+group = 35 / 62
+group = 40 / 62
+group = 45 / 62
+group = 50 / 62
+group = 55 / 62
+group = 60 / 62
+Writing to 57.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:24
+sed: preserving permissions for ‘./sedRLi83k’: Operation not permitted
+Reading 58 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 58.curJ ... 
+Loading ... 58.curJ
+Done loading 58.curJ. First order.
+Reading 58.curM ... 
+Loading ... 58.curM
+Done loading 58.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 58.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed5w7IIP’: Operation not permitted
+Reading 59 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 59.curJ ... 
+Loading ... 59.curJ
+Done loading 59.curJ. First order.
+Reading 59.curM ... 
+Loading ... 59.curM
+Done loading 59.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 59.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedf1vjOd’: Operation not permitted
+Reading 60 ... 
+numNodes = 6243
+numAbcTri = 12075
+Reading 60.curJ ... 
+Loading ... 60.curJ
+Done loading 60.curJ. First order.
+Reading 60.curM ... 
+Loading ... 60.curM
+Done loading 60.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 130
+group = 5 / 130
+group = 10 / 130
+group = 15 / 130
+group = 20 / 130
+group = 25 / 130
+group = 30 / 130
+group = 35 / 130
+group = 40 / 130
+group = 45 / 130
+group = 50 / 130
+group = 55 / 130
+group = 60 / 130
+group = 65 / 130
+group = 70 / 130
+group = 75 / 130
+group = 80 / 130
+group = 85 / 130
+group = 90 / 130
+group = 95 / 130
+group = 100 / 130
+group = 105 / 130
+group = 110 / 130
+group = 115 / 130
+group = 120 / 130
+group = 125 / 130
+Writing to 60.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:8
+sed: preserving permissions for ‘./sedRt0YsO’: Operation not permitted
+Reading 61 ... 
+numNodes = 6630
+numAbcTri = 12590
+Reading 61.curJ ... 
+Loading ... 61.curJ
+Done loading 61.curJ. First order.
+Reading 61.curM ... 
+Loading ... 61.curM
+Done loading 61.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 120
+group = 5 / 120
+group = 10 / 120
+group = 15 / 120
+group = 20 / 120
+group = 25 / 120
+group = 30 / 120
+group = 35 / 120
+group = 40 / 120
+group = 45 / 120
+group = 50 / 120
+group = 55 / 120
+group = 60 / 120
+group = 65 / 120
+group = 70 / 120
+group = 75 / 120
+group = 80 / 120
+group = 85 / 120
+group = 90 / 120
+group = 95 / 120
+group = 100 / 120
+group = 105 / 120
+group = 110 / 120
+group = 115 / 120
+Writing to 61.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:10
+sed: preserving permissions for ‘./sedKvYpIp’: Operation not permitted
+Reading 62 ... 
+numNodes = 2953
+numAbcTri = 5583
+Reading 62.curJ ... 
+Loading ... 62.curJ
+Done loading 62.curJ. First order.
+Reading 62.curM ... 
+Loading ... 62.curM
+Done loading 62.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 74
+group = 5 / 74
+group = 10 / 74
+group = 15 / 74
+group = 20 / 74
+group = 25 / 74
+group = 30 / 74
+group = 35 / 74
+group = 40 / 74
+group = 45 / 74
+group = 50 / 74
+group = 55 / 74
+group = 60 / 74
+group = 65 / 74
+group = 70 / 74
+Writing to 62.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:34
+sed: preserving permissions for ‘./sedNpvEzX’: Operation not permitted
+Reading 63 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 63.curJ ... 
+Loading ... 63.curJ
+Done loading 63.curJ. First order.
+Reading 63.curM ... 
+Loading ... 63.curM
+Done loading 63.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 63.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedx5zXck’: Operation not permitted
+Reading 64 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 64.curJ ... 
+Loading ... 64.curJ
+Done loading 64.curJ. First order.
+Reading 64.curM ... 
+Loading ... 64.curM
+Done loading 64.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 64.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedNHYc9I’: Operation not permitted
+Reading 65 ... 
+numNodes = 8171
+numAbcTri = 15882
+Reading 65.curJ ... 
+Loading ... 65.curJ
+Done loading 65.curJ. First order.
+Reading 65.curM ... 
+Loading ... 65.curM
+Done loading 65.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 133
+group = 5 / 133
+group = 10 / 133
+group = 15 / 133
+group = 20 / 133
+group = 25 / 133
+group = 30 / 133
+group = 35 / 133
+group = 40 / 133
+group = 45 / 133
+group = 50 / 133
+group = 55 / 133
+group = 60 / 133
+group = 65 / 133
+group = 70 / 133
+group = 75 / 133
+group = 80 / 133
+group = 85 / 133
+group = 90 / 133
+group = 95 / 133
+group = 100 / 133
+group = 105 / 133
+group = 110 / 133
+group = 115 / 133
+group = 120 / 133
+group = 125 / 133
+group = 130 / 133
+Writing to 65.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:23
+sed: preserving permissions for ‘./sed1d32Xj’: Operation not permitted
+Reading 66 ... 
+numNodes = 5760
+numAbcTri = 10957
+Reading 66.curJ ... 
+Loading ... 66.curJ
+Done loading 66.curJ. First order.
+Reading 66.curM ... 
+Loading ... 66.curM
+Done loading 66.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 103
+group = 5 / 103
+group = 10 / 103
+group = 15 / 103
+group = 20 / 103
+group = 25 / 103
+group = 30 / 103
+group = 35 / 103
+group = 40 / 103
+group = 45 / 103
+group = 50 / 103
+group = 55 / 103
+group = 60 / 103
+group = 65 / 103
+group = 70 / 103
+group = 75 / 103
+group = 80 / 103
+group = 85 / 103
+group = 90 / 103
+group = 95 / 103
+group = 100 / 103
+Writing to 66.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:2
+sed: preserving permissions for ‘./sedavbUL4’: Operation not permitted
+Reading 67 ... 
+numNodes = 2262
+numAbcTri = 4290
+Reading 67.curJ ... 
+Loading ... 67.curJ
+Done loading 67.curJ. First order.
+Reading 67.curM ... 
+Loading ... 67.curM
+Done loading 67.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 70
+group = 5 / 70
+group = 10 / 70
+group = 15 / 70
+group = 20 / 70
+group = 25 / 70
+group = 30 / 70
+group = 35 / 70
+group = 40 / 70
+group = 45 / 70
+group = 50 / 70
+group = 55 / 70
+group = 60 / 70
+group = 65 / 70
+Writing to 67.ap ... 
 Farfield Time(hh:mm:ss) = 0:0:31
+sed: preserving permissions for ‘./sedyEt1eH’: Operation not permitted
+Reading 68 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 68.curJ ... 
+Loading ... 68.curJ
+Done loading 68.curJ. First order.
+Reading 68.curM ... 
+Loading ... 68.curM
+Done loading 68.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 68.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedRdSJo6’: Operation not permitted
+Reading 69 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 69.curJ ... 
+Loading ... 69.curJ
+Done loading 69.curJ. First order.
+Reading 69.curM ... 
+Loading ... 69.curM
+Done loading 69.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 69.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedjzkvKr’: Operation not permitted
+Reading 70 ... 
+numNodes = 6928
+numAbcTri = 13611
+Reading 70.curJ ... 
+Loading ... 70.curJ
+Done loading 70.curJ. First order.
+Reading 70.curM ... 
+Loading ... 70.curM
+Done loading 70.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 120
+group = 5 / 120
+group = 10 / 120
+group = 15 / 120
+group = 20 / 120
+group = 25 / 120
+group = 30 / 120
+group = 35 / 120
+group = 40 / 120
+group = 45 / 120
+group = 50 / 120
+group = 55 / 120
+group = 60 / 120
+group = 65 / 120
+group = 70 / 120
+group = 75 / 120
+group = 80 / 120
+group = 85 / 120
+group = 90 / 120
+group = 95 / 120
+group = 100 / 120
+group = 105 / 120
+group = 110 / 120
+group = 115 / 120
+Writing to 70.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:14
+sed: preserving permissions for ‘./sedBrimJ4’: Operation not permitted
+Reading 71 ... 
+numNodes = 2110
+numAbcTri = 4003
+Reading 71.curJ ... 
+Loading ... 71.curJ
+Done loading 71.curJ. First order.
+Reading 71.curM ... 
+Loading ... 71.curM
+Done loading 71.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 68
+group = 5 / 68
+group = 10 / 68
+group = 15 / 68
+group = 20 / 68
+group = 25 / 68
+group = 30 / 68
+group = 35 / 68
+group = 40 / 68
+group = 45 / 68
+group = 50 / 68
+group = 55 / 68
+group = 60 / 68
+group = 65 / 68
+Writing to 71.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:28
+sed: preserving permissions for ‘./sedc3qpHC’: Operation not permitted
+Reading 72 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 72.curJ ... 
+Loading ... 72.curJ
+Done loading 72.curJ. First order.
+Reading 72.curM ... 
+Loading ... 72.curM
+Done loading 72.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 72.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedq2YBL0’: Operation not permitted
+Reading 73 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 73.curJ ... 
+Loading ... 73.curJ
+Done loading 73.curJ. First order.
+Reading 73.curM ... 
+Loading ... 73.curM
+Done loading 73.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 73.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedo0r33m’: Operation not permitted
+Reading 74 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 74.curJ ... 
+Loading ... 74.curJ
+Done loading 74.curJ. First order.
+Reading 74.curM ... 
+Loading ... 74.curM
+Done loading 74.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 74.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed87WYpO’: Operation not permitted
+Reading 75 ... 
+numNodes = 1978
+numAbcTri = 3770
+Reading 75.curJ ... 
+Loading ... 75.curJ
+Done loading 75.curJ. First order.
+Reading 75.curM ... 
+Loading ... 75.curM
+Done loading 75.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 56
+group = 5 / 56
+group = 10 / 56
+group = 15 / 56
+group = 20 / 56
+group = 25 / 56
+group = 30 / 56
+group = 35 / 56
+group = 40 / 56
+group = 45 / 56
+group = 50 / 56
+group = 55 / 56
+Writing to 75.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:25
+sed: preserving permissions for ‘./sedaObPKl’: Operation not permitted
+Reading 76 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 76.curJ ... 
+Loading ... 76.curJ
+Done loading 76.curJ. First order.
+Reading 76.curM ... 
+Loading ... 76.curM
+Done loading 76.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 76.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedfIKzqI’: Operation not permitted
+Reading 77 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 77.curJ ... 
+Loading ... 77.curJ
+Done loading 77.curJ. First order.
+Reading 77.curM ... 
+Loading ... 77.curM
+Done loading 77.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 77.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedcZecn8’: Operation not permitted
+Reading 78 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 78.curJ ... 
+Loading ... 78.curJ
+Done loading 78.curJ. First order.
+Reading 78.curM ... 
+Loading ... 78.curM
+Done loading 78.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 78.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedE2bZ9w’: Operation not permitted
+Reading 79 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 79.curJ ... 
+Loading ... 79.curJ
+Done loading 79.curJ. First order.
+Reading 79.curM ... 
+Loading ... 79.curM
+Done loading 79.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 79.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedhKb4UU’: Operation not permitted
+Reading 80 ... 
+numNodes = 8804
+numAbcTri = 17097
+Reading 80.curJ ... 
+Loading ... 80.curJ
+Done loading 80.curJ. First order.
+Reading 80.curM ... 
+Loading ... 80.curM
+Done loading 80.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 126
+group = 5 / 126
+group = 10 / 126
+group = 15 / 126
+group = 20 / 126
+group = 25 / 126
+group = 30 / 126
+group = 35 / 126
+group = 40 / 126
+group = 45 / 126
+group = 50 / 126
+group = 55 / 126
+group = 60 / 126
+group = 65 / 126
+group = 70 / 126
+group = 75 / 126
+group = 80 / 126
+group = 85 / 126
+group = 90 / 126
+group = 95 / 126
+group = 100 / 126
+group = 105 / 126
+group = 110 / 126
+group = 115 / 126
+group = 120 / 126
+group = 125 / 126
+Writing to 80.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:17
+sed: preserving permissions for ‘./sed56IMyt’: Operation not permitted
+Reading 81 ... 
+numNodes = 371
+numAbcTri = 594
+Reading 81.curJ ... 
+Loading ... 81.curJ
+Done loading 81.curJ. First order.
+Reading 81.curM ... 
+Loading ... 81.curM
+Done loading 81.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 23
+group = 5 / 23
+group = 10 / 23
+group = 15 / 23
+group = 20 / 23
+Writing to 81.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:9
+sed: preserving permissions for ‘./sedMgfvt3’: Operation not permitted
+Reading 82 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 82.curJ ... 
+Loading ... 82.curJ
+Done loading 82.curJ. First order.
+Reading 82.curM ... 
+Loading ... 82.curM
+Done loading 82.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 82.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed9RDdlp’: Operation not permitted
+Reading 83 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 83.curJ ... 
+Loading ... 83.curJ
+Done loading 83.curJ. First order.
+Reading 83.curM ... 
+Loading ... 83.curM
+Done loading 83.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 83.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedFrYXfO’: Operation not permitted
+Reading 84 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 84.curJ ... 
+Loading ... 84.curJ
+Done loading 84.curJ. First order.
+Reading 84.curM ... 
+Loading ... 84.curM
+Done loading 84.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 84.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedtky2ca’: Operation not permitted
+Reading 85 ... 
+numNodes = 8702
+numAbcTri = 16930
+Reading 85.curJ ... 
+Loading ... 85.curJ
+Done loading 85.curJ. First order.
+Reading 85.curM ... 
+Loading ... 85.curM
+Done loading 85.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 129
+group = 5 / 129
+group = 10 / 129
+group = 15 / 129
+group = 20 / 129
+group = 25 / 129
+group = 30 / 129
+group = 35 / 129
+group = 40 / 129
+group = 45 / 129
+group = 50 / 129
+group = 55 / 129
+group = 60 / 129
+group = 65 / 129
+group = 70 / 129
+group = 75 / 129
+group = 80 / 129
+group = 85 / 129
+group = 90 / 129
+group = 95 / 129
+group = 100 / 129
+group = 105 / 129
+group = 110 / 129
+group = 115 / 129
+group = 120 / 129
+group = 125 / 129
+Writing to 85.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:14
+sed: preserving permissions for ‘./seduNTsDL’: Operation not permitted
+Reading 86 ... 
+numNodes = 644
+numAbcTri = 1019
+Reading 86.curJ ... 
+Loading ... 86.curJ
+Done loading 86.curJ. First order.
+Reading 86.curM ... 
+Loading ... 86.curM
+Done loading 86.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 29
+group = 5 / 29
+group = 10 / 29
+group = 15 / 29
+group = 20 / 29
+group = 25 / 29
+Writing to 86.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:12
+sed: preserving permissions for ‘./sed5SAAKn’: Operation not permitted
+Reading 87 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 87.curJ ... 
+Loading ... 87.curJ
+Done loading 87.curJ. First order.
+Reading 87.curM ... 
+Loading ... 87.curM
+Done loading 87.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 87.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedrRO49I’: Operation not permitted
+Reading 88 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 88.curJ ... 
+Loading ... 88.curJ
+Done loading 88.curJ. First order.
+Reading 88.curM ... 
+Loading ... 88.curM
+Done loading 88.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 88.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedQWuYe9’: Operation not permitted
+Reading 89 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 89.curJ ... 
+Loading ... 89.curJ
+Done loading 89.curJ. First order.
+Reading 89.curM ... 
+Loading ... 89.curM
+Done loading 89.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 89.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedm1ki6s’: Operation not permitted
+Reading 90 ... 
+numNodes = 205
+numAbcTri = 343
+Reading 90.curJ ... 
+Loading ... 90.curJ
+Done loading 90.curJ. First order.
+Reading 90.curM ... 
+Loading ... 90.curM
+Done loading 90.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 21
+group = 5 / 21
+group = 10 / 21
+group = 15 / 21
+group = 20 / 21
+Writing to 90.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:9
+sed: preserving permissions for ‘./sedk3due8’: Operation not permitted
+Reading 91 ... 
+numNodes = 36
+numAbcTri = 43
+Reading 91.curJ ... 
+Loading ... 91.curJ
+Done loading 91.curJ. First order.
+Reading 91.curM ... 
+Loading ... 91.curM
+Done loading 91.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 7
+group = 5 / 7
+Writing to 91.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:3
+sed: preserving permissions for ‘./sedfzQmUK’: Operation not permitted
+Reading 92 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 92.curJ ... 
+Loading ... 92.curJ
+Done loading 92.curJ. First order.
+Reading 92.curM ... 
+Loading ... 92.curM
+Done loading 92.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 92.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed8G3pia’: Operation not permitted
+Reading 93 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 93.curJ ... 
+Loading ... 93.curJ
+Done loading 93.curJ. First order.
+Reading 93.curM ... 
+Loading ... 93.curM
+Done loading 93.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 93.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedgrdlow’: Operation not permitted
+Reading 94 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 94.curJ ... 
+Loading ... 94.curJ
+Done loading 94.curJ. First order.
+Reading 94.curM ... 
+Loading ... 94.curM
+Done loading 94.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 94.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedguqIJR’: Operation not permitted
+Reading 95 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 95.curJ ... 
+Loading ... 95.curJ
+Done loading 95.curJ. First order.
+Reading 95.curM ... 
+Loading ... 95.curM
+Done loading 95.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 95.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedIMtUPh’: Operation not permitted
+Reading 96 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 96.curJ ... 
+Loading ... 96.curJ
+Done loading 96.curJ. First order.
+Reading 96.curM ... 
+Loading ... 96.curM
+Done loading 96.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 96.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedBCyNOD’: Operation not permitted
+Reading 97 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 97.curJ ... 
+Loading ... 97.curJ
+Done loading 97.curJ. First order.
+Reading 97.curM ... 
+Loading ... 97.curM
+Done loading 97.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 97.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed5qljv2’: Operation not permitted
+Reading 98 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 98.curJ ... 
+Loading ... 98.curJ
+Done loading 98.curJ. First order.
+Reading 98.curM ... 
+Loading ... 98.curM
+Done loading 98.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 98.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedSo839m’: Operation not permitted
+Reading 99 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 99.curJ ... 
+Loading ... 99.curJ
+Done loading 99.curJ. First order.
+Reading 99.curM ... 
+Loading ... 99.curM
+Done loading 99.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 99.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedclnE1K’: Operation not permitted
+Reading 100 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 100.curJ ... 
+Loading ... 100.curJ
+Done loading 100.curJ. First order.
+Reading 100.curM ... 
+Loading ... 100.curM
+Done loading 100.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 100.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedI1Jswb’: Operation not permitted
+Reading 101 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 101.curJ ... 
+Loading ... 101.curJ
+Done loading 101.curJ. First order.
+Reading 101.curM ... 
+Loading ... 101.curM
+Done loading 101.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 101.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed2Qdoyw’: Operation not permitted
+Reading 102 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 102.curJ ... 
+Loading ... 102.curJ
+Done loading 102.curJ. First order.
+Reading 102.curM ... 
+Loading ... 102.curM
+Done loading 102.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 102.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedi91VQU’: Operation not permitted
+Reading 103 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 103.curJ ... 
+Loading ... 103.curJ
+Done loading 103.curJ. First order.
+Reading 103.curM ... 
+Loading ... 103.curM
+Done loading 103.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 103.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedr8g2lh’: Operation not permitted
+Reading 104 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 104.curJ ... 
+Loading ... 104.curJ
+Done loading 104.curJ. First order.
+Reading 104.curM ... 
+Loading ... 104.curM
+Done loading 104.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 104.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedZvp2VG’: Operation not permitted
+Reading 105 ... 
+numNodes = 6762
+numAbcTri = 13323
+Reading 105.curJ ... 
+Loading ... 105.curJ
+Done loading 105.curJ. First order.
+Reading 105.curM ... 
+Loading ... 105.curM
+Done loading 105.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 110
+group = 5 / 110
+group = 10 / 110
+group = 15 / 110
+group = 20 / 110
+group = 25 / 110
+group = 30 / 110
+group = 35 / 110
+group = 40 / 110
+group = 45 / 110
+group = 50 / 110
+group = 55 / 110
+group = 60 / 110
+group = 65 / 110
+group = 70 / 110
+group = 75 / 110
+group = 80 / 110
+group = 85 / 110
+group = 90 / 110
+group = 95 / 110
+group = 100 / 110
+group = 105 / 110
+Writing to 105.ap ... 
+Farfield Time(hh:mm:ss) = 0:1:2
+sed: preserving permissions for ‘./sedGZtyon’: Operation not permitted
+Reading 106 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 106.curJ ... 
+Loading ... 106.curJ
+Done loading 106.curJ. First order.
+Reading 106.curM ... 
+Loading ... 106.curM
+Done loading 106.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 106.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedDAMikM’: Operation not permitted
+Reading 107 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 107.curJ ... 
+Loading ... 107.curJ
+Done loading 107.curJ. First order.
+Reading 107.curM ... 
+Loading ... 107.curM
+Done loading 107.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 107.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedkAxy09’: Operation not permitted
+Reading 108 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 108.curJ ... 
+Loading ... 108.curJ
+Done loading 108.curJ. First order.
+Reading 108.curM ... 
+Loading ... 108.curM
+Done loading 108.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 108.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedxCoYey’: Operation not permitted
+Reading 109 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 109.curJ ... 
+Loading ... 109.curJ
+Done loading 109.curJ. First order.
+Reading 109.curM ... 
+Loading ... 109.curM
+Done loading 109.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 109.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedk23iZV’: Operation not permitted
+Reading 110 ... 
+numNodes = 929
+numAbcTri = 1739
+Reading 110.curJ ... 
+Loading ... 110.curJ
+Done loading 110.curJ. First order.
+Reading 110.curM ... 
+Loading ... 110.curM
+Done loading 110.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 45
+group = 5 / 45
+group = 10 / 45
+group = 15 / 45
+group = 20 / 45
+group = 25 / 45
+group = 30 / 45
+group = 35 / 45
+group = 40 / 45
+Writing to 110.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:18
+sed: preserving permissions for ‘./seddtNuCt’: Operation not permitted
+Reading 111 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 111.curJ ... 
+Loading ... 111.curJ
+Done loading 111.curJ. First order.
+Reading 111.curM ... 
+Loading ... 111.curM
+Done loading 111.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 111.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed7B3FwR’: Operation not permitted
+Reading 112 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 112.curJ ... 
+Loading ... 112.curJ
+Done loading 112.curJ. First order.
+Reading 112.curM ... 
+Loading ... 112.curM
+Done loading 112.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 112.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedWF08Fg’: Operation not permitted
+Reading 113 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 113.curJ ... 
+Loading ... 113.curJ
+Done loading 113.curJ. First order.
+Reading 113.curM ... 
+Loading ... 113.curM
+Done loading 113.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 113.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed93erBE’: Operation not permitted
+Reading 114 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 114.curJ ... 
+Loading ... 114.curJ
+Done loading 114.curJ. First order.
+Reading 114.curM ... 
+Loading ... 114.curM
+Done loading 114.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 114.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedJsoep1’: Operation not permitted
+Reading 115 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 115.curJ ... 
+Loading ... 115.curJ
+Done loading 115.curJ. First order.
+Reading 115.curM ... 
+Loading ... 115.curM
+Done loading 115.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 115.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedLhHbPq’: Operation not permitted
+Reading 116 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 116.curJ ... 
+Loading ... 116.curJ
+Done loading 116.curJ. First order.
+Reading 116.curM ... 
+Loading ... 116.curM
+Done loading 116.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 116.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedt1oarM’: Operation not permitted
+Reading 117 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 117.curJ ... 
+Loading ... 117.curJ
+Done loading 117.curJ. First order.
+Reading 117.curM ... 
+Loading ... 117.curM
+Done loading 117.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 117.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedZX3yA8’: Operation not permitted
+Reading 118 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 118.curJ ... 
+Loading ... 118.curJ
+Done loading 118.curJ. First order.
+Reading 118.curM ... 
+Loading ... 118.curM
+Done loading 118.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 118.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedppQwHy’: Operation not permitted
+Reading 119 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 119.curJ ... 
+Loading ... 119.curJ
+Done loading 119.curJ. First order.
+Reading 119.curM ... 
+Loading ... 119.curM
+Done loading 119.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 119.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedKJx9tU’: Operation not permitted
+Reading 120 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 120.curJ ... 
+Loading ... 120.curJ
+Done loading 120.curJ. First order.
+Reading 120.curM ... 
+Loading ... 120.curM
+Done loading 120.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 120.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./seduiXg8h’: Operation not permitted
+Reading 121 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 121.curJ ... 
+Loading ... 121.curJ
+Done loading 121.curJ. First order.
+Reading 121.curM ... 
+Loading ... 121.curM
+Done loading 121.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 121.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedCoP4eG’: Operation not permitted
+Reading 122 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 122.curJ ... 
+Loading ... 122.curJ
+Done loading 122.curJ. First order.
+Reading 122.curM ... 
+Loading ... 122.curM
+Done loading 122.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 122.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sed9l2o53’: Operation not permitted
+Reading 123 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 123.curJ ... 
+Loading ... 123.curJ
+Done loading 123.curJ. First order.
+Reading 123.curM ... 
+Loading ... 123.curM
+Done loading 123.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 123.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedBkTAfp’: Operation not permitted
+Reading 124 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 124.curJ ... 
+Loading ... 124.curJ
+Done loading 124.curJ. First order.
+Reading 124.curM ... 
+Loading ... 124.curM
+Done loading 124.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 124.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedT7e0mP’: Operation not permitted
