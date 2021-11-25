@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" prefHeight="44.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.RCSvalueController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.RCSvalueController">
    <children>
       <BorderPane AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
          <left>
@@ -21,7 +21,7 @@
                      <font>
                         <Font size="15.0" />
                      </font></Label>
-                  <TextField fx:id="textRCS" onKeyPressed="#onTextRCSChange" prefHeight="26.0" prefWidth="104.0">
+                  <TextField fx:id="textRCS" editable="false" onKeyPressed="#onTextRCSChange" prefHeight="26.0" prefWidth="104.0">
                      <padding>
                         <Insets left="5.0" right="5.0" />
                      </padding>
