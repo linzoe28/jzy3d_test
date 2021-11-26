@@ -302,7 +302,7 @@ public class Read_data {
                             applyOSRecord2Mesh(entry.getMesh(), osRecord);
                             tobeRemoved = entry;
                             index++;
-                            System.out.println(index+"/"+osRecordsMap.getKey2FileNameMap().size());
+//                            System.out.println(index+"/"+osRecordsMap.getKey2FileNameMap().size());
                             break;
                         }
                     }
