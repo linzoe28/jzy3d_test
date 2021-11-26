@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TitledPane?>
@@ -9,81 +8,22 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.ZoomPanelController">
+<AnchorPane id="AnchorPane" prefHeight="445.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.ZoomPanelController">
    <children>
-      <TitledPane alignment="CENTER" text="載具視角設定" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-         <content>
-            <VBox alignment="CENTER">
-               <children>
-                  <VBox alignment="TOP_CENTER" prefWidth="100.0">
-                     <children>
-                        <Slider fx:id="zoomSlider" blockIncrement="1.0" majorTickUnit="7.0" max="16.0" min="1.0" minorTickCount="6" orientation="VERTICAL" prefHeight="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </Slider>
-                        <Button fx:id="buttonZoom" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onZoomClicked" prefHeight="26.0" prefWidth="114.0" text="Zoom" />
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </VBox>
-                  <HBox prefWidth="200.0">
-                     <children>
-                        <VBox prefWidth="100.0">
-                           <children>
-                              <Label text="X">
-                                 <VBox.margin>
-                                    <Insets left="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Slider blockIncrement="1.0" majorTickUnit="20.0" minorTickCount="20" orientation="VERTICAL" prefHeight="200.0" showTickLabels="true" showTickMarks="true" value="50.0" fx:id="xSlider" />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="Y">
-                                 <VBox.margin>
-                                    <Insets left="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Slider fx:id="ySlider" blockIncrement="1.0" majorTickUnit="20.0" minorTickCount="20" orientation="VERTICAL" prefHeight="200.0" showTickLabels="true" showTickMarks="true" value="50.0" />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="Z">
-                                 <VBox.margin>
-                                    <Insets left="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Slider fx:id="zSlider" blockIncrement="1.0" majorTickUnit="20.0" minorTickCount="20" orientation="VERTICAL" prefHeight="200.0" showTickLabels="true" showTickMarks="true" value="50.0" />
-                           </children>
-                        </VBox>
-                     </children>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <Button fx:id="movebutton" mnemonicParsing="false" onAction="#onMoveClicked" prefHeight="26.0" prefWidth="114.0" text="move">
-                     <VBox.margin>
-                        <Insets bottom="5.0" top="5.0" />
-                     </VBox.margin>
-                  </Button>
-                  <HBox alignment="CENTER" prefWidth="200.0">
-                     <children>
-                        <Button fx:id="buttonZoomF" alignment="CENTER" mnemonicParsing="false" onAction="#onZoomFClicked" text="F" />
-                        <Button fx:id="buttonZoomB" mnemonicParsing="false" onAction="#onZoomBClicked" text="B" />
-                        <Button fx:id="buttonZoomL" mnemonicParsing="false" onAction="#onZoomLClicked" text="L" />
-                        <Button fx:id="buttonZoomR" mnemonicParsing="false" onAction="#onZoomRClicked" text="R" />
-                        <Button fx:id="buttonZoomU" alignment="CENTER" mnemonicParsing="false" onAction="#onZoomUClicked" text="U" />
-                        <Button fx:id="buttonZoomD" alignment="CENTER" mnemonicParsing="false" onAction="#onZoomDClicked" text="D" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </content>
-      </TitledPane>
+      <VBox alignment="TOP_CENTER" prefWidth="100.0">
+         <children>
+            <Slider fx:id="zoomSlider" blockIncrement="1.0" majorTickUnit="7.0" max="16.0" min="1.0" minorTickCount="6" onMouseReleased="#onZoomClicked" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+      <Label layoutX="20.0" layoutY="171.0" text="X" />
+      <Label layoutX="56.0" layoutY="171.0" text="Y" />
+      <Label layoutX="95.0" layoutY="171.0" text="Z" />
+      <Slider blockIncrement="1.0" layoutX="3.0" layoutY="194.0" majorTickUnit="20.0" minorTickCount="20" onMouseReleased="#xSliderMove" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" value="50.0" fx:id="xSlider" />
+      <Slider fx:id="ySlider" blockIncrement="1.0" layoutX="39.0" layoutY="194.0" majorTickUnit="20.0" minorTickCount="20" onMouseReleased="#ySliderMove" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" value="50.0" />
+      <Slider fx:id="zSlider" blockIncrement="1.0" layoutX="78.0" layoutY="194.0" majorTickUnit="20.0" minorTickCount="20" onMouseReleased="#zSliderMove" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" value="50.0" />
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
