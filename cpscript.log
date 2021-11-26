@@ -20455,3 +20455,94 @@ group = 25 / 32
 group = 30 / 32
 Writing to 1425.ap ... 
 Farfield Time(hh:mm:ss) = 0:0:13
+sed: preserving permissions for ‘./sedmfL7At’: Operation not permitted
+Reading 1426 ... 
+numNodes = 95
+numAbcTri = 103
+Reading 1426.curJ ... 
+Loading ... 1426.curJ
+Done loading 1426.curJ. First order.
+Reading 1426.curM ... 
+Loading ... 1426.curM
+Done loading 1426.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 11
+group = 5 / 11
+group = 10 / 11
+Writing to 1426.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:6
+sed: preserving permissions for ‘./sedVE4ctA’: Operation not permitted
+Reading 1427 ... 
+numNodes = 96
+numAbcTri = 124
+Reading 1427.curJ ... 
+Loading ... 1427.curJ
+Done loading 1427.curJ. First order.
+Reading 1427.curM ... 
+Loading ... 1427.curM
+Done loading 1427.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 10
+group = 5 / 10
+Writing to 1427.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:8
+sed: preserving permissions for ‘./sed7eGbca’: Operation not permitted
+Reading 1428 ... 
+numNodes = 375
+numAbcTri = 649
+Reading 1428.curJ ... 
+Loading ... 1428.curJ
+Done loading 1428.curJ. First order.
+Reading 1428.curM ... 
+Loading ... 1428.curM
+Done loading 1428.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 24
+group = 5 / 24
+group = 10 / 24
+group = 15 / 24
+group = 20 / 24
+Writing to 1428.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:9
+sed: preserving permissions for ‘./sed0N6DAN’: Operation not permitted
+Reading 1429 ... 
+numNodes = 555
+numAbcTri = 991
+Reading 1429.curJ ... 
+Loading ... 1429.curJ
+Done loading 1429.curJ. First order.
+Reading 1429.curM ... 
+Loading ... 1429.curM
+Done loading 1429.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 32
+group = 5 / 32
+group = 10 / 32
+group = 15 / 32
+group = 20 / 32
+group = 25 / 32
+group = 30 / 32
+Writing to 1429.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:12
+sed: preserving permissions for ‘./sedbdDqtn’: Operation not permitted
+Reading 1430 ... 
+numNodes = 242
+numAbcTri = 392
+Reading 1430.curJ ... 
+Loading ... 1430.curJ
+Done loading 1430.curJ. First order.
+Reading 1430.curM ... 
+Loading ... 1430.curM
+Done loading 1430.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 17
+group = 5 / 17
+group = 10 / 17
+group = 15 / 17
+Writing to 1430.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:9
