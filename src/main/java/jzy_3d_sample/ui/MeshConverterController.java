@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import jzy_3d_sample.datafactory.AngleLabelMapGenerator;
 import jzy_3d_sample.datafactory.FastN2fWriter;
 import jzy_3d_sample.datafactory.OSFileParser;
 import jzy_3d_sample.datafactory.Read_data;
@@ -78,7 +79,7 @@ public class MeshConverterController {
 
     @FXML
     void buttonCancelClicked(ActionEvent event) {
-        ((Stage)nasFileText.getScene().getWindow()).close();
+        ((Stage) nasFileText.getScene().getWindow()).close();
     }
 
     @FXML
@@ -123,7 +124,7 @@ public class MeshConverterController {
                     }
                     FileUtils.forceMkdir(outputDir);
                     File outputOsFolder = new File(bigOsFile.getParentFile(), ".os");
-                    List<File> osFiles=null;
+                    List<File> osFiles = null;
                     if (!outputOsFolder.exists()) {
                         outputOsFolder.mkdirs();
                         osFiles = OSFileSplitter.splitByAngle(bigOsFile, new OSFileSplitter.OutputFileCreator() {
@@ -131,8 +132,8 @@ public class MeshConverterController {
                                 return new File(outputOsFolder, "" + index + ".os");
                             }
                         }, null);
-                    }else if(outputOsFolder.listFiles().length>0){
-                        osFiles=Arrays.asList(outputOsFolder.listFiles());
+                    } else if (outputOsFolder.listFiles().length > 0) {
+                        osFiles = Arrays.asList(outputOsFolder.listFiles());
                     }
                     Read_data r = new Read_data(outputDir, "angle0");
                     long x = Long.valueOf(x_value.getText());
@@ -205,34 +206,39 @@ public class MeshConverterController {
                     index = 0;
                     projectModel.setHomeFolder(outputDir);
                     if (checkboxn2f.isSelected()) {
-                        for (File n2fFolder : n2fProcessingQueue) {
-                            setStatusMessage("processing n2f for angle " + (index + 1) + "/" + osFiles.size());
-                            N2fExecutor executor = new N2fExecutorImpl(new File("n2ftools"));
+                        int delta = AngleLabelMapGenerator.getDelta(n2fProcessingQueue.size());
+                        int theta = 0;
+                        int phi = 0;
+                        for (phi = 0; phi <= 360; phi += delta) {
+                            for (theta = 0; theta <= 180; theta += delta) {
+                                System.out.println("theta="+theta+", phi="+phi);
+                                File n2fFolder = n2fProcessingQueue.get(index);
+                                setStatusMessage("processing n2f for angle " + (index + 1) + "/" + osFiles.size());
+                                N2fExecutor executor = new N2fExecutorImpl(new File("n2ftools"));
 
-                            executor.addN2fExecutorListener(new N2fExecutorListener() {
-                                public void statusUpdated(N2fExecutorEvent e) {
-                                    setStatusMessage(e.getMessage());
-                                }
-                            });
+                                executor.addN2fExecutorListener(new N2fExecutorListener() {
+                                    public void statusUpdated(N2fExecutorEvent e) {
+                                        setStatusMessage(e.getMessage());
+                                    }
+                                });
 
-                            executor.init(n2fFolder);
+                                executor.init(n2fFolder);
 
-                            //TODO: update embedded n2f tools to recognize theta and phi
-                            double theta = 170;
-                            double phi = 180;
-                            executor.execute(x * y * z, 1000, theta, phi);
-                            System.out.println(Arrays.toString(executor.getResults()));
-                            CurrentData currentData = projectModel.getCurrentData("angle" + index);
-                            //update current data with rcs values
-                            currentData.setTheta(theta);
-                            currentData.setPhi(phi);
-                            currentData.setRcs(executor.getResults());
-                            currentData.setRcsTotal(executor.getRCSTotal());
-                            File currentObjFile = new File(outputDir, "angle" + index + ".current");
-                            SerializeUtil.writeToFile(currentData, currentObjFile);
-                            executor.close();
-                            index++;
+                                executor.execute(x * y * z, 1000, theta, phi);
+                                CurrentData currentData = projectModel.getCurrentData("angle" + index);
+                                //update current data with rcs values
+                                currentData.setTheta(theta);
+                                currentData.setPhi(phi);
+                                currentData.setRcs(executor.getResults());
+                                currentData.setRcsTotal(executor.getRCSTotal());
+                                File currentObjFile = new File(outputDir, "angle" + index + ".current");
+                                SerializeUtil.writeToFile(currentData, currentObjFile);
+                                executor.close();
+                                index++;
+                                index++;
+                            }
                         }
+                       
                     }
                     for (Mesh mesh : meshes) {
                         mesh.emptyCurrent();

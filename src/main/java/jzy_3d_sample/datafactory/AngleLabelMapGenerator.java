@@ -29,15 +29,21 @@ public class AngleLabelMapGenerator {
             String str=IOUtils.toString(input, "utf-8");
             Gson gson=new Gson();
             angleCount2DeltaMap=gson.fromJson(str, Map.class);
-            System.out.println("angleCount2DeltaMap="+angleCount2DeltaMap);
+//            System.out.println("angleCount2DeltaMap="+angleCount2DeltaMap);
         } catch (IOException ex) {
             Logger.getLogger(AngleLabelMapGenerator.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static int getDelta(int currentDataSize){
+        int delta=Integer.valueOf(angleCount2DeltaMap.get(""+currentDataSize));
+        return delta;
+    }
+    
     public static AngleIndexThetaPhiMap createAngleIndex2ThetaPhiMap(ProjectModel projectModel){
         AngleIndexThetaPhiMap ret=new AngleIndexThetaPhiMap();
         System.out.println(projectModel.getCurrentDataList(true).size());
-        int delta=Integer.valueOf(angleCount2DeltaMap.get(""+(projectModel.getCurrentDataList(true).size())));
+        int delta=getDelta(projectModel.getCurrentDataList(true).size());//Integer.valueOf(angleCount2DeltaMap.get(""+(projectModel.getCurrentDataList(true).size())));
         System.out.println("delta="+delta);
         int index=0;
         for(int phi=0; phi<=360; phi+=delta){

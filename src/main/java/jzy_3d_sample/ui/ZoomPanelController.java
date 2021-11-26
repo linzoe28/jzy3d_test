@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.input.MouseEvent;
 import jzy_3d_sample.model.RenderModel;
 import org.jzy3d.maths.BoundingBox3d;
 
@@ -17,31 +18,11 @@ import org.jzy3d.maths.BoundingBox3d;
  * @author lendle
  */
 public class ZoomPanelController {
-    @FXML
-    private Button buttonZoomF;
-
-    @FXML
-    private Button buttonZoomB;
-
-    @FXML
-    private Button buttonZoomL;
-
-    @FXML
-    private Button buttonZoomR;
 
     @FXML
     private Slider zoomSlider;
-
+   
     @FXML
-    private Button buttonZoom;
-
-    @FXML
-    private Button buttonZoomU;
-
-    @FXML
-    private Button buttonZoomD;
-    
-        @FXML
     private Slider xSlider;
 
     @FXML
@@ -50,8 +31,6 @@ public class ZoomPanelController {
     @FXML
     private Slider zSlider;
 
-    @FXML
-    private Button movebutton;
 
     
     private RenderModel renderModel=null;
@@ -64,14 +43,9 @@ public class ZoomPanelController {
         this.renderModel = renderModel;
     }
     
-    @FXML
-    void onMoveClicked(ActionEvent event) {
-        renderModel.move((float)xSlider.getValue()/100, (float)ySlider.getValue()/100, (float)zSlider.getValue()/100);
-        renderModel.repaint();
-    }
     
     @FXML
-    void onZoomClicked(ActionEvent event) {
+    void onZoomClicked(MouseEvent event) {
         System.err.println(zoomSlider.getValue());
         renderModel.zoom((float) zoomSlider.getValue());
         renderModel.repaint();
@@ -113,12 +87,26 @@ public class ZoomPanelController {
         setslider();
     }
     
+
     @FXML
-    void onZoomBClicked(ActionEvent event) {
-        renderModel.moveY(1f);
+    void xSliderMove(MouseEvent event) {
+        renderModel.move((float)xSlider.getValue()/100, (float)ySlider.getValue()/100, (float)zSlider.getValue()/100);
         renderModel.repaint();
-        setslider();
     }
+    
+    @FXML
+    void ySliderMove(MouseEvent event) {
+        renderModel.move((float)xSlider.getValue()/100, (float)ySlider.getValue()/100, (float)zSlider.getValue()/100);
+        renderModel.repaint();
+    }
+    
+    @FXML
+    void zSliderMove(MouseEvent event) {
+        renderModel.move((float)xSlider.getValue()/100, (float)ySlider.getValue()/100, (float)zSlider.getValue()/100);
+        renderModel.repaint();
+    }
+    
+    
     
     void setslider(){
         BoundingBox3d bounds = renderModel.getChart().getView().getBounds();

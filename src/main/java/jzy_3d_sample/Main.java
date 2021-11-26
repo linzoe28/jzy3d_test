@@ -32,6 +32,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -147,6 +148,8 @@ public class Main extends Application {
                         if (fileOpenObjController.isOk()) {
 
                             new BackgroundRunner(southpanelController) {
+                                ObservableList angleList;
+
                                 @Override
                                 public void runBeforeWorkerThread() {
                                     southpanelController.setStatus("Open data......");
@@ -157,7 +160,7 @@ public class Main extends Application {
                                     File ObjFile = fileOpenObjController.getobjFile();
                                     renderModel = loadRenderModel(primaryStage, ObjFile);
                                     zoomPanelController.setRenderModel(renderModel);
-                                    ObservableList angleList = FXCollections.observableArrayList();
+                                    angleList = FXCollections.observableArrayList();
                                     int angle = 0;
                                     for (String currentData : renderModel.getProjectModel().getCurrentDataList()) {
 //                                System.out.println("processing current data: " + angle);
@@ -174,7 +177,7 @@ public class Main extends Application {
                                                 //設定RCS總值
                                                 RCSTotal = "" + cd.getRcsTotal();
                                                 System.out.println(RCSTotal);
-                                                southpanelController.setTextBeforeValue(RCSTotal);
+
                                             } catch (Exception ex) {
                                                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                                             }
@@ -185,7 +188,7 @@ public class Main extends Application {
                                         colorLegend.setVisible(true);
                                         renderModel.repaint();
                                     }
-                                    anglePanelController.getAnglelist().setItems(angleList);
+
                                 }
 
                                 @Override
@@ -196,26 +199,27 @@ public class Main extends Application {
                                     renderModel.repaint();
                                     southpanelController.setStatus("Done");
                                     resetColor(Double.valueOf(rCSvalueController.getThreshold()));
+                                    //加入所有角度資料於清單
+                                    anglePanelController.getAnglelist().setItems(angleList);
+                                    //顯示RCSTotal
+                                    southpanelController.setTextBeforeValue(RCSTotal);
                                     //設定Slider值
-                                    List<Cube> Cubes = sortCube(subCubes);
+                                    List<Cube> Cubes = rCSvalueController.sortCube(subCubes);
+                                    rCSvalueController.setSlidermax(Cubes.get(Cubes.size() - 1).getRcs());
+                                    rCSvalueController.setSlidermin(Cubes.get(0).getRcs());
+                                    rCSvalueController.setSlidervalue(Cubes.get(0).getRcs());
+                                    double majortick = ((Cubes.get(Cubes.size() - 1).getRcs()) - (Cubes.get(0).getRcs())) / 20;
+                                    rCSvalueController.setSliderMajorTickUnit(majortick);
                                     rCSvalueController.getTo_db_check().setOnAction(new EventHandler<ActionEvent>() {
                                         @Override
                                         public void handle(ActionEvent event) {
-                                            System.out.println(rCSvalueController.get_to_db_checkisOK());
+                                            renderModel.repaint();
+                                            rCSvalueController.repaint();
+//                                            System.out.println(rCSvalueController.get_to_db_checkisOK());
                                             if (!rCSvalueController.get_to_db_checkisOK()) {
-                                                rCSvalueController.setSlidermax(Cubes.get(Cubes.size() - 1).getRcs());
-                                                rCSvalueController.setSlidermin(Cubes.get(0).getRcs());
-                                                rCSvalueController.setSlidervalue(Cubes.get(0).getRcs());
-                                                double majortick = ((Cubes.get(Cubes.size() - 1).getRcs()) - (Cubes.get(0).getRcs())) / 20;
-                                                rCSvalueController.setSliderMajorTickUnit(majortick);
+                                                southpanelController.setTextBeforeValue(RCSTotal);
                                             } else {
-                                                double rcs_max = rCSvalueController.to_dbvalue(Cubes.get(Cubes.size() - 1).getRcs());
-                                                double rcs_min = rCSvalueController.to_dbvalue(Cubes.get(0).getRcs());
-                                                rCSvalueController.setSlidermax(rcs_max);
-                                                rCSvalueController.setSlidermin(rcs_min);
-                                                rCSvalueController.setSlidervalue(rcs_min);
-                                                double majortick = (rcs_max - rcs_min) / 20;
-                                                rCSvalueController.setSliderMajorTickUnit(majortick);
+                                                southpanelController.setTextBeforeValue("" + rCSvalueController.to_dbvalue(Double.valueOf(RCSTotal)));
                                             }
                                         }
                                     });
@@ -333,7 +337,7 @@ public class Main extends Application {
                             }
                             RCSTotal = rcsList.get(rcsList.size() - 1);
                             southpanelController.setTextBeforeValue(RCSTotal);
-                            sortCube(subCubes);
+                            rCSvalueController.sortCube(subCubes);
                             resetColor(Double.valueOf(rCSvalueController.getThreshold()));
                             colorLegend.setPrefWidth(63);
                             colorLegend.setVisible(true);
@@ -373,12 +377,11 @@ public class Main extends Application {
             AnchorPane southpanelRoot = (AnchorPane) southpanelFxmlLoader.load();
             southpanelController = southpanelFxmlLoader.getController();
             container.setBottom(southpanelRoot);
-            legendloader = new FXMLLoader(getClass().getResource("/fxml/legend.fxml"));
-            colorLegend = (VBox) legendloader.load();
 
             VBox rightToolBarContainer = new VBox();
             container.setRight(rightToolBarContainer);
-            rightToolBarContainer.getChildren().add(colorLegend);
+            legendloader = new FXMLLoader(getClass().getResource("/fxml/legend.fxml"));
+            colorLegend = (VBox) legendloader.load();
             colorLegend.setPrefWidth(0);
             colorLegend.setVisible(false);
             colorLegend.setPadding(new Insets(10));
@@ -387,7 +390,7 @@ public class Main extends Application {
             AnchorPane zoomPanelRoot = (AnchorPane) zoompanelFxmlLoader.load();
             zoomPanelController = zoompanelFxmlLoader.getController();
 
-            rightToolBarContainer.getChildren().add(zoomPanelRoot);
+            rightToolBarContainer.getChildren().addAll(colorLegend, zoomPanelRoot);
             primaryStage.setTitle("CS");
             primaryStage.setScene(scene);
             if (TEST) {
@@ -465,12 +468,12 @@ public class Main extends Application {
         double gap = (rcsThreshold - colorCubes.get(0).getRcs()) / 5;
 //        System.out.println("gap" + gap);
         LegendController legendController = legendloader.getController();
-        legendController.getRedValue().setText(String.format("%06.2f", rcsThreshold));
-        legendController.getoValue().setText(String.format("%06.2f", rcsThreshold - gap));
-        legendController.getyValue().setText(String.format("%06.2f", rcsThreshold - 2 * gap));
-        legendController.getgValue().setText(String.format("%06.2f", rcsThreshold - 3 * gap));
-        legendController.getbValue().setText(String.format("%06.2f", rcsThreshold - 4 * gap));
-        legendController.getbValue1().setText(String.format("%06.2f", rcsThreshold - 5 * gap));
+        legendController.getRedValue().setText(String.format("%06.3f", rcsThreshold));
+        legendController.getoValue().setText(String.format("%06.3f", rcsThreshold - gap));
+        legendController.getyValue().setText(String.format("%06.3f", rcsThreshold - 2 * gap));
+        legendController.getgValue().setText(String.format("%06.3f", rcsThreshold - 3 * gap));
+        legendController.getbValue().setText(String.format("%06.3f", rcsThreshold - 4 * gap));
+        legendController.getbValue1().setText(String.format("%06.3f", rcsThreshold - 5 * gap));
 //        System.out.println(Arrays.deepToString(colors));
         RainbowColorPainter painter = new RainbowColorPainter(rcsThreshold, gap);
         for (int i = 0; i < colorCubes.size(); i++) {
@@ -500,25 +503,6 @@ public class Main extends Application {
             southpanelController.setExtremePointPosition(meshs.get(meshs.size() - 1).getCenter());
             renderModel.getChart().getScene().add(extremeValuePoint);
         }
-    }
-
-    private List<Cube> sortCube(List<Cube> Cubes) {
-        Collections.sort(Cubes, new Comparator<Cube>() {
-
-            @Override
-            public int compare(Cube o1, Cube o2) {
-                if (o1.getRcs() < o2.getRcs()) {
-                    return -1;
-                } else if (o1.getRcs() == o2.getRcs()) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            }
-        });
-
-        return Cubes;
-
     }
 
     /**
