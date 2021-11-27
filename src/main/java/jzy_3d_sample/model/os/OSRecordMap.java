@@ -97,6 +97,9 @@ public class OSRecordMap implements Cloneable, Serializable {
 
     public OSRecord getOSRecord(String key) throws Exception {
         OSRecord record = null;
+        if(cache==null){
+            cache=new ArrayList<>();
+        }
         if (fastAccessMap.containsKey(key)) {
             hit++;
             return fastAccessMap.get(key);

@@ -203,7 +203,7 @@ public class MeshConverterController {
                         index++;
 
                         //FileUtils.forceDelete(osFile);
-                        System.out.println("hit: " + osRecords.getHit() + ", miss: " + osRecords.getMiss());
+//                        System.out.println("hit: " + osRecords.getHit() + ", miss: " + osRecords.getMiss());
                     }
                     index = 0;
                     projectModel.setHomeFolder(outputDir);

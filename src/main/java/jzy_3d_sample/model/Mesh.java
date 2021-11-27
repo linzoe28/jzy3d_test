@@ -97,6 +97,7 @@ public class Mesh extends Polygon implements Cloneable, Serializable{
         for(Vertex v : newVertices){
             newMesh.setCurrent(v, (VertexCurrent) currentMap.get(v).clone());
         }
+        newMesh.setOsRecordKey(this.osRecordKey);
         return newMesh;
     }
     
