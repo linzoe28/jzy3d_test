@@ -158,6 +158,7 @@ public class MeshConverterController {
                     }
                     ///////////////////////////////
                     List<File> n2fProcessingQueue = new ArrayList<>();
+                    List<Integer> frequencies=new ArrayList<>();
                     index = 0;//angle 0 was already processed when loading meshes
                     for (int n = 0; n < osFiles.size(); n++) {
                         File osFile = osFiles.get(n);
@@ -176,6 +177,7 @@ public class MeshConverterController {
                             osRecords = OSFileParser.readOSFile(outputDir, osFile, "angle" + (index));
                             r.applyOStoMeshes(meshes, osRecords);
                         }
+                        frequencies.add(osRecords.getFrequency());
                         Shape surface = SurfaceLoader.loadSurface(meshes);
                         Cube boundingCube = new Cube(surface.getBounds(), meshes);
                         List<Cube> cubes = boundingCube.slice(x, y, z);
@@ -209,10 +211,11 @@ public class MeshConverterController {
                         int delta = AngleLabelMapGenerator.getDelta(n2fProcessingQueue.size());
                         int theta = 0;
                         int phi = 0;
-                        for (phi = 0; phi <= 360; phi += delta) {
-                            for (theta = 0; theta <= 180; theta += delta) {
-                                System.out.println("theta="+theta+", phi="+phi);
+                        for (phi = 0; index< n2fProcessingQueue.size() && phi <= 360; phi += delta) {
+                            for (theta = 0; index< n2fProcessingQueue.size() && theta <= 180; theta += delta) {
                                 File n2fFolder = n2fProcessingQueue.get(index);
+                                int frequency=frequencies.get(index);
+                                System.out.println("theta="+theta+", phi="+phi+", frequency="+frequency);
                                 setStatusMessage("processing n2f for angle " + (index + 1) + "/" + osFiles.size());
                                 N2fExecutor executor = new N2fExecutorImpl(new File("n2ftools"));
 
@@ -224,7 +227,7 @@ public class MeshConverterController {
 
                                 executor.init(n2fFolder);
 
-                                executor.execute(x * y * z, 1000, theta, phi);
+                                executor.execute(x * y * z, frequency, theta, phi);
                                 CurrentData currentData = projectModel.getCurrentData("angle" + index);
                                 //update current data with rcs values
                                 currentData.setTheta(theta);
@@ -234,7 +237,6 @@ public class MeshConverterController {
                                 File currentObjFile = new File(outputDir, "angle" + index + ".current");
                                 SerializeUtil.writeToFile(currentData, currentObjFile);
                                 executor.close();
-                                index++;
                                 index++;
                             }
                         }

@@ -30,6 +30,17 @@ public class OSRecordMap implements Cloneable, Serializable {
     private transient List<Map<String, OSRecord>> cache = new ArrayList<>();
     private transient File homeFolder = null;
     private long hit = 0, miss = 0;
+    private int frequency=-1;
+
+    public int getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
+    
+    
 
     public File getHomeFolder() {
         return homeFolder;

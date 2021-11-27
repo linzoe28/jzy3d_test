@@ -171,6 +171,7 @@ public class Main extends Application {
                                         if (angle == 0) {
                                             try {
                                                 CurrentData cd = renderModel.getProjectModel().getCurrentData("angle" + (angle));
+                                                System.out.println("cd.getRcs().length="+cd.getRcs().length);
                                                 for (int i = 0; angle == 0 && i < cd.getRcs().length - 1; i++) {
                                                     subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
                                                 }
