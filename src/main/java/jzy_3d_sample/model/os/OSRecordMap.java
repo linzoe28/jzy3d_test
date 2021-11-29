@@ -30,13 +30,13 @@ public class OSRecordMap implements Cloneable, Serializable {
     private transient List<Map<String, OSRecord>> cache = new ArrayList<>();
     private transient File homeFolder = null;
     private long hit = 0, miss = 0;
-    private double frequency=-1;
+    private int frequency=-1;
 
-    public double getFrequency() {
+    public int getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(double frequency) {
+    public void setFrequency(int frequency) {
         this.frequency = frequency;
     }
     
@@ -97,6 +97,9 @@ public class OSRecordMap implements Cloneable, Serializable {
 
     public OSRecord getOSRecord(String key) throws Exception {
         OSRecord record = null;
+        if(cache==null){
+            cache=new ArrayList<>();
+        }
         if (fastAccessMap.containsKey(key)) {
             hit++;
             return fastAccessMap.get(key);

@@ -77,6 +77,10 @@ public class ProjectModel implements Cloneable, Serializable {
         this.cubes = cubes;
     }
 
+    public CurrentData getCurrentData(int index) throws Exception {
+        return this.getCurrentData(currentDataList.get(index));
+    }
+    
     public CurrentData getCurrentData(String label) throws Exception {
         System.out.println("label="+label);
         initAngleIndexThetaPhiMap();

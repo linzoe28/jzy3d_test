@@ -282,6 +282,7 @@ public class Read_data {
                 new Complex(Double.valueOf(oSRecord.getReC3Y()), Double.valueOf(oSRecord.getImC3Y())),
                 new Complex(Double.valueOf(oSRecord.getReC3Z()), Double.valueOf(oSRecord.getImC3Z()))
         ));
+        mesh.setOsRecordKey(oSRecord.getKey());
     }
     
     public void applyOStoMeshes(Map<String, List<MeshOSMatchingEntry>> fuzzyKeyMatchingMap, OSRecordMap osRecordsMap) {
@@ -302,7 +303,7 @@ public class Read_data {
                             applyOSRecord2Mesh(entry.getMesh(), osRecord);
                             tobeRemoved = entry;
                             index++;
-//                            System.out.println(index+"/"+osRecordsMap.getKey2FileNameMap().size());
+                            //System.out.println(index+"/"+osRecordsMap.getKey2FileNameMap().size());
                             break;
                         }
                     }
@@ -331,7 +332,7 @@ public class Read_data {
                 for(MeshOSMatchingEntry entry : entries){
                     if(entry.getBestOSRecord()!=null){
                         index++;
-                        System.out.println(index+"/"+osRecordsMap.getKey2FileNameMap().size());
+//                        System.out.println(index+"/"+osRecordsMap.getKey2FileNameMap().size());
                         applyOSRecord2Mesh(entry.getMesh(), entry.getBestOSRecord());
                     }else{
                         System.out.println("fail on "+entry.getMesh());

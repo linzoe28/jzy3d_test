@@ -5,17 +5,11 @@
  */
 package jzy_3d_sample;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import jzy_3d_sample.datafactory.Read_data;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,7 +26,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -54,19 +47,18 @@ import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
 import jzy_3d_sample.model.Vertex;
 import jzy_3d_sample.model.VertexCurrent;
+import jzy_3d_sample.model.os.OSRecord;
 import jzy_3d_sample.model.serialized.CurrentData;
 import jzy_3d_sample.model.serialized.ProjectModel;
 import jzy_3d_sample.ui.AnglePanelController;
+import jzy_3d_sample.ui.AngleSelectionHandler;
 import jzy_3d_sample.ui.BackgroundRunner;
-import jzy_3d_sample.ui.FileOpenController;
 import jzy_3d_sample.ui.FileOpenObjController;
 import jzy_3d_sample.ui.LegendController;
 import jzy_3d_sample.ui.RCSvalueController;
 import jzy_3d_sample.ui.RainbowColorPainter;
 import jzy_3d_sample.ui.RcslistController;
-import jzy_3d_sample.ui.SlicecubeController;
 import jzy_3d_sample.ui.SouthpanelController;
-import jzy_3d_sample.ui.SubCubesColorPainter;
 import jzy_3d_sample.ui.ZoomPanelController;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.complex.Complex;
@@ -77,7 +69,7 @@ import org.jzy3d.plot3d.primitives.Point;
  *
  * @author user
  */
-public class Main extends Application {
+public class Main extends Application implements AngleSelectionHandler {
 
     private static final boolean TEST = false;
     private List<Mesh> meshs = null;
@@ -171,7 +163,7 @@ public class Main extends Application {
                                         if (angle == 0) {
                                             try {
                                                 CurrentData cd = renderModel.getProjectModel().getCurrentData("angle" + (angle));
-//                                                System.out.println("rcs length="+cd.getRcs().length);
+                                                System.out.println("cd.getRcs().length=" + cd.getRcs().length);
                                                 for (int i = 0; angle == 0 && i < cd.getRcs().length - 1; i++) {
                                                     subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
                                                 }
@@ -372,6 +364,7 @@ public class Main extends Application {
             FXMLLoader anglepanelFXMLLoader = new FXMLLoader(getClass().getResource("/fxml/anglepanel.fxml"));
             AnchorPane anglepanelRoot = (AnchorPane) anglepanelFXMLLoader.load();
             anglePanelController = anglepanelFXMLLoader.getController();
+            anglePanelController.setAngleSelectionHandler(this);
             container.setLeft(anglepanelRoot);
 
             FXMLLoader southpanelFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/southpanel.fxml"));
@@ -513,4 +506,41 @@ public class Main extends Application {
         launch(args);
     }
 
+    @Override
+    public void angleSelectionChanged(int index) {
+        try {
+            CurrentData cd = this.renderModel.getProjectModel().getCurrentData(index);
+            cd.getOsRecordsMap().setHomeFolder(this.renderModel.getProjectModel().getHomeFolder());
+            //set rcs to cubes
+            for (int i = 0; i < cd.getRcs().length - 1; i++) {
+                subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
+            }
+            this.RCSTotal=""+cd.getRcsTotal();
+//            System.out.println(this.RCSTotal);
+            southpanelController.setTextBeforeValue(RCSTotal);
+            //set current to meshes
+            for (Mesh mesh : this.meshs) {
+                String osRecordKey = mesh.getOsRecordKey();
+                OSRecord oSRecord = cd.getOsRecordsMap().get(osRecordKey);
+                mesh.setCurrent(mesh.getVertices()[0], new VertexCurrent(
+                        new Complex(Double.valueOf(oSRecord.getReC1X()), Double.valueOf(oSRecord.getImC1X())),
+                        new Complex(Double.valueOf(oSRecord.getReC1Y()), Double.valueOf(oSRecord.getImC1Y())),
+                        new Complex(Double.valueOf(oSRecord.getReC1Z()), Double.valueOf(oSRecord.getImC1Z()))
+                ));
+                mesh.setCurrent(mesh.getVertices()[1], new VertexCurrent(
+                        new Complex(Double.valueOf(oSRecord.getReC2X()), Double.valueOf(oSRecord.getImC2X())),
+                        new Complex(Double.valueOf(oSRecord.getReC2Y()), Double.valueOf(oSRecord.getImC2Y())),
+                        new Complex(Double.valueOf(oSRecord.getReC2Z()), Double.valueOf(oSRecord.getImC2Z()))
+                ));
+                mesh.setCurrent(mesh.getVertices()[2], new VertexCurrent(
+                        new Complex(Double.valueOf(oSRecord.getReC3X()), Double.valueOf(oSRecord.getImC3X())),
+                        new Complex(Double.valueOf(oSRecord.getReC3Y()), Double.valueOf(oSRecord.getImC3Y())),
+                        new Complex(Double.valueOf(oSRecord.getReC3Z()), Double.valueOf(oSRecord.getImC3Z()))
+                ));
+            }
+            //reset UI
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

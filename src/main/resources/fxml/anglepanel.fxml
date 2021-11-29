@@ -8,7 +8,7 @@
    <children>
       <TitledPane text="全域角度切換" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <content>
-            <ListView fx:id="anglelist" />
+            <ListView fx:id="anglelist" onMouseClicked="#onAnglelistClicked" />
          </content>
       </TitledPane>
    </children>

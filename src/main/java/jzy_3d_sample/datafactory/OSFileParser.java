@@ -52,8 +52,8 @@ public class OSFileParser {
             while ((line = input.readLine()) != null) {
                 line = line.trim();
                 if(line.startsWith("#Frequency:")){
-                    String [] frequencyRecord=line.split(" +");
-                    double frequency=(Double.valueOf(frequencyRecord[1])/1000000);
+                    String [] row=line.split(" +");
+                    int frequency=(int)(Double.valueOf(row[1])/1000000);
                     oSRecordMap.setFrequency(frequency);
                 }
                 else if (line.length() > 0 && line.startsWith("#") == false && line.startsWith("*") == false) {
