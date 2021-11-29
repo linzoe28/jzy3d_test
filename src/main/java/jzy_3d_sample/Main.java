@@ -171,12 +171,13 @@ public class Main extends Application {
                                         if (angle == 0) {
                                             try {
                                                 CurrentData cd = renderModel.getProjectModel().getCurrentData("angle" + (angle));
+//                                                System.out.println("rcs length="+cd.getRcs().length);
                                                 for (int i = 0; angle == 0 && i < cd.getRcs().length - 1; i++) {
                                                     subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
                                                 }
                                                 //設定RCS總值
                                                 RCSTotal = "" + cd.getRcsTotal();
-                                                System.out.println(RCSTotal);
+//                                                System.out.println(RCSTotal);
 
                                             } catch (Exception ex) {
                                                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
