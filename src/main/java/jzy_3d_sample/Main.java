@@ -155,7 +155,6 @@ public class Main extends Application implements AngleSelectionHandler {
                                     angleList = FXCollections.observableArrayList();
                                     int angle = 0;
                                     for (String currentData : renderModel.getProjectModel().getCurrentDataList()) {
-//                                System.out.println("processing current data: " + angle);
                                         angleList.add(currentData);
 
                                         //處理讀進來的 rcs 清單
@@ -196,13 +195,7 @@ public class Main extends Application implements AngleSelectionHandler {
                                     anglePanelController.getAnglelist().setItems(angleList);
                                     //顯示RCSTotal
                                     southpanelController.setTextBeforeValue(RCSTotal);
-                                    //設定Slider值
-                                    List<Cube> Cubes = rCSvalueController.sortCube(subCubes);
-                                    rCSvalueController.setSlidermax(Cubes.get(Cubes.size() - 1).getRcs());
-                                    rCSvalueController.setSlidermin(Cubes.get(0).getRcs());
-                                    rCSvalueController.setSlidervalue(Cubes.get(0).getRcs());
-                                    double majortick = ((Cubes.get(Cubes.size() - 1).getRcs()) - (Cubes.get(0).getRcs())) / 20;
-                                    rCSvalueController.setSliderMajorTickUnit(majortick);
+                                    resetSlider();
                                     rCSvalueController.getTo_db_check().setOnAction(new EventHandler<ActionEvent>() {
                                         @Override
                                         public void handle(ActionEvent event) {
@@ -218,6 +211,7 @@ public class Main extends Application implements AngleSelectionHandler {
                                     });
 
                                 }
+
                             }.start();
 
                         }
@@ -507,40 +501,73 @@ public class Main extends Application implements AngleSelectionHandler {
     }
 
     @Override
-    public void angleSelectionChanged(int index) {
+    public void angleSelectionChanged(final int index) {
         try {
-            CurrentData cd = this.renderModel.getProjectModel().getCurrentData(index);
-            cd.getOsRecordsMap().setHomeFolder(this.renderModel.getProjectModel().getHomeFolder());
-            //set rcs to cubes
-            for (int i = 0; i < cd.getRcs().length - 1; i++) {
-                subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
-            }
-            this.RCSTotal=""+cd.getRcsTotal();
-//            System.out.println(this.RCSTotal);
-            southpanelController.setTextBeforeValue(RCSTotal);
-            //set current to meshes
-            for (Mesh mesh : this.meshs) {
-                String osRecordKey = mesh.getOsRecordKey();
-                OSRecord oSRecord = cd.getOsRecordsMap().get(osRecordKey);
-                mesh.setCurrent(mesh.getVertices()[0], new VertexCurrent(
-                        new Complex(Double.valueOf(oSRecord.getReC1X()), Double.valueOf(oSRecord.getImC1X())),
-                        new Complex(Double.valueOf(oSRecord.getReC1Y()), Double.valueOf(oSRecord.getImC1Y())),
-                        new Complex(Double.valueOf(oSRecord.getReC1Z()), Double.valueOf(oSRecord.getImC1Z()))
-                ));
-                mesh.setCurrent(mesh.getVertices()[1], new VertexCurrent(
-                        new Complex(Double.valueOf(oSRecord.getReC2X()), Double.valueOf(oSRecord.getImC2X())),
-                        new Complex(Double.valueOf(oSRecord.getReC2Y()), Double.valueOf(oSRecord.getImC2Y())),
-                        new Complex(Double.valueOf(oSRecord.getReC2Z()), Double.valueOf(oSRecord.getImC2Z()))
-                ));
-                mesh.setCurrent(mesh.getVertices()[2], new VertexCurrent(
-                        new Complex(Double.valueOf(oSRecord.getReC3X()), Double.valueOf(oSRecord.getImC3X())),
-                        new Complex(Double.valueOf(oSRecord.getReC3Y()), Double.valueOf(oSRecord.getImC3Y())),
-                        new Complex(Double.valueOf(oSRecord.getReC3Z()), Double.valueOf(oSRecord.getImC3Z()))
-                ));
-            }
-            //reset UI
+            new BackgroundRunner(southpanelController) {
+                @Override
+                public void runBeforeWorkerThread() {
+                    southpanelController.setStatus("Load angel......");
+                }
+
+                @Override
+                public void runInWorkerThread() {
+                    try {
+                        CurrentData cd = renderModel.getProjectModel().getCurrentData(index);
+                        cd.getOsRecordsMap().setHomeFolder(renderModel.getProjectModel().getHomeFolder());
+                        //set rcs to cubes
+                        for (int i = 0; i < cd.getRcs().length - 1; i++) {
+                            subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
+                        }
+                        RCSTotal = "" + cd.getRcsTotal();
+                        southpanelController.setTextBeforeValue(RCSTotal);
+                        //set current to meshes
+                        for (Mesh mesh : meshs) {
+                            String osRecordKey = mesh.getOsRecordKey();
+                            OSRecord oSRecord = cd.getOsRecordsMap().get(osRecordKey);
+                            mesh.setCurrent(mesh.getVertices()[0], new VertexCurrent(
+                                    new Complex(Double.valueOf(oSRecord.getReC1X()), Double.valueOf(oSRecord.getImC1X())),
+                                    new Complex(Double.valueOf(oSRecord.getReC1Y()), Double.valueOf(oSRecord.getImC1Y())),
+                                    new Complex(Double.valueOf(oSRecord.getReC1Z()), Double.valueOf(oSRecord.getImC1Z()))
+                            ));
+                            mesh.setCurrent(mesh.getVertices()[1], new VertexCurrent(
+                                    new Complex(Double.valueOf(oSRecord.getReC2X()), Double.valueOf(oSRecord.getImC2X())),
+                                    new Complex(Double.valueOf(oSRecord.getReC2Y()), Double.valueOf(oSRecord.getImC2Y())),
+                                    new Complex(Double.valueOf(oSRecord.getReC2Z()), Double.valueOf(oSRecord.getImC2Z()))
+                            ));
+                            mesh.setCurrent(mesh.getVertices()[2], new VertexCurrent(
+                                    new Complex(Double.valueOf(oSRecord.getReC3X()), Double.valueOf(oSRecord.getImC3X())),
+                                    new Complex(Double.valueOf(oSRecord.getReC3Y()), Double.valueOf(oSRecord.getImC3Y())),
+                                    new Complex(Double.valueOf(oSRecord.getReC3Z()), Double.valueOf(oSRecord.getImC3Z()))
+                            ));
+                        }
+                    } catch (Exception ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                @Override
+                public void runInUIThread() {
+                    //reset UI
+                    resetSlider();
+                    resetColor(0);
+                    renderModel.repaint();
+                    rCSvalueController.repaint();
+                    southpanelController.setStatus("Done");
+                }
+            }.start();
+
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void resetSlider() {
+        //設定Slider值
+        List<Cube> Cubes = rCSvalueController.sortCube(subCubes);
+        rCSvalueController.setSlidermax(Cubes.get(Cubes.size() - 1).getRcs());
+        rCSvalueController.setSlidermin(Cubes.get(0).getRcs());
+        rCSvalueController.setSlidervalue(Cubes.get(0).getRcs());
+        double majortick = ((Cubes.get(Cubes.size() - 1).getRcs()) - (Cubes.get(0).getRcs())) / 20;
+        rCSvalueController.setSliderMajorTickUnit(majortick);
     }
 }
