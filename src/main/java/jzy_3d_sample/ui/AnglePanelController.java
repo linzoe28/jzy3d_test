@@ -1,11 +1,12 @@
 package jzy_3d_sample.ui;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
 
 public class AnglePanelController {
-    private AngleSelectionHandler angleSelectionHandler=null;
+
+    private AngleSelectionHandler angleSelectionHandler = null;
 
     @FXML
     private ListView<?> anglelist;
@@ -21,13 +22,11 @@ public class AnglePanelController {
     public void setAngleSelectionHandler(AngleSelectionHandler angleSelectionHandler) {
         this.angleSelectionHandler = angleSelectionHandler;
     }
-    
-    
-    
+
     @FXML
-    void onAnglelistClicked(MouseEvent event) {
+    void onShowButtonClicked(ActionEvent event) {
         System.out.println(anglelist.getSelectionModel().getSelectedIndex());
-        if(this.angleSelectionHandler!=null){
+        if (this.angleSelectionHandler != null) {
             this.angleSelectionHandler.angleSelectionChanged(anglelist.getSelectionModel().getSelectedIndex());
         }
     }

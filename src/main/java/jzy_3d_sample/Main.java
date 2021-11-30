@@ -14,12 +14,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,7 +50,6 @@ import jzy_3d_sample.model.Vertex;
 import jzy_3d_sample.model.VertexCurrent;
 import jzy_3d_sample.model.os.OSRecord;
 import jzy_3d_sample.model.serialized.CurrentData;
-import jzy_3d_sample.model.serialized.ProjectModel;
 import jzy_3d_sample.ui.AnglePanelController;
 import jzy_3d_sample.ui.AngleSelectionHandler;
 import jzy_3d_sample.ui.BackgroundRunner;
@@ -72,11 +72,11 @@ import org.jzy3d.plot3d.primitives.Point;
 public class Main extends Application implements AngleSelectionHandler {
 
     private static final boolean TEST = false;
-    private List<Mesh> meshs = null;
+    private List<Mesh> meshs = new ArrayList<>();
     private RenderModel renderModel = null;
     private Scene scene = null;
     private BorderPane container = null;
-    private List<Cube> subCubes = null;
+    private List<Cube> subCubes = new ArrayList<>();
     File subCubeRoot = null;
     VBox colorLegend = null;
     FXMLLoader legendloader = null;
@@ -86,6 +86,8 @@ public class Main extends Application implements AngleSelectionHandler {
     private ZoomPanelController zoomPanelController = null;
     private AnglePanelController anglePanelController = null;
     private Point extremeValuePoint = null;
+    private Map<Integer, Double> angle2RcsThreshold=new HashMap<>();//store selected angle to rcs threshold
+    private int currentAngleIndex=0;
 
     private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
         this.meshs = meshs;
@@ -95,6 +97,7 @@ public class Main extends Application implements AngleSelectionHandler {
 
     private RenderModel loadRenderModel(Stage primaryStage, File savedFile) {
         try {
+            subCubeRoot=savedFile;
             this.renderModel = new RenderModel(scene, primaryStage, savedFile);
             this.meshs = renderModel.getProjectModel().getMeshes();
             subCubes = renderModel.getProjectModel().getCubes();
@@ -117,8 +120,9 @@ public class Main extends Application implements AngleSelectionHandler {
             MenuItem fileOpenObjItem = new MenuItem("Open Obj");
             fileMenu.getItems().add(fileOpenObjItem);
             MenuItem fileRCSMenuItem = new MenuItem("RCS資料輸入");
-            fileMenu.getItems().add(fileRCSMenuItem);
+            //fileMenu.getItems().add(fileRCSMenuItem);
             MenuItem researchMenuItem = new MenuItem("研改輸出");
+//            researchMenuItem.setDisable(true);
             fileMenu.getItems().add(researchMenuItem);
             fileMenu.getItems().add(new SeparatorMenuItem());
             MenuItem fileExitMenuItem = new MenuItem("Exit");
@@ -128,6 +132,11 @@ public class Main extends Application implements AngleSelectionHandler {
                 @Override
                 public void handle(ActionEvent t) {
                     try {
+                        angle2RcsThreshold.clear();
+                        subCubes.clear();
+                        meshs.clear();
+                        currentAngleIndex=0;
+                        
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/fileopen_obj.fxml"));
                         Parent root1 = (Parent) fxmlLoader.load();
                         FileOpenObjController fileOpenObjController = fxmlLoader.getController();
@@ -162,7 +171,7 @@ public class Main extends Application implements AngleSelectionHandler {
                                         if (angle == 0) {
                                             try {
                                                 CurrentData cd = renderModel.getProjectModel().getCurrentData("angle" + (angle));
-                                                System.out.println("cd.getRcs().length=" + cd.getRcs().length);
+//                                                System.out.println("cd.getRcs().length=" + cd.getRcs().length);
                                                 for (int i = 0; angle == 0 && i < cd.getRcs().length - 1; i++) {
                                                     subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
                                                 }
@@ -255,7 +264,7 @@ public class Main extends Application implements AngleSelectionHandler {
                                 researchFile = new File("research_" + subCubeRoot.getName());
                                 FileUtils.deleteDirectory(researchFile);
                                 FileUtils.forceMkdir(researchFile);
-                                researchFile = new File(researchFile, "0");
+                                researchFile = new File(researchFile, renderModel.getProjectModel().getCurrentDataList(false).get(currentAngleIndex).replace(',', '_'));
                                 FileUtils.forceMkdir(researchFile);
                                 FastN2fWriter.writeTriFile(rmeshs, new File(researchFile, "0.tri"));
                                 FastN2fWriter.writeCurMFile(rmeshs, new File(researchFile, "0.curM"));
@@ -294,7 +303,7 @@ public class Main extends Application implements AngleSelectionHandler {
 
             BorderPane menuBarContainer = new BorderPane();
             menuBarContainer.setTop(menuBar);
-            scene = new Scene(menuBarContainer, 800, 600);
+            scene = new Scene(menuBarContainer, 1100, 768);
             container = new BorderPane();
             menuBarContainer.setCenter(container);
 
@@ -344,6 +353,7 @@ public class Main extends Application implements AngleSelectionHandler {
                 @Override
                 public void handle(ActionEvent event) {
                     double threshold = Double.valueOf(rCSvalueController.getThreshold());
+                    angle2RcsThreshold.put(currentAngleIndex, threshold);
                     resetColor(threshold);
                     double sum = 0;
                     for (Cube cube : subCubes) {
@@ -381,58 +391,6 @@ public class Main extends Application implements AngleSelectionHandler {
             rightToolBarContainer.getChildren().addAll(colorLegend, zoomPanelRoot);
             primaryStage.setTitle("CS");
             primaryStage.setScene(scene);
-            if (TEST) {
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        ProjectModel projectModel = null;
-                        try {
-                            long start = System.currentTimeMillis();
-                            File testObjFile = new File("C:\\Users\\70938\\Desktop\\test\\cubes.obj");
-                            if (testObjFile.exists()) {
-                                System.out.println("read from serializable");
-//                                ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(testObjFile)));
-//                                projectModel= (ProjectModel) objectInputStream.readObject();
-//                                subCubes = projectModel.getCubes();
-//                                objectInputStream.close();
-//                                meshs = new ArrayList<>();
-//                                System.out.println("read from serializable");
-//                                for (Cube cube : subCubes) {
-////                                    meshs.addAll(cube.getClonedMeshs());
-//                                      meshs.addAll(cube.getMeshs());
-//                                }
-//                                for (Mesh m : meshs) {
-//                                    for (Vertex v : m.getVertices()) {
-//                                        m.add(v);
-//                                    }
-//                                }
-                                renderModel = loadRenderModel(primaryStage, testObjFile);
-                            } else {
-                                meshs = r.getdata_from_nas(new File("./sample/missile_cone_test/missile_cone_test.nas"), new File("./sample/missile_cone_test/missile_cone_test.os"));
-                                renderModel = loadRenderModel(primaryStage, meshs);
-                                System.out.println("read from source");
-                            }
-                            long ok = System.currentTimeMillis();
-                            System.out.println(ok - start);
-                            subCubeRoot = new File(new File("./sample/missile_cone_test/missile_cone_test.nas").getName());
-                            zoomPanelController.setRenderModel(renderModel);
-                            ScrollPane scrollPane = new ScrollPane();
-                            container.setCenter(scrollPane);
-
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    scrollPane.setContent(renderModel.getView());
-
-                                    renderModel.repaint();
-                                }
-                            });
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                });
-            }
 
             primaryStage.show();
 
@@ -447,14 +405,7 @@ public class Main extends Application implements AngleSelectionHandler {
             renderModel.getChart().getScene().remove(extremeValuePoint);
         }
         List<Cube> colorCubes = new ArrayList<>(subCubes);
-//        for (Cube c : colorCubes) {
-//            if (c.getRcs() != 0) {
-//                System.out.println(c.getRcs());
-//            }
-//        }
-//        System.out.println("MIN" + colorCubes.get(0).getRcs() + ",MAX" + colorCubes.get(colorCubes.size() - 1).getRcs());
         double gap = (rcsThreshold - colorCubes.get(0).getRcs()) / 5;
-//        System.out.println("gap" + gap);
         LegendController legendController = legendloader.getController();
         legendController.getRedValue().setText(String.format("%06.3f", rcsThreshold));
         legendController.getoValue().setText(String.format("%06.3f", rcsThreshold - gap));
@@ -462,7 +413,6 @@ public class Main extends Application implements AngleSelectionHandler {
         legendController.getgValue().setText(String.format("%06.3f", rcsThreshold - 3 * gap));
         legendController.getbValue().setText(String.format("%06.3f", rcsThreshold - 4 * gap));
         legendController.getbValue1().setText(String.format("%06.3f", rcsThreshold - 5 * gap));
-//        System.out.println(Arrays.deepToString(colors));
         RainbowColorPainter painter = new RainbowColorPainter(rcsThreshold, gap);
         for (int i = 0; i < colorCubes.size(); i++) {
             Cube c = colorCubes.get(i);
@@ -506,7 +456,7 @@ public class Main extends Application implements AngleSelectionHandler {
             new BackgroundRunner(southpanelController) {
                 @Override
                 public void runBeforeWorkerThread() {
-                    southpanelController.setStatus("Load angel......");
+                    southpanelController.setStatus("Loading angle "+index+"......");
                 }
 
                 @Override
@@ -515,6 +465,7 @@ public class Main extends Application implements AngleSelectionHandler {
                         CurrentData cd = renderModel.getProjectModel().getCurrentData(index);
                         cd.getOsRecordsMap().setHomeFolder(renderModel.getProjectModel().getHomeFolder());
                         //set rcs to cubes
+//                        System.out.println(Arrays.toString(cd.getRcs()));
                         for (int i = 0; i < cd.getRcs().length - 1; i++) {
                             subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
                         }
@@ -549,7 +500,14 @@ public class Main extends Application implements AngleSelectionHandler {
                 public void runInUIThread() {
                     //reset UI
                     resetSlider();
-                    resetColor(0);
+                    currentAngleIndex=index;
+                    if(angle2RcsThreshold.containsKey(currentAngleIndex)){
+                        double threshold=angle2RcsThreshold.get(currentAngleIndex);
+                        resetColor(threshold);
+                        rCSvalueController.setThreshold(threshold);
+                    }else{
+                        resetColor(0);
+                    }
                     renderModel.repaint();
                     rCSvalueController.repaint();
                     southpanelController.setStatus("Done");

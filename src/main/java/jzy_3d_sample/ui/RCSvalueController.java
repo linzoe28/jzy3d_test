@@ -67,7 +67,7 @@ public class RCSvalueController {
             @Override
             public Double fromString(String string) {
                 if (!to_db_check.isSelected()) {
-                    return Math.pow(10, Double.valueOf(string));
+                    return Math.pow(10, Double.valueOf(string)/10);
                 } else {
                     return Double.valueOf(string);
                 }
@@ -110,6 +110,10 @@ public class RCSvalueController {
     public double getThreshold() {
         return sliderRCS.getValue();
     }
+    
+    public void setThreshold(double  threshold) {
+        this.sliderRCS.setValue(threshold);
+    }
 
     public boolean get_to_db_checkisOK() {
         return to_db_check.isSelected();
@@ -119,7 +123,7 @@ public class RCSvalueController {
         if (value == 0) {
             return 0;
         }
-        double dbvalue = Math.log10(value);
+        double dbvalue = 10 * Math.log10(value);
         return dbvalue;
     }
 
