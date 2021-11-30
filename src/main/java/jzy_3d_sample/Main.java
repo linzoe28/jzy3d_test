@@ -307,44 +307,6 @@ public class Main extends Application implements AngleSelectionHandler {
             container = new BorderPane();
             menuBarContainer.setCenter(container);
 
-            fileRCSMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rcslist.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        RcslistController rcslistController = fxmlLoader.getController();
-                        Stage stage = new Stage();
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.initStyle(StageStyle.UTILITY);
-                        stage.setTitle("Paste RCS Values......");
-                        stage.setScene(new Scene(root1));
-                        stage.showAndWait();
-                        ArrayList<String> rcsList = new ArrayList<>();
-                        if (rcslistController.isOk()) {
-                            FileReader fileReader = new FileReader(rcslistController.getRCSFile());
-                            BufferedReader br = new BufferedReader(fileReader);
-                            while (br.ready()) {
-                                rcsList.add(br.readLine());
-                            }
-                            //處理讀進來的 rcs 清單
-                            for (int i = 0; i < rcsList.size() - 1; i++) {
-                                subCubes.get(i).setRcs(Double.valueOf(rcsList.get(i)));
-                            }
-                            RCSTotal = rcsList.get(rcsList.size() - 1);
-                            southpanelController.setTextBeforeValue(RCSTotal);
-                            rCSvalueController.sortCube(subCubes);
-                            resetColor(Double.valueOf(rCSvalueController.getThreshold()));
-                            colorLegend.setPrefWidth(63);
-                            colorLegend.setVisible(true);
-                            renderModel.repaint();
-                        }
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            });
-
             FXMLLoader rcsvalueFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rcsvaluepanel.fxml"));
             AnchorPane rcsvalueRoot = (AnchorPane) rcsvalueFxmlLoader.load();
             rCSvalueController = rcsvalueFxmlLoader.getController();
