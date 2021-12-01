@@ -307,7 +307,11 @@ private void init() {
         chart.getView().shoot();
         chart.getView().computeScaledViewBounds();
     }
-
+    
+    public void changeView(Coord3d c){
+        chart.setViewPoint(c);
+    }
+    
     public void repaint() {
         Platform.runLater(new Runnable() {
 

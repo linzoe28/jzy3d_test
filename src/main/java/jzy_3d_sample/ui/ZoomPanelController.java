@@ -12,6 +12,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import jzy_3d_sample.model.RenderModel;
 import org.jzy3d.maths.BoundingBox3d;
+import org.jzy3d.maths.Coord3d;
 
 /**
  *
@@ -31,7 +32,23 @@ public class ZoomPanelController {
     @FXML
     private Slider zSlider;
 
+    @FXML
+    private Button forwordViewButton;
 
+    @FXML
+    private Button leftViewButton;
+
+    @FXML
+    private Button rightViewButton;
+
+    @FXML
+    private Button downViewButton;
+
+    @FXML
+    private Button upViewButton;
+
+    @FXML
+    private Button backViewButton;
     
     private RenderModel renderModel=null;
 
@@ -104,6 +121,37 @@ public class ZoomPanelController {
     void zSliderMove(MouseEvent event) {
         renderModel.move((float)xSlider.getValue()/100, (float)ySlider.getValue()/100, (float)zSlider.getValue()/100);
         renderModel.repaint();
+    }
+    
+    @FXML
+    void backViewButtonclick(ActionEvent event) {
+        renderModel.changeView(new Coord3d(Math.PI, 0, 0));
+    }
+
+    @FXML
+    void downViewButtonclick(ActionEvent event) {
+        renderModel.changeView(new Coord3d(0, -Math.PI/2, 0));
+    }
+
+    @FXML
+    void forwordViewButtonclick(ActionEvent event) {
+        renderModel.changeView(new Coord3d(0, 0, 0));
+    }
+
+    @FXML
+    void leftViewButtonclick(ActionEvent event) {
+        renderModel.changeView(new Coord3d(-Math.PI/2, 0, 0));
+    }
+
+
+    @FXML
+    void rightViewButtonclick(ActionEvent event) {
+        renderModel.changeView(new Coord3d(Math.PI/2, 0, 0));
+    }
+
+    @FXML
+    void upViewButtonclick(ActionEvent event) {
+        renderModel.changeView(new Coord3d(0, Math.PI/2, 0));
     }
     
     
