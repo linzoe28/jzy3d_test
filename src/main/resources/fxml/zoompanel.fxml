@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.ZoomPanelController">
+   <children>
+      <TitledPane text="載具視角設定">
+         <content>
+            <VBox alignment="CENTER">
+               <children>
+                  <Label text="Zoom" textAlignment="CENTER">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Slider fx:id="zoomSlider" blockIncrement="1.0" majorTickUnit="7.0" max="16.0" min="1.0" minorTickCount="6" onMouseReleased="#onZoomClicked" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Slider>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="200.0">
+                           <children>
+                              <Label text="X" />
+                              <Slider blockIncrement="1.0" majorTickUnit="20.0" minorTickCount="20" onMouseReleased="#xSliderMove" orientation="VERTICAL" prefHeight="200.0" showTickLabels="true" showTickMarks="true" value="50.0" fx:id="xSlider" />
+                           </children>
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox prefHeight="200.0">
+                           <children>
+                              <Label text="Y" />
+                              <Slider fx:id="ySlider" blockIncrement="1.0" majorTickUnit="20.0" minorTickCount="20" onMouseReleased="#ySliderMove" orientation="VERTICAL" prefHeight="200.0" showTickLabels="true" showTickMarks="true" value="50.0">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </Slider>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox prefHeight="200.0">
+                           <children>
+                              <Label text="Z" />
+                              <Slider fx:id="zSlider" blockIncrement="1.0" majorTickUnit="20.0" minorTickCount="20" onMouseReleased="#zSliderMove" orientation="VERTICAL" prefHeight="200.0" showTickLabels="true" showTickMarks="true" value="50.0">
+                                 <VBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </Slider>
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </VBox>
+         </content>
+      </TitledPane>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</AnchorPane>

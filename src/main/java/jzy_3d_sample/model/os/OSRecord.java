@@ -5,22 +5,57 @@
  */
 package jzy_3d_sample.model.os;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Map;
+
 /**
  *
  * @author lendle
  */
-public class OSRecord {
-
+public class OSRecord implements Cloneable, Serializable{
+    private static final long serialVersionUID = -1636927109633279805L;
     private String num = null;
     private String key=null;
+    private String fuzzyKey=null;
     private String reC1X = null, reC2X = null, reC3X = null;
     private String imC1X = null, imC2X = null, imC3X = null;
     private String reC1Y = null, reC2Y = null, reC3Y = null;
     private String imC1Y = null, imC2Y = null, imC3Y = null;
     private String reC1Z = null, reC2Z = null, reC3Z = null;
     private String imC1Z = null, imC2Z = null, imC3Z = null;
+    private String row=null;
     private double x=-1, y=-1, z=-1;
 
+    public String getRow() {
+        return row;
+    }
+
+    public void setRow(String row) {
+        this.row = row;
+    }
+
+    
+    
+    public static void serialize2File(Map<String, OSRecord> osRecords, File file) throws Exception{
+        try(ObjectOutputStream output=new ObjectOutputStream(new FileOutputStream(file))){
+            output.writeObject(osRecords);
+            output.flush();
+        }
+    }
+
+    public String getFuzzyKey() {
+        return fuzzyKey;
+    }
+
+    public void setFuzzyKey(String fuzzyKey) {
+        this.fuzzyKey = fuzzyKey;
+    }
+    
+    
+    
     public double getX() {
         return x;
     }

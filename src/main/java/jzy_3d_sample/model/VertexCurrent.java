@@ -5,14 +5,15 @@
  */
 package jzy_3d_sample.model;
 
+import java.io.Serializable;
 import org.apache.commons.math3.complex.Complex;
 
 /**
  *
  * @author lendle
  */
-public class VertexCurrent implements Cloneable{
-
+public class VertexCurrent implements Cloneable, Serializable{
+    private static final long serialVersionUID = -1636927109633279805L;
     private Complex x, y, z = null;
 
     public VertexCurrent(Complex x, Complex y, Complex z) {

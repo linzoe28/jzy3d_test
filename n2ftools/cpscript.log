@@ -1,0 +1,858 @@
+Your Number of Subspace: 8
+Your Operating Frequency(MHz): 10000
+Root Directory: /home/lendle/remote_dir/Missile_delta90_output/angle14
+Reading 0 ... 
+numNodes = 206665
+numAbcTri = 405345
+Reading 0.curJ ... 
+Loading ... 0.curJ
+Done loading 0.curJ. First order.
+Reading 0.curM ... 
+Loading ... 0.curM
+Done loading 0.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 618
+group = 5 / 618
+group = 10 / 618
+group = 15 / 618
+group = 20 / 618
+group = 25 / 618
+group = 30 / 618
+group = 35 / 618
+group = 40 / 618
+group = 45 / 618
+group = 50 / 618
+group = 55 / 618
+group = 60 / 618
+group = 65 / 618
+group = 70 / 618
+group = 75 / 618
+group = 80 / 618
+group = 85 / 618
+group = 90 / 618
+group = 95 / 618
+group = 100 / 618
+group = 105 / 618
+group = 110 / 618
+group = 115 / 618
+group = 120 / 618
+group = 125 / 618
+group = 130 / 618
+group = 135 / 618
+group = 140 / 618
+group = 145 / 618
+group = 150 / 618
+group = 155 / 618
+group = 160 / 618
+group = 165 / 618
+group = 170 / 618
+group = 175 / 618
+group = 180 / 618
+group = 185 / 618
+group = 190 / 618
+group = 195 / 618
+group = 200 / 618
+group = 205 / 618
+group = 210 / 618
+group = 215 / 618
+group = 220 / 618
+group = 225 / 618
+group = 230 / 618
+group = 235 / 618
+group = 240 / 618
+group = 245 / 618
+group = 250 / 618
+group = 255 / 618
+group = 260 / 618
+group = 265 / 618
+group = 270 / 618
+group = 275 / 618
+group = 280 / 618
+group = 285 / 618
+group = 290 / 618
+group = 295 / 618
+group = 300 / 618
+group = 305 / 618
+group = 310 / 618
+group = 315 / 618
+group = 320 / 618
+group = 325 / 618
+group = 330 / 618
+group = 335 / 618
+group = 340 / 618
+group = 345 / 618
+group = 350 / 618
+group = 355 / 618
+group = 360 / 618
+group = 365 / 618
+group = 370 / 618
+group = 375 / 618
+group = 380 / 618
+group = 385 / 618
+group = 390 / 618
+group = 395 / 618
+group = 400 / 618
+group = 405 / 618
+group = 410 / 618
+group = 415 / 618
+group = 420 / 618
+group = 425 / 618
+group = 430 / 618
+group = 435 / 618
+group = 440 / 618
+group = 445 / 618
+group = 450 / 618
+group = 455 / 618
+group = 460 / 618
+group = 465 / 618
+group = 470 / 618
+group = 475 / 618
+group = 480 / 618
+group = 485 / 618
+group = 490 / 618
+group = 495 / 618
+group = 500 / 618
+group = 505 / 618
+group = 510 / 618
+group = 515 / 618
+group = 520 / 618
+group = 525 / 618
+group = 530 / 618
+group = 535 / 618
+group = 540 / 618
+group = 545 / 618
+group = 550 / 618
+group = 555 / 618
+group = 560 / 618
+group = 565 / 618
+group = 570 / 618
+group = 575 / 618
+group = 580 / 618
+group = 585 / 618
+group = 590 / 618
+group = 595 / 618
+group = 600 / 618
+group = 605 / 618
+group = 610 / 618
+group = 615 / 618
+Writing to 0.ap ... 
+Farfield Time(hh:mm:ss) = 2:0:8
+sed: preserving permissions for ‘./sedh8Udhg’: Operation not permitted
+Reading 1 ... 
+numNodes = 53163
+numAbcTri = 100123
+Reading 1.curJ ... 
+Loading ... 1.curJ
+Done loading 1.curJ. First order.
+Reading 1.curM ... 
+Loading ... 1.curM
+Done loading 1.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 285
+group = 5 / 285
+group = 10 / 285
+group = 15 / 285
+group = 20 / 285
+group = 25 / 285
+group = 30 / 285
+group = 35 / 285
+group = 40 / 285
+group = 45 / 285
+group = 50 / 285
+group = 55 / 285
+group = 60 / 285
+group = 65 / 285
+group = 70 / 285
+group = 75 / 285
+group = 80 / 285
+group = 85 / 285
+group = 90 / 285
+group = 95 / 285
+group = 100 / 285
+group = 105 / 285
+group = 110 / 285
+group = 115 / 285
+group = 120 / 285
+group = 125 / 285
+group = 130 / 285
+group = 135 / 285
+group = 140 / 285
+group = 145 / 285
+group = 150 / 285
+group = 155 / 285
+group = 160 / 285
+group = 165 / 285
+group = 170 / 285
+group = 175 / 285
+group = 180 / 285
+group = 185 / 285
+group = 190 / 285
+group = 195 / 285
+group = 200 / 285
+group = 205 / 285
+group = 210 / 285
+group = 215 / 285
+group = 220 / 285
+group = 225 / 285
+group = 230 / 285
+group = 235 / 285
+group = 240 / 285
+group = 245 / 285
+group = 250 / 285
+group = 255 / 285
+group = 260 / 285
+group = 265 / 285
+group = 270 / 285
+group = 275 / 285
+group = 280 / 285
+Writing to 1.ap ... 
+Farfield Time(hh:mm:ss) = 0:11:20
+sed: preserving permissions for ‘./sedOxdquE’: Operation not permitted
+Reading 2 ... 
+numNodes = 207582
+numAbcTri = 407945
+Reading 2.curJ ... 
+Loading ... 2.curJ
+Done loading 2.curJ. First order.
+Reading 2.curM ... 
+Loading ... 2.curM
+Done loading 2.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 611
+group = 5 / 611
+group = 10 / 611
+group = 15 / 611
+group = 20 / 611
+group = 25 / 611
+group = 30 / 611
+group = 35 / 611
+group = 40 / 611
+group = 45 / 611
+group = 50 / 611
+group = 55 / 611
+group = 60 / 611
+group = 65 / 611
+group = 70 / 611
+group = 75 / 611
+group = 80 / 611
+group = 85 / 611
+group = 90 / 611
+group = 95 / 611
+group = 100 / 611
+group = 105 / 611
+group = 110 / 611
+group = 115 / 611
+group = 120 / 611
+group = 125 / 611
+group = 130 / 611
+group = 135 / 611
+group = 140 / 611
+group = 145 / 611
+group = 150 / 611
+group = 155 / 611
+group = 160 / 611
+group = 165 / 611
+group = 170 / 611
+group = 175 / 611
+group = 180 / 611
+group = 185 / 611
+group = 190 / 611
+group = 195 / 611
+group = 200 / 611
+group = 205 / 611
+group = 210 / 611
+group = 215 / 611
+group = 220 / 611
+group = 225 / 611
+group = 230 / 611
+group = 235 / 611
+group = 240 / 611
+group = 245 / 611
+group = 250 / 611
+group = 255 / 611
+group = 260 / 611
+group = 265 / 611
+group = 270 / 611
+group = 275 / 611
+group = 280 / 611
+group = 285 / 611
+group = 290 / 611
+group = 295 / 611
+group = 300 / 611
+group = 305 / 611
+group = 310 / 611
+group = 315 / 611
+group = 320 / 611
+group = 325 / 611
+group = 330 / 611
+group = 335 / 611
+group = 340 / 611
+group = 345 / 611
+group = 350 / 611
+group = 355 / 611
+group = 360 / 611
+group = 365 / 611
+group = 370 / 611
+group = 375 / 611
+group = 380 / 611
+group = 385 / 611
+group = 390 / 611
+group = 395 / 611
+group = 400 / 611
+group = 405 / 611
+group = 410 / 611
+group = 415 / 611
+group = 420 / 611
+group = 425 / 611
+group = 430 / 611
+group = 435 / 611
+group = 440 / 611
+group = 445 / 611
+group = 450 / 611
+group = 455 / 611
+group = 460 / 611
+group = 465 / 611
+group = 470 / 611
+group = 475 / 611
+group = 480 / 611
+group = 485 / 611
+group = 490 / 611
+group = 495 / 611
+group = 500 / 611
+group = 505 / 611
+group = 510 / 611
+group = 515 / 611
+group = 520 / 611
+group = 525 / 611
+group = 530 / 611
+group = 535 / 611
+group = 540 / 611
+group = 545 / 611
+group = 550 / 611
+group = 555 / 611
+group = 560 / 611
+group = 565 / 611
+group = 570 / 611
+group = 575 / 611
+group = 580 / 611
+group = 585 / 611
+group = 590 / 611
+group = 595 / 611
+group = 600 / 611
+group = 605 / 611
+group = 610 / 611
+Writing to 2.ap ... 
+Farfield Time(hh:mm:ss) = 1:12:44
+sed: preserving permissions for ‘./sedcxzl52’: Operation not permitted
+Reading 3 ... 
+numNodes = 53191
+numAbcTri = 100184
+Reading 3.curJ ... 
+Loading ... 3.curJ
+Done loading 3.curJ. First order.
+Reading 3.curM ... 
+Loading ... 3.curM
+Done loading 3.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 283
+group = 5 / 283
+group = 10 / 283
+group = 15 / 283
+group = 20 / 283
+group = 25 / 283
+group = 30 / 283
+group = 35 / 283
+group = 40 / 283
+group = 45 / 283
+group = 50 / 283
+group = 55 / 283
+group = 60 / 283
+group = 65 / 283
+group = 70 / 283
+group = 75 / 283
+group = 80 / 283
+group = 85 / 283
+group = 90 / 283
+group = 95 / 283
+group = 100 / 283
+group = 105 / 283
+group = 110 / 283
+group = 115 / 283
+group = 120 / 283
+group = 125 / 283
+group = 130 / 283
+group = 135 / 283
+group = 140 / 283
+group = 145 / 283
+group = 150 / 283
+group = 155 / 283
+group = 160 / 283
+group = 165 / 283
+group = 170 / 283
+group = 175 / 283
+group = 180 / 283
+group = 185 / 283
+group = 190 / 283
+group = 195 / 283
+group = 200 / 283
+group = 205 / 283
+group = 210 / 283
+group = 215 / 283
+group = 220 / 283
+group = 225 / 283
+group = 230 / 283
+group = 235 / 283
+group = 240 / 283
+group = 245 / 283
+group = 250 / 283
+group = 255 / 283
+group = 260 / 283
+group = 265 / 283
+group = 270 / 283
+group = 275 / 283
+group = 280 / 283
+Writing to 3.ap ... 
+Farfield Time(hh:mm:ss) = 0:11:47
+sed: preserving permissions for ‘./sedmwwxmQ’: Operation not permitted
+Reading 4 ... 
+numNodes = 272323
+numAbcTri = 537746
+Reading 4.curJ ... 
+Loading ... 4.curJ
+Done loading 4.curJ. First order.
+Reading 4.curM ... 
+Loading ... 4.curM
+Done loading 4.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 700
+group = 5 / 700
+group = 10 / 700
+group = 15 / 700
+group = 20 / 700
+group = 25 / 700
+group = 30 / 700
+group = 35 / 700
+group = 40 / 700
+group = 45 / 700
+group = 50 / 700
+group = 55 / 700
+group = 60 / 700
+group = 65 / 700
+group = 70 / 700
+group = 75 / 700
+group = 80 / 700
+group = 85 / 700
+group = 90 / 700
+group = 95 / 700
+group = 100 / 700
+group = 105 / 700
+group = 110 / 700
+group = 115 / 700
+group = 120 / 700
+group = 125 / 700
+group = 130 / 700
+group = 135 / 700
+group = 140 / 700
+group = 145 / 700
+group = 150 / 700
+group = 155 / 700
+group = 160 / 700
+group = 165 / 700
+group = 170 / 700
+group = 175 / 700
+group = 180 / 700
+group = 185 / 700
+group = 190 / 700
+group = 195 / 700
+group = 200 / 700
+group = 205 / 700
+group = 210 / 700
+group = 215 / 700
+group = 220 / 700
+group = 225 / 700
+group = 230 / 700
+group = 235 / 700
+group = 240 / 700
+group = 245 / 700
+group = 250 / 700
+group = 255 / 700
+group = 260 / 700
+group = 265 / 700
+group = 270 / 700
+group = 275 / 700
+group = 280 / 700
+group = 285 / 700
+group = 290 / 700
+group = 295 / 700
+group = 300 / 700
+group = 305 / 700
+group = 310 / 700
+group = 315 / 700
+group = 320 / 700
+group = 325 / 700
+group = 330 / 700
+group = 335 / 700
+group = 340 / 700
+group = 345 / 700
+group = 350 / 700
+group = 355 / 700
+group = 360 / 700
+group = 365 / 700
+group = 370 / 700
+group = 375 / 700
+group = 380 / 700
+group = 385 / 700
+group = 390 / 700
+group = 395 / 700
+group = 400 / 700
+group = 405 / 700
+group = 410 / 700
+group = 415 / 700
+group = 420 / 700
+group = 425 / 700
+group = 430 / 700
+group = 435 / 700
+group = 440 / 700
+group = 445 / 700
+group = 450 / 700
+group = 455 / 700
+group = 460 / 700
+group = 465 / 700
+group = 470 / 700
+group = 475 / 700
+group = 480 / 700
+group = 485 / 700
+group = 490 / 700
+group = 495 / 700
+group = 500 / 700
+group = 505 / 700
+group = 510 / 700
+group = 515 / 700
+group = 520 / 700
+group = 525 / 700
+group = 530 / 700
+group = 535 / 700
+group = 540 / 700
+group = 545 / 700
+group = 550 / 700
+group = 555 / 700
+group = 560 / 700
+group = 565 / 700
+group = 570 / 700
+group = 575 / 700
+group = 580 / 700
+group = 585 / 700
+group = 590 / 700
+group = 595 / 700
+group = 600 / 700
+group = 605 / 700
+group = 610 / 700
+group = 615 / 700
+group = 620 / 700
+group = 625 / 700
+group = 630 / 700
+group = 635 / 700
+group = 640 / 700
+group = 645 / 700
+group = 650 / 700
+group = 655 / 700
+group = 660 / 700
+group = 665 / 700
+group = 670 / 700
+group = 675 / 700
+group = 680 / 700
+group = 685 / 700
+group = 690 / 700
+group = 695 / 700
+Writing to 4.ap ... 
+Farfield Time(hh:mm:ss) = 2:7:56
+sed: preserving permissions for ‘./sedY3JE7e’: Operation not permitted
+Reading 5 ... 
+numNodes = 37037
+numAbcTri = 68801
+Reading 5.curJ ... 
+Loading ... 5.curJ
+Done loading 5.curJ. First order.
+Reading 5.curM ... 
+Loading ... 5.curM
+Done loading 5.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 255
+group = 5 / 255
+group = 10 / 255
+group = 15 / 255
+group = 20 / 255
+group = 25 / 255
+group = 30 / 255
+group = 35 / 255
+group = 40 / 255
+group = 45 / 255
+group = 50 / 255
+group = 55 / 255
+group = 60 / 255
+group = 65 / 255
+group = 70 / 255
+group = 75 / 255
+group = 80 / 255
+group = 85 / 255
+group = 90 / 255
+group = 95 / 255
+group = 100 / 255
+group = 105 / 255
+group = 110 / 255
+group = 115 / 255
+group = 120 / 255
+group = 125 / 255
+group = 130 / 255
+group = 135 / 255
+group = 140 / 255
+group = 145 / 255
+group = 150 / 255
+group = 155 / 255
+group = 160 / 255
+group = 165 / 255
+group = 170 / 255
+group = 175 / 255
+group = 180 / 255
+group = 185 / 255
+group = 190 / 255
+group = 195 / 255
+group = 200 / 255
+group = 205 / 255
+group = 210 / 255
+group = 215 / 255
+group = 220 / 255
+group = 225 / 255
+group = 230 / 255
+group = 235 / 255
+group = 240 / 255
+group = 245 / 255
+group = 250 / 255
+Writing to 5.ap ... 
+Farfield Time(hh:mm:ss) = 0:6:17
+sed: preserving permissions for ‘./sedgyVd8h’: Operation not permitted
+Reading 6 ... 
+numNodes = 272673
+numAbcTri = 537137
+Reading 6.curJ ... 
+Loading ... 6.curJ
+Done loading 6.curJ. First order.
+Reading 6.curM ... 
+Loading ... 6.curM
+Done loading 6.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 700
+group = 5 / 700
+group = 10 / 700
+group = 15 / 700
+group = 20 / 700
+group = 25 / 700
+group = 30 / 700
+group = 35 / 700
+group = 40 / 700
+group = 45 / 700
+group = 50 / 700
+group = 55 / 700
+group = 60 / 700
+group = 65 / 700
+group = 70 / 700
+group = 75 / 700
+group = 80 / 700
+group = 85 / 700
+group = 90 / 700
+group = 95 / 700
+group = 100 / 700
+group = 105 / 700
+group = 110 / 700
+group = 115 / 700
+group = 120 / 700
+group = 125 / 700
+group = 130 / 700
+group = 135 / 700
+group = 140 / 700
+group = 145 / 700
+group = 150 / 700
+group = 155 / 700
+group = 160 / 700
+group = 165 / 700
+group = 170 / 700
+group = 175 / 700
+group = 180 / 700
+group = 185 / 700
+group = 190 / 700
+group = 195 / 700
+group = 200 / 700
+group = 205 / 700
+group = 210 / 700
+group = 215 / 700
+group = 220 / 700
+group = 225 / 700
+group = 230 / 700
+group = 235 / 700
+group = 240 / 700
+group = 245 / 700
+group = 250 / 700
+group = 255 / 700
+group = 260 / 700
+group = 265 / 700
+group = 270 / 700
+group = 275 / 700
+group = 280 / 700
+group = 285 / 700
+group = 290 / 700
+group = 295 / 700
+group = 300 / 700
+group = 305 / 700
+group = 310 / 700
+group = 315 / 700
+group = 320 / 700
+group = 325 / 700
+group = 330 / 700
+group = 335 / 700
+group = 340 / 700
+group = 345 / 700
+group = 350 / 700
+group = 355 / 700
+group = 360 / 700
+group = 365 / 700
+group = 370 / 700
+group = 375 / 700
+group = 380 / 700
+group = 385 / 700
+group = 390 / 700
+group = 395 / 700
+group = 400 / 700
+group = 405 / 700
+group = 410 / 700
+group = 415 / 700
+group = 420 / 700
+group = 425 / 700
+group = 430 / 700
+group = 435 / 700
+group = 440 / 700
+group = 445 / 700
+group = 450 / 700
+group = 455 / 700
+group = 460 / 700
+group = 465 / 700
+group = 470 / 700
+group = 475 / 700
+group = 480 / 700
+group = 485 / 700
+group = 490 / 700
+group = 495 / 700
+group = 500 / 700
+group = 505 / 700
+group = 510 / 700
+group = 515 / 700
+group = 520 / 700
+group = 525 / 700
+group = 530 / 700
+group = 535 / 700
+group = 540 / 700
+group = 545 / 700
+group = 550 / 700
+group = 555 / 700
+group = 560 / 700
+group = 565 / 700
+group = 570 / 700
+group = 575 / 700
+group = 580 / 700
+group = 585 / 700
+group = 590 / 700
+group = 595 / 700
+group = 600 / 700
+group = 605 / 700
+group = 610 / 700
+group = 615 / 700
+group = 620 / 700
+group = 625 / 700
+group = 630 / 700
+group = 635 / 700
+group = 640 / 700
+group = 645 / 700
+group = 650 / 700
+group = 655 / 700
+group = 660 / 700
+group = 665 / 700
+group = 670 / 700
+group = 675 / 700
+group = 680 / 700
+group = 685 / 700
+group = 690 / 700
+group = 695 / 700
+Writing to 6.ap ... 
+Farfield Time(hh:mm:ss) = 1:39:20
+sed: preserving permissions for ‘./sedV3V116’: Operation not permitted
+Reading 7 ... 
+numNodes = 37100
+numAbcTri = 67614
+Reading 7.curJ ... 
+Loading ... 7.curJ
+Done loading 7.curJ. First order.
+Reading 7.curM ... 
+Loading ... 7.curM
+Done loading 7.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 255
+group = 5 / 255
+group = 10 / 255
+group = 15 / 255
+group = 20 / 255
+group = 25 / 255
+group = 30 / 255
+group = 35 / 255
+group = 40 / 255
+group = 45 / 255
+group = 50 / 255
+group = 55 / 255
+group = 60 / 255
+group = 65 / 255
+group = 70 / 255
+group = 75 / 255
+group = 80 / 255
+group = 85 / 255
+group = 90 / 255
+group = 95 / 255
+group = 100 / 255
+group = 105 / 255
+group = 110 / 255
+group = 115 / 255
+group = 120 / 255
+group = 125 / 255
+group = 130 / 255
+group = 135 / 255
+group = 140 / 255
+group = 145 / 255
+group = 150 / 255
+group = 155 / 255
+group = 160 / 255
+group = 165 / 255
+group = 170 / 255
+group = 175 / 255
+group = 180 / 255
+group = 185 / 255
+group = 190 / 255
+group = 195 / 255
+group = 200 / 255
+group = 205 / 255
+group = 210 / 255
+group = 215 / 255
+group = 220 / 255
+group = 225 / 255
+group = 230 / 255
+group = 235 / 255
+group = 240 / 255
+group = 245 / 255
+group = 250 / 255
+Writing to 7.ap ... 
+Farfield Time(hh:mm:ss) = 0:6:16
+sed: preserving permissions for ‘./sedUm8XXS’: Operation not permitted

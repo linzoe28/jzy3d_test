@@ -5,6 +5,7 @@
  */
 package jzy_3d_sample.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,12 +20,15 @@ import org.jzy3d.maths.Coord3d;
  *
  * @author lendle
  */
-public class Cube extends BoundingBox3d{
-
+public class Cube implements Serializable{
+    private static final long serialVersionUID = -1636927109633279805L;
     private List<Mesh> meshs=new ArrayList<>();
     private double rcs;
-    
-    
+    transient private BoundingBox3d box3d=null;
+
+    public BoundingBox3d getBox3d() {
+        return box3d;
+    }
 
     public double getRcs() {
         return rcs;
@@ -37,12 +41,12 @@ public class Cube extends BoundingBox3d{
      * @param vertices must be of length 8
      */
     public Cube(List<Vertex> vertices, List<Mesh> meshs) {
-        super(new ArrayList<Coord3d>(vertices));
+        box3d=new BoundingBox3d(new ArrayList<Coord3d>(vertices));
         this.meshs.addAll(meshs);
     }
     
     public Cube(BoundingBox3d box, List<Mesh> meshs) {
-        super(box);
+        box3d=new BoundingBox3d(box);
         this.meshs.addAll(meshs);
     }
     
@@ -60,7 +64,7 @@ public class Cube extends BoundingBox3d{
     
     protected List<Vertex> getVerticesVertexs(){
         List<Vertex> ret=new ArrayList<>();
-        for(Coord3d point : super.getVertices()){
+        for(Coord3d point : box3d.getVertices()){
             ret.add(new Vertex(point.x, point.y, point.z));
         }
         return ret;
@@ -98,19 +102,19 @@ public class Cube extends BoundingBox3d{
      * @return 
      */
     private Vertex createVertexInCube(double x, double y, double z){
-        x=(x<this.getXmin())?this.getXmin():x;
-        x=(x>this.getXmax())?this.getXmax():x;
-        y=(y<this.getYmin())?this.getYmin():y;
-        y=(y>this.getYmax())?this.getYmax():y;
-        z=(z<this.getZmin())?this.getZmin():z;
-        z=(z>this.getZmax())?this.getZmax():z;
+        x=(x<box3d.getXmin())?box3d.getXmin():x;
+        x=(x>box3d.getXmax())?box3d.getXmax():x;
+        y=(y<box3d.getYmin())?box3d.getYmin():y;
+        y=(y>box3d.getYmax())?box3d.getYmax():y;
+        z=(z<box3d.getZmin())?box3d.getZmin():z;
+        z=(z>box3d.getZmax())?box3d.getZmax():z;
         return new Vertex(x, y, z);
     }
     
     public List<Cube> slice(double xParts, double yParts, double zParts){
-        double xLength=this.getRange().x;
-        double yLength=this.getRange().y;
-        double zLength=this.getRange().z;
+        double xLength=box3d.getRange().x;
+        double yLength=box3d.getRange().y;
+        double zLength=box3d.getRange().z;
         double xUnit=xLength/xParts;
         double yUnit=yLength/yParts;
         double zUnit=zLength/zParts;
@@ -138,7 +142,7 @@ public class Cube extends BoundingBox3d{
         for(int i=0; i<xParts; i++){
             for(int j=0; j<yParts; j++){
                 for(int k=0; k<zParts; k++){
-                    double [] origin=new double[]{this.getXmin()+i*xUnit, this.getYmin()+j*yUnit, this.getZmin()+k*zUnit};
+                    double [] origin=new double[]{box3d.getXmin()+i*xUnit, box3d.getYmin()+j*yUnit, box3d.getZmin()+k*zUnit};
                     List<Vertex> subVertices=Arrays.asList(
                             createVertexInCube(origin[0], origin[1], origin[2]),
                             createVertexInCube(origin[0]+xUnit, origin[1], origin[2]),
@@ -156,19 +160,19 @@ public class Cube extends BoundingBox3d{
         Cube lastCube=null;
         List<Cube> lastFewCubes=new ArrayList<>();
         outer: for(Mesh mesh : localMeshs){
-            if(lastCube!=null && lastCube.contains(mesh.getCenter())){
+            if(lastCube!=null && lastCube.box3d.contains(mesh.getCenter())){
                 lastCube.getMeshs().add(mesh);
                 continue;
             }
             for(Cube cube : lastFewCubes){
-                if(cube.contains(mesh.getCenter())){
+                if(cube.box3d.contains(mesh.getCenter())){
                     lastCube=cube;
                     cube.getMeshs().add(mesh);
                     continue outer;
                 }
             }
             for(Cube cube : subCubes){
-                if(cube.contains(mesh.getCenter())){
+                if(cube.box3d.contains(mesh.getCenter())){
                     cube.getMeshs().add(mesh);
                     if(lastFewCubes.size()>(xParts*yParts*zParts)/5){
                         lastFewCubes.remove(0);

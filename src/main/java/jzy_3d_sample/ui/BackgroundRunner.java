@@ -14,6 +14,7 @@ import javafx.application.Platform;
 public abstract class BackgroundRunner {
 
     private ProgressReporter progressReporter = null;
+    private Thread runner=null;
 
     public BackgroundRunner(ProgressReporter progressReporter) {
         this.progressReporter = progressReporter;
@@ -27,7 +28,7 @@ public abstract class BackgroundRunner {
             }
         });
         this.progressReporter.startProgress();
-        new Thread() {
+        runner=new Thread() {
             public void run() {
                 runInWorkerThread();
                 progressReporter.stopProgress();
@@ -38,9 +39,14 @@ public abstract class BackgroundRunner {
                     }
                 });
             }
-        }.start();
+        };
+        runner.start();
     }
-
+    
+    public void shutdown(){
+        
+    }
+    
     public abstract void runBeforeWorkerThread();
 
     public abstract void runInWorkerThread();
