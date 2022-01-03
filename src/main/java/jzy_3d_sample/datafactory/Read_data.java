@@ -27,6 +27,7 @@ import jzy_3d_sample.model.Vertex;
 import jzy_3d_sample.model.VertexCurrent;
 import jzy_3d_sample.model.os.OSRecord;
 import jzy_3d_sample.model.os.OSRecordMap;
+import jzy_3d_sample.utils.ThreadUtils;
 import org.apache.commons.math3.complex.Complex;
 
 /**
@@ -301,6 +302,9 @@ public class Read_data {
                     MeshOSMatchingEntry tobeRemoved = null;
                     //for 100% matched entries
                     for (MeshOSMatchingEntry entry : entries) {
+                        if(ThreadUtils.isInterrupted()){
+                            throw new RuntimeException("interrupted");
+                        }
                         if (entry.getMeshKey().equals(osRecord.getKey())) {
                             entry.setBestOSRecord(osRecord);
                             entry.setMinDistance(0);
@@ -328,8 +332,9 @@ public class Read_data {
                 }
             } catch (Exception ex) {
                 Logger.getLogger(Read_data.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(current.getRow());
-                System.exit(0);
+                throw new RuntimeException(ex);
+//                System.out.println(current.getRow());
+//                System.exit(0);
             }
         }
         //process all undetermined entries

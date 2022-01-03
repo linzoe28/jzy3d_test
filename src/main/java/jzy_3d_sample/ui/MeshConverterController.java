@@ -35,6 +35,7 @@ import jzy_3d_sample.model.serialized.ProjectModel;
 import jzy_3d_sample.ui.BackgroundRunner.ProgressReporter;
 import jzy_3d_sample.utils.OSFileSplitter;
 import jzy_3d_sample.utils.SerializeUtil;
+import jzy_3d_sample.utils.ThreadUtils;
 import org.apache.commons.io.FileUtils;
 import org.jzy3d.plot3d.primitives.Shape;
 import rocks.imsofa.n2fproxy.N2fExecutor;
@@ -78,10 +79,16 @@ public class MeshConverterController {
 
     @FXML
     private CheckBox checkboxn2f;
+    
+    private BackgroundRunner r=null;
 
     @FXML
     void buttonCancelClicked(ActionEvent event) {
-        ((Stage) nasFileText.getScene().getWindow()).close();
+        if(r!=null && !r.isStopped()){
+            r.shutdown();
+        }else{
+            ((Stage) nasFileText.getScene().getWindow()).close();
+        }
     }
 
     @FXML
@@ -100,7 +107,7 @@ public class MeshConverterController {
 
     @FXML
     void buttonOkClicked(ActionEvent event) {
-        BackgroundRunner r = new BackgroundRunner(new ProgressReporter() {
+        r = new BackgroundRunner(new ProgressReporter() {
             public void startProgress() {
             }
 
@@ -130,24 +137,9 @@ public class MeshConverterController {
                     if(outputOsFolder.exists() && outputOsFolder.list().length==0){
                         FileUtils.deleteDirectory(outputOsFolder);
                     }
-                    if (!outputOsFolder.exists()) {
-                        outputOsFolder.mkdirs();
-                        osFiles = OSFileSplitter.splitByAngle(bigOsFile, new OSFileSplitter.OutputFileCreator() {
-                            public File createFile(File osFile, long index) {
-                                return new File(outputOsFolder, "" + index + ".os");
-                            }
-                        }, null);
-                    } else if (outputOsFolder.listFiles().length > 0) {
-                        osFiles = Arrays.asList(outputOsFolder.listFiles());
-                        Collections.sort(osFiles, new Comparator<File>(){
-                            public int compare(File o1, File o2){
-                                int number1=Integer.valueOf(o1.getName().substring(0, o1.getName().indexOf(".")));
-                                int number2=Integer.valueOf(o2.getName().substring(0, o2.getName().indexOf(".")));
-                                return number1-number2;
-                            }
-                        });
-                    }
-                    
+                    //split os files by angle
+                    osFiles = splitOSFileByAngle(outputOsFolder, osFiles, bigOsFile);
+                    ////////////////////////////
                     Read_data r = new Read_data(outputDir, "angle0");
                     long x = Long.valueOf(x_value.getText());
                     long y = Long.valueOf(y_value.getText());
@@ -169,57 +161,9 @@ public class MeshConverterController {
                         projectModel.setzSlice(z);
                         projectModel.setCubes(cubes);
                     }
-                    ///////////////////////////////
-                    List<File> n2fProcessingQueue = new ArrayList<>();
-                    List<Integer> frequencies=new ArrayList<>();
-                    index = 0;//angle 0 was already processed when loading meshes
-                    for (int n = 0; n < osFiles.size(); n++) {
-                        File osFile = osFiles.get(n);
-                        setStatusMessage("slicing for angle " + (index + 1) + "/" + osFiles.size());
-                        System.out.println("slicing for angle " + (index + 1) + "/" + osFiles.size());
-                        File subOutputFolder = new File(outputDir, "angle" + (index));
-                        if (subOutputFolder.exists()) {
-                            FileUtils.deleteDirectory(subOutputFolder);
-                        }
-                        FileUtils.forceMkdir(subOutputFolder);
-
-                        //re-apply different os records to the original mesh
-                        OSRecordMap osRecords = null;
-                        if (n == 0) {
-                            osRecords = r.getLastOSRecordMap();
-                        } else {
-                            osRecords = OSFileParser.readOSFile(outputDir, osFile, "angle" + (index));
-                            r.applyOStoMeshes(meshes, osRecords);
-                        }
-                        System.out.println("finished slicing for angle " + (index + 1) + "/" + osFiles.size());
-                        frequencies.add(osRecords.getFrequency());
-                        Shape surface = SurfaceLoader.loadSurface(meshes);
-                        Cube boundingCube = new Cube(surface.getBounds(), meshes);
-                        List<Cube> cubes = boundingCube.slice(x, y, z);
-                        for (int i = 0; i < cubes.size(); i++) {
-                            Cube c = cubes.get(i);
-                            File subCubeDir = new File(subOutputFolder, "" + i);
-                            if (subCubeDir.exists()) {
-                                FileUtils.deleteDirectory(subCubeDir);
-                            }
-                            FileUtils.forceMkdir(subCubeDir);
-                            FastN2fWriter.writeTriFile(c.getMeshs(), new File(subCubeDir, i + ".tri"));
-                            FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeDir, i + ".curM"));
-                            FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeDir, i + ".curJ"));
-                        }
-                        n2fProcessingQueue.add(subOutputFolder);
-
-                        //TODO: separate n2f process from slicing process
-                        CurrentData currentData = new CurrentData();
-                        currentData.setOsRecordsMap(osRecords);
-                        File currentObjFile = new File(outputDir, "angle" + index + ".current");
-                        SerializeUtil.writeToFile(currentData, currentObjFile);
-                        projectModel.getCurrentDataList(true).add("angle" + index);
-                        index++;
-
-                        //FileUtils.forceDelete(osFile);
-//                        System.out.println("hit: " + osRecords.getHit() + ", miss: " + osRecords.getMiss());
-                    }
+                    //serializeCurrentData
+                    serializeCurrentData(index, osFiles, outputDir, r, meshes, x, y, z, projectModel);
+                    ///////////////////////
                     index = 0;
                     projectModel.setHomeFolder(outputDir);
                     if (checkboxn2f.isSelected()) {
@@ -228,6 +172,9 @@ public class MeshConverterController {
                         int phi = 0;
                         for (phi = 0; index< n2fProcessingQueue.size() && phi <= 360; phi += delta) {
                             for (theta = 0; index< n2fProcessingQueue.size() && theta <= 180; theta += delta) {
+                                if(ThreadUtils.isInterrupted()){
+                                    throw new Exception("interrupted");
+                                }
                                 File n2fFolder = n2fProcessingQueue.get(index);
                                 int frequency=frequencies.get(index);
                                 System.out.println("theta="+theta+", phi="+phi+", frequency="+frequency);
@@ -241,7 +188,7 @@ public class MeshConverterController {
                                 });
 
                                 executor.init(n2fFolder);
-                                executor.execute(x * y * z, frequency, theta, phi);
+                                executor.execute(x * y * z, frequency, theta, phi, delta);
                                 CurrentData currentData = projectModel.getCurrentData("angle" + index);
                                 //update current data with rcs values
                                 currentData.setTheta(theta);
@@ -267,6 +214,83 @@ public class MeshConverterController {
                     ex.printStackTrace();
                 } finally {
                 }
+            }
+
+            private void serializeCurrentData(int index, List<File> osFiles, File outputDir, Read_data r1, List<Mesh> meshes, long x, long y, long z, ProjectModel projectModel) throws Exception {
+                ///////////////////////////////
+                index = 0;//angle 0 was already processed when loading meshes
+                for (int n = 0; n < osFiles.size(); n++) {
+                    if(ThreadUtils.isInterrupted()){
+                        throw new Exception("interrupted");
+                    }
+                    File osFile = osFiles.get(n);
+                    setStatusMessage("slicing for angle " + (index + 1) + "/" + osFiles.size());
+                    System.out.println("slicing for angle " + (index + 1) + "/" + osFiles.size());
+                    File subOutputFolder = new File(outputDir, "angle" + (index));
+                    if (subOutputFolder.exists()) {
+                        FileUtils.deleteDirectory(subOutputFolder);
+                    }
+                    FileUtils.forceMkdir(subOutputFolder);
+                    //re-apply different os records to the original mesh
+                    OSRecordMap osRecords = null;
+                    if (n == 0) {
+                        osRecords = r1.getLastOSRecordMap();
+                    } else {
+                        osRecords = OSFileParser.readOSFile(outputDir, osFile, "angle" + (index));
+                        r1.applyOStoMeshes(meshes, osRecords);
+                    }
+                    System.out.println("finished slicing for angle " + (index + 1) + "/" + osFiles.size());
+                    frequencies.add(osRecords.getFrequency());
+                    Shape surface = SurfaceLoader.loadSurface(meshes);
+                    Cube boundingCube = new Cube(surface.getBounds(), meshes);
+                    List<Cube> cubes = boundingCube.slice(x, y, z);
+                    for (int i = 0; i < cubes.size(); i++) {
+                        Cube c = cubes.get(i);
+                        File subCubeDir = new File(subOutputFolder, "" + i);
+                        if (subCubeDir.exists()) {
+                            FileUtils.deleteDirectory(subCubeDir);
+                        }
+                        FileUtils.forceMkdir(subCubeDir);
+                        FastN2fWriter.writeTriFile(c.getMeshs(), new File(subCubeDir, i + ".tri"));
+                        FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeDir, i + ".curM"));
+                        FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeDir, i + ".curJ"));
+                    }
+                    n2fProcessingQueue.add(subOutputFolder);
+                    //TODO: separate n2f process from slicing process
+                    CurrentData currentData = new CurrentData();
+                    currentData.setOsRecordsMap(osRecords);
+                    File currentObjFile = new File(outputDir, "angle" + index + ".current");
+                    SerializeUtil.writeToFile(currentData, currentObjFile);
+                    projectModel.getCurrentDataList(true).add("angle" + index);
+                    index++;
+                    
+                    //FileUtils.forceDelete(osFile);
+//                        System.out.println("hit: " + osRecords.getHit() + ", miss: " + osRecords.getMiss());
+                }
+            }
+            private List<Integer> frequencies= new ArrayList<>();
+            private List<File> n2fProcessingQueue = new ArrayList<>();
+
+            private List<File> splitOSFileByAngle(File outputOsFolder, List<File> osFiles, File bigOsFile) throws Exception {
+                //split os files by angle
+                if (!outputOsFolder.exists()) {
+                    outputOsFolder.mkdirs();
+                    osFiles = OSFileSplitter.splitByAngle(bigOsFile, new OSFileSplitter.OutputFileCreator() {
+                        public File createFile(File osFile, long index) {
+                            return new File(outputOsFolder, "" + index + ".os");
+                        }
+                    }, null);
+                } else if (outputOsFolder.listFiles().length > 0) {
+                    osFiles = Arrays.asList(outputOsFolder.listFiles());
+                    Collections.sort(osFiles, new Comparator<File>(){
+                        public int compare(File o1, File o2){
+                            int number1=Integer.valueOf(o1.getName().substring(0, o1.getName().indexOf(".")));
+                            int number2=Integer.valueOf(o2.getName().substring(0, o2.getName().indexOf(".")));
+                            return number1-number2;
+                        }
+                    });
+                }
+                return osFiles;
             }
 
             public void runInUIThread() {

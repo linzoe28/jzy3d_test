@@ -1,6 +1,8 @@
+./cpscript: line 21: 1: No such file or directory
 Your Number of Subspace: 8
 Your Operating Frequency(MHz): 10000
-Root Directory: /home/lendle/remote_dir/Missile_delta90_output/angle14
+Root Directory: /home/lendle/remote_dir/missle_delta90_output2/angle14
+./fast_n2f 0 10000 2 4
 Reading 0 ... 
 numNodes = 206665
 numAbcTri = 405345
@@ -137,8 +139,9 @@ group = 605 / 618
 group = 610 / 618
 group = 615 / 618
 Writing to 0.ap ... 
-Farfield Time(hh:mm:ss) = 2:0:8
-sed: preserving permissions for ‘./sedh8Udhg’: Operation not permitted
+Farfield Time(hh:mm:ss) = 1:17:54
+sed: preserving permissions for ‘./sedNnUkBQ’: Operation not permitted
+./fast_n2f 1 10000 2 4
 Reading 1 ... 
 numNodes = 53163
 numAbcTri = 100123
@@ -208,8 +211,9 @@ group = 270 / 285
 group = 275 / 285
 group = 280 / 285
 Writing to 1.ap ... 
-Farfield Time(hh:mm:ss) = 0:11:20
-sed: preserving permissions for ‘./sedOxdquE’: Operation not permitted
+Farfield Time(hh:mm:ss) = 0:3:1
+sed: preserving permissions for ‘./sedARByyi’: Operation not permitted
+./fast_n2f 2 10000 2 4
 Reading 2 ... 
 numNodes = 207582
 numAbcTri = 407945
@@ -345,8 +349,9 @@ group = 600 / 611
 group = 605 / 611
 group = 610 / 611
 Writing to 2.ap ... 
-Farfield Time(hh:mm:ss) = 1:12:44
-sed: preserving permissions for ‘./sedcxzl52’: Operation not permitted
+Farfield Time(hh:mm:ss) = 0:30:53
+sed: preserving permissions for ‘./sedsgiGcu’: Operation not permitted
+./fast_n2f 3 10000 2 4
 Reading 3 ... 
 numNodes = 53191
 numAbcTri = 100184
@@ -416,8 +421,9 @@ group = 270 / 283
 group = 275 / 283
 group = 280 / 283
 Writing to 3.ap ... 
-Farfield Time(hh:mm:ss) = 0:11:47
-sed: preserving permissions for ‘./sedmwwxmQ’: Operation not permitted
+Farfield Time(hh:mm:ss) = 0:3:28
+sed: preserving permissions for ‘./sedW33jPM’: Operation not permitted
+./fast_n2f 4 10000 2 4
 Reading 4 ... 
 numNodes = 272323
 numAbcTri = 537746
@@ -570,8 +576,9 @@ group = 685 / 700
 group = 690 / 700
 group = 695 / 700
 Writing to 4.ap ... 
-Farfield Time(hh:mm:ss) = 2:7:56
-sed: preserving permissions for ‘./sedY3JE7e’: Operation not permitted
+Farfield Time(hh:mm:ss) = 1:8:6
+sed: preserving permissions for ‘./sed3IQ19Q’: Operation not permitted
+./fast_n2f 5 10000 2 4
 Reading 5 ... 
 numNodes = 37037
 numAbcTri = 68801
@@ -635,8 +642,9 @@ group = 240 / 255
 group = 245 / 255
 group = 250 / 255
 Writing to 5.ap ... 
-Farfield Time(hh:mm:ss) = 0:6:17
-sed: preserving permissions for ‘./sedgyVd8h’: Operation not permitted
+Farfield Time(hh:mm:ss) = 0:0:59
+sed: preserving permissions for ‘./sedNZXQs6’: Operation not permitted
+./fast_n2f 6 10000 2 4
 Reading 6 ... 
 numNodes = 272673
 numAbcTri = 537137
@@ -789,8 +797,9 @@ group = 685 / 700
 group = 690 / 700
 group = 695 / 700
 Writing to 6.ap ... 
-Farfield Time(hh:mm:ss) = 1:39:20
-sed: preserving permissions for ‘./sedV3V116’: Operation not permitted
+Farfield Time(hh:mm:ss) = 0:40:1
+sed: preserving permissions for ‘./sedWAZXCr’: Operation not permitted
+./fast_n2f 7 10000 2 4
 Reading 7 ... 
 numNodes = 37100
 numAbcTri = 67614
@@ -854,5 +863,5 @@ group = 240 / 255
 group = 245 / 255
 group = 250 / 255
 Writing to 7.ap ... 
-Farfield Time(hh:mm:ss) = 0:6:16
-sed: preserving permissions for ‘./sedUm8XXS’: Operation not permitted
+Farfield Time(hh:mm:ss) = 0:0:47
+sed: preserving permissions for ‘./sediIq5Oa’: Operation not permitted

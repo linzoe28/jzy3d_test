@@ -11,8 +11,9 @@ mkdir $TIMESTAMP/ap/.n2f
 # $3=ap Data Directory
 # $4=theta
 # $5=phi
+# $6=delta
 echo "initializing..." > $TIMESTAMP/.n2f/status
-./cpscript $1 $2 $3 $TIMESTAMP
+./cpscript $1 $2 $3 $TIMESTAMP $6
 cp -r $3/ap $TIMESTAMP/
 echo "RCS: Executing RCS_code.m..." > $TIMESTAMP/.n2f/status
 octave-cli RCS_code.m $TIMESTAMP/ap/ $1 $4 $5

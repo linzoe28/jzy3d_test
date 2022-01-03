@@ -15,6 +15,13 @@ if [ $# -eq 0 ]
     h=$[q-1]
     w=$[$2]
     dir=$3
+    delta=$[$5]
+    effectiveTheta=$[180/$delta]
+    effectivePhi=$[360/$delta]
+    if [ effectiveTheta<1 ]
+		then
+			effectiveTheta=1
+	fi
 fi
 #read -p "Number of Subspace:" q
 echo -e "Your Number of Subspace: ${q}"
@@ -33,8 +40,8 @@ do
 	cp $home/fast_n2f $dir/$i
 
 	cd $dir/$i
-
-	./fast_n2f $i $w 180 360	  
+	echo "./fast_n2f $i $w $effectiveTheta $effectivePhi" 
+	./fast_n2f $i $w $effectiveTheta $effectivePhi
 
 	cd ..
 

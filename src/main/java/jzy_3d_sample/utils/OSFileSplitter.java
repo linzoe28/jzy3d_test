@@ -33,6 +33,9 @@ public class OSFileSplitter {
             String line = reader.readLine();
             while (true) {
                 if (line != null) {
+                    if(ThreadUtils.isInterrupted()){
+                        throw new Exception("interrupted");
+                    }
                     line = line.trim();
                     if (line.startsWith("#Configuration")) {
                         if (sb.length() > 0) {
@@ -58,6 +61,7 @@ public class OSFileSplitter {
                         count = 0;
                         sb = new StringBuilder();
                     }
+                    
                     line = reader.readLine();
                 } else {
                     break;

@@ -3,9 +3,9 @@ num_col = 0
 num_theta = 0
 num_phi = 0
 data_dir = 
-data_dir = /home/lendle/dev/projects/1101/jzy3d_test/n2ftools/results_163975510814414/
+data_dir = /home/lendle/dev/projects/1101/jzy3d_test/n2ftools/results_164079836461914/
 status_dir = [](0x0)
-cmd = grep -n "^180 360" /home/lendle/dev/projects/1101/jzy3d_test/n2ftools/results_163975510814414/0.ap | cut -f1 -d:
+cmd = grep -n "^180 360" /home/lendle/dev/projects/1101/jzy3d_test/n2ftools/results_164079836461914/0.ap | cut -f1 -d:
 num_col =  1
-data dir=/home/lendle/dev/projects/1101/jzy3d_test/n2ftools/results_163975510814414/, num_sub = 8, num_col= 1, num_theta=180, num_phi=1
+data dir=/home/lendle/dev/projects/1101/jzy3d_test/n2ftools/results_164079836461914/, num_sub = 8, num_col= 1, num_theta=180, num_phi=1
 finish
