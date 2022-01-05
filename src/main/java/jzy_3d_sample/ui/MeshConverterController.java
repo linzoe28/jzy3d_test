@@ -15,6 +15,7 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -29,6 +30,7 @@ import jzy_3d_sample.datafactory.Read_data;
 import jzy_3d_sample.datafactory.SurfaceLoader;
 import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.Mesh;
+import jzy_3d_sample.model.meshconverter.Status;
 import jzy_3d_sample.model.os.OSRecordMap;
 import jzy_3d_sample.model.serialized.CurrentData;
 import jzy_3d_sample.model.serialized.ProjectModel;
@@ -36,6 +38,7 @@ import jzy_3d_sample.ui.BackgroundRunner.ProgressReporter;
 import jzy_3d_sample.utils.OSFileSplitter;
 import jzy_3d_sample.utils.SerializeUtil;
 import jzy_3d_sample.utils.ThreadUtils;
+import jzy_3d_sample.utils.meshconverter.StatusFileUtil;
 import org.apache.commons.io.FileUtils;
 import org.jzy3d.plot3d.primitives.Shape;
 import rocks.imsofa.n2fproxy.N2fExecutor;
@@ -53,6 +56,7 @@ public class MeshConverterController {
     private File osFile = null;
     private boolean ok = false;
     private FileChooser fileChooser = new FileChooser();
+    private boolean closing=false;
     @FXML
     private TextField outputFolderText;
 
@@ -79,18 +83,27 @@ public class MeshConverterController {
 
     @FXML
     private CheckBox checkboxn2f;
+    @FXML
+    private Button buttonCancel;
     
-    private BackgroundRunner r=null;
+    private BackgroundRunner r = null;
 
     @FXML
     void buttonCancelClicked(ActionEvent event) {
-        if(r!=null && !r.isStopped()){
+        shutdown();
+    }
+    
+    public void shutdown(){
+        closing=true;
+        if (r != null && !r.isStopped()) {
+            buttonCancel.setDisable(true);
+            buttonCancel.setText("Stopping");
             r.shutdown();
         }else{
             ((Stage) nasFileText.getScene().getWindow()).close();
         }
     }
-
+    
     @FXML
     void buttonNasClicked(ActionEvent event) {
         fileChooser.getExtensionFilters().clear();
@@ -117,6 +130,17 @@ public class MeshConverterController {
             public void setStatus(String status) {
             }
         }) {
+            private List<Integer> frequencies = new ArrayList<>();
+            private List<File> n2fProcessingQueue = new ArrayList<>();
+            private Status status=null;
+
+            @Override
+            public void afterStopped(){
+                if(closing){
+                    ((Stage) nasFileText.getScene().getWindow()).close();
+                }
+            }
+            
             public void runBeforeWorkerThread() {
                 progressBar.setVisible(true);
             }
@@ -128,13 +152,17 @@ public class MeshConverterController {
                     File nasFile = new File(nasFileText.getText());
                     setStatusMessage("splitting os files");
                     File outputDir = new File(outputFolderText.getText());
+//                    if(!outputDir.exists()){
+//                        FileUtils.forceMkdir(outputDir);
+//                    }
+//                    status=StatusFileUtil.loadStatus(outputDir, bigOsFile.getParentFile());
                     if (outputDir.exists()) {
                         FileUtils.deleteDirectory(outputDir);
                     }
                     FileUtils.forceMkdir(outputDir);
                     File outputOsFolder = new File(bigOsFile.getParentFile(), ".os");
                     List<File> osFiles = null;
-                    if(outputOsFolder.exists() && outputOsFolder.list().length==0){
+                    if (outputOsFolder.exists() && outputOsFolder.list().length == 0) {
                         FileUtils.deleteDirectory(outputOsFolder);
                     }
                     //split os files by angle
@@ -148,8 +176,14 @@ public class MeshConverterController {
 
                     //first, output the no-os model
                     File firstOsFile = osFiles.get(0);
+                    if (ThreadUtils.isInterrupted()) {
+                        throw new Exception("interrupted");
+                    }
                     setStatusMessage("processing mesh");
                     List<Mesh> meshes = r.getdata_from_nas(nasFile, firstOsFile);
+                    if (ThreadUtils.isInterrupted()) {
+                        throw new Exception("interrupted");
+                    }
                     setStatusMessage("done loading mesh definition");
                     {
                         Shape surface = SurfaceLoader.loadSurface(meshes);
@@ -161,6 +195,7 @@ public class MeshConverterController {
                         projectModel.setzSlice(z);
                         projectModel.setCubes(cubes);
                     }
+                    
                     //serializeCurrentData
                     serializeCurrentData(index, osFiles, outputDir, r, meshes, x, y, z, projectModel);
                     ///////////////////////
@@ -170,14 +205,14 @@ public class MeshConverterController {
                         int delta = AngleLabelMapGenerator.getDelta(n2fProcessingQueue.size());
                         int theta = 0;
                         int phi = 0;
-                        for (phi = 0; index< n2fProcessingQueue.size() && phi <= 360; phi += delta) {
-                            for (theta = 0; index< n2fProcessingQueue.size() && theta <= 180; theta += delta) {
-                                if(ThreadUtils.isInterrupted()){
+                        for (phi = 0; index < n2fProcessingQueue.size() && phi <= 360; phi += delta) {
+                            for (theta = 0; index < n2fProcessingQueue.size() && theta <= 180; theta += delta) {
+                                if (ThreadUtils.isInterrupted()) {
                                     throw new Exception("interrupted");
                                 }
                                 File n2fFolder = n2fProcessingQueue.get(index);
-                                int frequency=frequencies.get(index);
-                                System.out.println("theta="+theta+", phi="+phi+", frequency="+frequency);
+                                int frequency = frequencies.get(index);
+                                System.out.println("theta=" + theta + ", phi=" + phi + ", frequency=" + frequency);
                                 setStatusMessage("processing n2f for angle " + (index + 1) + "/" + osFiles.size());
                                 N2fExecutor executor = new N2fExecutorImpl(new File("n2ftools"));
 
@@ -195,13 +230,14 @@ public class MeshConverterController {
                                 currentData.setPhi(phi);
                                 currentData.setRcs(executor.getResults());
                                 currentData.setRcsTotal(executor.getRCSTotal());
+                                System.out.println("\trcs="+executor.getRCSTotal()+":"+Arrays.toString(executor.getResults()));
                                 File currentObjFile = new File(outputDir, "angle" + index + ".current");
                                 SerializeUtil.writeToFile(currentData, currentObjFile);
                                 executor.close();
                                 index++;
                             }
                         }
-                       
+
                     }
                     for (Mesh mesh : meshes) {
                         mesh.emptyCurrent();
@@ -220,7 +256,7 @@ public class MeshConverterController {
                 ///////////////////////////////
                 index = 0;//angle 0 was already processed when loading meshes
                 for (int n = 0; n < osFiles.size(); n++) {
-                    if(ThreadUtils.isInterrupted()){
+                    if (ThreadUtils.isInterrupted()) {
                         throw new Exception("interrupted");
                     }
                     File osFile = osFiles.get(n);
@@ -229,6 +265,8 @@ public class MeshConverterController {
                     File subOutputFolder = new File(outputDir, "angle" + (index));
                     if (subOutputFolder.exists()) {
                         FileUtils.deleteDirectory(subOutputFolder);
+//                        n2fProcessingQueue.add(subOutputFolder);
+//                        continue;
                     }
                     FileUtils.forceMkdir(subOutputFolder);
                     //re-apply different os records to the original mesh
@@ -263,14 +301,12 @@ public class MeshConverterController {
                     SerializeUtil.writeToFile(currentData, currentObjFile);
                     projectModel.getCurrentDataList(true).add("angle" + index);
                     index++;
-                    
+
                     //FileUtils.forceDelete(osFile);
 //                        System.out.println("hit: " + osRecords.getHit() + ", miss: " + osRecords.getMiss());
                 }
             }
-            private List<Integer> frequencies= new ArrayList<>();
-            private List<File> n2fProcessingQueue = new ArrayList<>();
-
+            
             private List<File> splitOSFileByAngle(File outputOsFolder, List<File> osFiles, File bigOsFile) throws Exception {
                 //split os files by angle
                 if (!outputOsFolder.exists()) {
@@ -282,11 +318,11 @@ public class MeshConverterController {
                     }, null);
                 } else if (outputOsFolder.listFiles().length > 0) {
                     osFiles = Arrays.asList(outputOsFolder.listFiles());
-                    Collections.sort(osFiles, new Comparator<File>(){
-                        public int compare(File o1, File o2){
-                            int number1=Integer.valueOf(o1.getName().substring(0, o1.getName().indexOf(".")));
-                            int number2=Integer.valueOf(o2.getName().substring(0, o2.getName().indexOf(".")));
-                            return number1-number2;
+                    Collections.sort(osFiles, new Comparator<File>() {
+                        public int compare(File o1, File o2) {
+                            int number1 = Integer.valueOf(o1.getName().substring(0, o1.getName().indexOf(".")));
+                            int number2 = Integer.valueOf(o2.getName().substring(0, o2.getName().indexOf(".")));
+                            return number1 - number2;
                         }
                     });
                 }
@@ -340,4 +376,3 @@ public class MeshConverterController {
 
     }
 }
-

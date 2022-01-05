@@ -67,6 +67,9 @@ public class Read_data {
                 PrintWriter meshCSVFileWriter = new PrintWriter(meshCSVFile)) {
             String line = input.readLine();
             while (line != null) {
+                if (ThreadUtils.isInterrupted()) {
+                    throw new IOException(new Exception("interrupted"));
+                }
                 if (!line.startsWith("$")) {
                     if (pointSection) {
                         if (line.startsWith("CTRIA3")) {
@@ -92,6 +95,9 @@ public class Read_data {
                 bw.write("GRID*,X,Y,Z");
                 String _line = null;
                 while ((_line = reader.readLine()) != null) {
+                    if (ThreadUtils.isInterrupted()) {
+                        throw new IOException(new Exception("interrupted"));
+                    }
                     String item[] = _line.split(" +");
                     String GRID = item[1];
                     String X = item[2];
@@ -118,6 +124,9 @@ public class Read_data {
                 bw.write("#MESH,GRID*,GRID*,GRID*");
                 String _line = null;
                 while ((_line = reader.readLine()) != null) {
+                    if (ThreadUtils.isInterrupted()) {
+                        throw new IOException(new Exception("interrupted"));
+                    }
                     String item[] = _line.split(" +");
                     String mesh = item[1];
                     String gred1 = item[3];
@@ -155,11 +164,17 @@ public class Read_data {
             CSVReader reader = new CSVReader(new FileReader(pointFile), ',', '\'', 1);
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
+                if (ThreadUtils.isInterrupted()) {
+                    throw new IOException(new Exception("interrupted"));
+                }
                 points.put(nextLine[0], new double[]{Double.valueOf(nextLine[1]), Double.valueOf(nextLine[2]), Double.valueOf(nextLine[3])});
             }
             long total = 0;
             CSVReader reader_mesh = new CSVReader(new FileReader(meshFile), ',', '\'', 1);
             while ((nextLine = reader_mesh.readNext()) != null) {
+                if (ThreadUtils.isInterrupted()) {
+                    throw new IOException(new Exception("interrupted"));
+                }
                 //System.out.println((++total) + "/" + osRecords.size());
                 Vertex v1 = new Vertex(points.get(nextLine[1]));
                 Vertex v2 = new Vertex(points.get(nextLine[2]));
@@ -287,22 +302,22 @@ public class Read_data {
         ));
         mesh.setOsRecordKey(oSRecord.getKey());
     }
-    
+
     public void applyOStoMeshes(Map<String, List<MeshOSMatchingEntry>> fuzzyKeyMatchingMap, OSRecordMap osRecordsMap) {
         List<String> fileNames = osRecordsMap.getOsRecordFileNames();
-        int index=0;
+        int index = 0;
         for (String fileName : fileNames) {
-            OSRecord current=null;
+            OSRecord current = null;
             try {
                 Map<String, OSRecord> map = osRecordsMap.load(fileName);
                 for (OSRecord osRecord : map.values()) {
-                    current=osRecord;
+                    current = osRecord;
                     String fuzzyOSKey = osRecord.getFuzzyKey();
                     List<MeshOSMatchingEntry> entries = fuzzyKeyMatchingMap.get(fuzzyOSKey);
                     MeshOSMatchingEntry tobeRemoved = null;
                     //for 100% matched entries
                     for (MeshOSMatchingEntry entry : entries) {
-                        if(ThreadUtils.isInterrupted()){
+                        if (ThreadUtils.isInterrupted()) {
                             throw new RuntimeException("interrupted");
                         }
                         if (entry.getMeshKey().equals(osRecord.getKey())) {
@@ -320,9 +335,9 @@ public class Read_data {
                     } else {
                         //for not 100% matched entries
                         for (MeshOSMatchingEntry entry : entries) {
-                            Vertex center=entry.getMesh().getCenter();
-                            double distance = Math.sqrt(Math.pow(osRecord.getX() - center.getX(), 2) + 
-                                    Math.pow(osRecord.getY() - center.getY(), 2) + Math.pow(osRecord.getZ() - center.getZ(), 2));
+                            Vertex center = entry.getMesh().getCenter();
+                            double distance = Math.sqrt(Math.pow(osRecord.getX() - center.getX(), 2)
+                                    + Math.pow(osRecord.getY() - center.getY(), 2) + Math.pow(osRecord.getZ() - center.getZ(), 2));
                             if (distance < entry.getMinDistance()) {
                                 entry.setMinDistance(distance);
                                 entry.setBestOSRecord(osRecord);
@@ -338,15 +353,15 @@ public class Read_data {
             }
         }
         //process all undetermined entries
-        for(List<MeshOSMatchingEntry> entries : fuzzyKeyMatchingMap.values()){
-            if(!entries.isEmpty()){
-                for(MeshOSMatchingEntry entry : entries){
-                    if(entry.getBestOSRecord()!=null){
+        for (List<MeshOSMatchingEntry> entries : fuzzyKeyMatchingMap.values()) {
+            if (!entries.isEmpty()) {
+                for (MeshOSMatchingEntry entry : entries) {
+                    if (entry.getBestOSRecord() != null) {
                         index++;
 //                        System.out.println(index+"/"+osRecordsMap.getKey2FileNameMap().size());
                         applyOSRecord2Mesh(entry.getMesh(), entry.getBestOSRecord());
-                    }else{
-                        System.out.println("fail on "+entry.getMesh());
+                    } else {
+                        System.out.println("fail on " + entry.getMesh());
                     }
                 }
             }
@@ -361,6 +376,9 @@ public class Read_data {
     private Map<String, List<MeshOSMatchingEntry>> createMatchingMap(List<Mesh> meshes) {
         Map<String, List<MeshOSMatchingEntry>> fuzzyKeyMatchingMap = new HashMap<>();
         for (Mesh mesh : meshes) {
+            if (ThreadUtils.isInterrupted()) {
+                throw new RuntimeException("interrupted");
+            }
             Vertex center = mesh.getCenter();
             String key = String.format("%13.4E", (double) center.getX())
                     + String.format("%13.4E", (double) center.getY())

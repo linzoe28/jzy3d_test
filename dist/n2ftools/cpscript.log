@@ -1,11 +1,11 @@
 ./cpscript: line 21: 1: No such file or directory
 Your Number of Subspace: 8
-Your Operating Frequency(MHz): 9400
-Root Directory: /home/lendle/Desktop/test/angle0
-./fast_n2f 0 9400 0 1
+Your Operating Frequency(MHz): 500
+Root Directory: /home/lendle/remote_dir/F5E_delta90_output/angle12
+./fast_n2f 0 500 2 4
 Reading 0 ... 
-numNodes = 14888
-numAbcTri = 29234
+numNodes = 13232
+numAbcTri = 26028
 Reading 0.curJ ... 
 Loading ... 0.curJ
 Done loading 0.curJ. First order.
@@ -14,14 +14,48 @@ Loading ... 0.curM
 Done loading 0.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 164
-./cpscript: line 55: 567854 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
-cp: cannot stat '/home/lendle/Desktop/test/angle0/0/0.ap': No such file or directory
-sed: can't read 0.ap: No such file or directory
-./fast_n2f 1 9400 0 1
+group = 0 / 173
+group = 5 / 173
+group = 10 / 173
+group = 15 / 173
+group = 20 / 173
+group = 25 / 173
+group = 30 / 173
+group = 35 / 173
+group = 40 / 173
+group = 45 / 173
+group = 50 / 173
+group = 55 / 173
+group = 60 / 173
+group = 65 / 173
+group = 70 / 173
+group = 75 / 173
+group = 80 / 173
+group = 85 / 173
+group = 90 / 173
+group = 95 / 173
+group = 100 / 173
+group = 105 / 173
+group = 110 / 173
+group = 115 / 173
+group = 120 / 173
+group = 125 / 173
+group = 130 / 173
+group = 135 / 173
+group = 140 / 173
+group = 145 / 173
+group = 150 / 173
+group = 155 / 173
+group = 160 / 173
+group = 165 / 173
+group = 170 / 173
+Writing to 0.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:5
+sed: preserving permissions for ‘./sedhOKpE3’: Operation not permitted
+./fast_n2f 1 500 2 4
 Reading 1 ... 
-numNodes = 14624
-numAbcTri = 28697
+numNodes = 1783
+numAbcTri = 3241
 Reading 1.curJ ... 
 Loading ... 1.curJ
 Done loading 1.curJ. First order.
@@ -30,14 +64,25 @@ Loading ... 1.curM
 Done loading 1.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 167
-./cpscript: line 55: 567883 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
-cp: cannot stat '/home/lendle/Desktop/test/angle0/1/1.ap': No such file or directory
-sed: can't read 1.ap: No such file or directory
-./fast_n2f 2 9400 0 1
+group = 0 / 57
+group = 5 / 57
+group = 10 / 57
+group = 15 / 57
+group = 20 / 57
+group = 25 / 57
+group = 30 / 57
+group = 35 / 57
+group = 40 / 57
+group = 45 / 57
+group = 50 / 57
+group = 55 / 57
+Writing to 1.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:1
+sed: preserving permissions for ‘./sedRsDH7H’: Operation not permitted
+./fast_n2f 2 500 2 4
 Reading 2 ... 
-numNodes = 14204
-numAbcTri = 27839
+numNodes = 3966
+numAbcTri = 7659
 Reading 2.curJ ... 
 Loading ... 2.curJ
 Done loading 2.curJ. First order.
@@ -46,14 +91,31 @@ Loading ... 2.curM
 Done loading 2.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 155
-./cpscript: line 55: 567908 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
-cp: cannot stat '/home/lendle/Desktop/test/angle0/2/2.ap': No such file or directory
-sed: can't read 2.ap: No such file or directory
-./fast_n2f 3 9400 0 1
+group = 0 / 88
+group = 5 / 88
+group = 10 / 88
+group = 15 / 88
+group = 20 / 88
+group = 25 / 88
+group = 30 / 88
+group = 35 / 88
+group = 40 / 88
+group = 45 / 88
+group = 50 / 88
+group = 55 / 88
+group = 60 / 88
+group = 65 / 88
+group = 70 / 88
+group = 75 / 88
+group = 80 / 88
+group = 85 / 88
+Writing to 2.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:2
+sed: preserving permissions for ‘./sedtBHwNo’: Operation not permitted
+./fast_n2f 3 500 2 4
 Reading 3 ... 
-numNodes = 14041
-numAbcTri = 27512
+numNodes = 0
+numAbcTri = 0
 Reading 3.curJ ... 
 Loading ... 3.curJ
 Done loading 3.curJ. First order.
@@ -62,14 +124,13 @@ Loading ... 3.curM
 Done loading 3.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 159
-./cpscript: line 55: 567930 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
-cp: cannot stat '/home/lendle/Desktop/test/angle0/3/3.ap': No such file or directory
-sed: can't read 3.ap: No such file or directory
-./fast_n2f 4 9400 0 1
+Writing to 3.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+sed: preserving permissions for ‘./sedCvspsQ’: Operation not permitted
+./fast_n2f 4 500 2 4
 Reading 4 ... 
-numNodes = 3935
-numAbcTri = 7417
+numNodes = 13382
+numAbcTri = 26326
 Reading 4.curJ ... 
 Loading ... 4.curJ
 Done loading 4.curJ. First order.
@@ -78,55 +139,65 @@ Loading ... 4.curM
 Done loading 4.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 88
-./cpscript: line 55: 567952 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
-cp: cannot stat '/home/lendle/Desktop/test/angle0/4/4.ap': No such file or directory
+group = 0 / 175
+group = 5 / 175
+group = 10 / 175
+group = 15 / 175
+group = 20 / 175
+group = 25 / 175
+group = 30 / 175
+group = 35 / 175
+group = 40 / 175
+group = 45 / 175
+group = 50 / 175
+group = 55 / 175
+group = 60 / 175
+group = 65 / 175
+group = 70 / 175
+group = 75 / 175
+group = 80 / 175
+group = 85 / 175
+group = 90 / 175
+group = 95 / 175
+group = 100 / 175
+group = 105 / 175
+group = 110 / 175
+group = 115 / 175
+group = 120 / 175
+group = 125 / 175
+group = 130 / 175
+group = 135 / 175
+group = 140 / 175
+group = 145 / 175
+group = 150 / 175
+group = 155 / 175
+group = 160 / 175
+group = 165 / 175
+group = 170 / 175
+Writing to 4.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:5
+cp: cannot create regular file '/home/lendle/remote_dir/F5E_delta90_output/angle12/ap/': Not a directory
+./cpscript: line 50: cd: ap: No such file or directory
 sed: can't read 4.ap: No such file or directory
-./fast_n2f 5 9400 0 1
-Reading 5 ... 
-numNodes = 3958
-numAbcTri = 7456
-Reading 5.curJ ... 
-Loading ... 5.curJ
-Done loading 5.curJ. First order.
-Reading 5.curM ... 
-Loading ... 5.curM
-Done loading 5.curM. First order.
-Done reading files.
-Partitioning mesh ... 
-group = 0 / 88
-./cpscript: line 55: 567974 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
-cp: cannot stat '/home/lendle/Desktop/test/angle0/5/5.ap': No such file or directory
+rm: cannot remove '/home/lendle/remote_dir/F5E_delta90_output/angle12/4/fast_n2f': No such file or directory
+./cpscript: line 42: cd: /home/lendle/remote_dir/F5E_delta90_output/angle12/5: Not a directory
+./fast_n2f 5 500 2 4
+./cpscript: line 44: ./fast_n2f: No such file or directory
+cp: cannot stat '/home/lendle/remote_dir/F5E_delta90_output/angle12/5/5.ap': Not a directory
+./cpscript: line 50: cd: ap: No such file or directory
 sed: can't read 5.ap: No such file or directory
-./fast_n2f 6 9400 0 1
-Reading 6 ... 
-numNodes = 3976
-numAbcTri = 7467
-Reading 6.curJ ... 
-Loading ... 6.curJ
-Done loading 6.curJ. First order.
-Reading 6.curM ... 
-Loading ... 6.curM
-Done loading 6.curM. First order.
-Done reading files.
-Partitioning mesh ... 
-group = 0 / 87
-./cpscript: line 55: 567996 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
-cp: cannot stat '/home/lendle/Desktop/test/angle0/6/6.ap': No such file or directory
+rm: cannot remove '/home/lendle/remote_dir/F5E_delta90_output/angle12/5/fast_n2f': Not a directory
+./cpscript: line 42: cd: /home/lendle/remote_dir/F5E_delta90_output/angle12/6: Not a directory
+./fast_n2f 6 500 2 4
+./cpscript: line 44: ./fast_n2f: No such file or directory
+cp: cannot stat '/home/lendle/remote_dir/F5E_delta90_output/angle12/6/6.ap': Not a directory
+./cpscript: line 50: cd: ap: No such file or directory
 sed: can't read 6.ap: No such file or directory
-./fast_n2f 7 9400 0 1
-Reading 7 ... 
-numNodes = 3986
-numAbcTri = 7488
-Reading 7.curJ ... 
-Loading ... 7.curJ
-Done loading 7.curJ. First order.
-Reading 7.curM ... 
-Loading ... 7.curM
-Done loading 7.curM. First order.
-Done reading files.
-Partitioning mesh ... 
-group = 0 / 87
-./cpscript: line 55: 568018 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
-cp: cannot stat '/home/lendle/Desktop/test/angle0/7/7.ap': No such file or directory
+rm: cannot remove '/home/lendle/remote_dir/F5E_delta90_output/angle12/6/fast_n2f': Not a directory
+./cpscript: line 42: cd: /home/lendle/remote_dir/F5E_delta90_output/angle12/7: Not a directory
+./fast_n2f 7 500 2 4
+./cpscript: line 44: ./fast_n2f: No such file or directory
+cp: cannot stat '/home/lendle/remote_dir/F5E_delta90_output/angle12/7/7.ap': Not a directory
+./cpscript: line 50: cd: ap: No such file or directory
 sed: can't read 7.ap: No such file or directory
+rm: cannot remove '/home/lendle/remote_dir/F5E_delta90_output/angle12/7/fast_n2f': Not a directory

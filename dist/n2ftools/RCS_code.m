@@ -19,7 +19,7 @@ endif
 status_dir=[]
 cmd=["grep -n \"^", num2str(num_theta), " ", num2str(num_phi), "\" ", data_dir, "0.ap | cut -f1 -d:"]
 [status, cmdout]=system(cmd);
-num_col=1#str2num(cmdout);
+num_col=str2num(cmdout);
 printf("data dir=%s, num_sub = %d, num_col= %d, num_theta=%d, num_phi=%d\n", data_dir, num_sub, num_col, num_theta, num_col);
 
 data=[];

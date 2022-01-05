@@ -17,12 +17,14 @@ import java.util.Map;
 import jzy_3d_sample.model.os.OSRecord;
 import jzy_3d_sample.model.os.OSRecordMap;
 import jzy_3d_sample.utils.SerializeUtil;
+import jzy_3d_sample.utils.ThreadUtils;
 
 /**
  *
  * @author lendle
  */
 public class OSFileParser {
+
     public static OSRecordMap readSerializedOSFile(File osMapFile) throws IOException, ClassNotFoundException {
         return (OSRecordMap) SerializeUtil.readFromFile(osMapFile);
 //        try(ObjectInputStream input=new ObjectInputStream(new FileInputStream(osMapFile))){
@@ -36,48 +38,50 @@ public class OSFileParser {
      * @return
      */
     public static OSRecordMap readOSFile(File outputFolder, File osFile, String outputPrefix) throws IOException {
-        OSRecordMap oSRecordMap=new OSRecordMap();
+        OSRecordMap oSRecordMap = new OSRecordMap();
         oSRecordMap.setHomeFolder(outputFolder);
         HashMap<String, OSRecord> ret = new HashMap<>();
         if (osFile == null) {
             return oSRecordMap;
         }
-        int osRecordMapIndex=0;
-        String currentFileName=outputPrefix+"_"+osRecordMapIndex+".osRecordMap";
-        System.out.println("currentFileName="+currentFileName);
+        int osRecordMapIndex = 0;
+        String currentFileName = outputPrefix + "_" + osRecordMapIndex + ".osRecordMap";
+        System.out.println("currentFileName=" + currentFileName);
         oSRecordMap.getOsRecordFileNames().add(currentFileName);
         try (BufferedReader input = new BufferedReader(new FileReader(osFile))) {
             String line = null;
             boolean firstRecordGot = false;
             while ((line = input.readLine()) != null) {
-                line = line.trim();
-                if(line.startsWith("#Frequency:")){
-                    String [] row=line.split(" +");
-                    int frequency=(int)(Double.valueOf(row[1])/1000000);
-                    oSRecordMap.setFrequency(frequency);
+                if (ThreadUtils.isInterrupted()) {
+                    throw new IOException(new RuntimeException("interrupted"));
                 }
-                else if (line.length() > 0 && line.startsWith("#") == false && line.startsWith("*") == false) {
+                line = line.trim();
+                if (line.startsWith("#Frequency:")) {
+                    String[] row = line.split(" +");
+                    int frequency = (int) (Double.valueOf(row[1]) / 1000000);
+                    oSRecordMap.setFrequency(frequency);
+                } else if (line.length() > 0 && line.startsWith("#") == false && line.startsWith("*") == false) {
                     firstRecordGot = true;
                     String[] row = line.split(" +");
                     OSRecord record = new OSRecord();
                     record.setRow(line);
-                    String key=String.format("%13.4E", Double.valueOf(row[1]))+
-                            String.format("%13.4E", Double.valueOf(row[2]))+
-                            String.format("%13.4E", Double.valueOf(row[3]));
-                    String fuzzyCenterKeyString=String.format("%13.4E", Double.valueOf(row[1])).substring(0, 4)+
-                            String.format("%13.4E", Double.valueOf(row[2])).substring(0, 4)+String.format("%13.4E", Double.valueOf(row[3])).substring(0, 4);
+                    String key = String.format("%13.4E", Double.valueOf(row[1]))
+                            + String.format("%13.4E", Double.valueOf(row[2]))
+                            + String.format("%13.4E", Double.valueOf(row[3]));
+                    String fuzzyCenterKeyString = String.format("%13.4E", Double.valueOf(row[1])).substring(0, 4)
+                            + String.format("%13.4E", Double.valueOf(row[2])).substring(0, 4) + String.format("%13.4E", Double.valueOf(row[3])).substring(0, 4);
                     record.setKey(key);
                     record.setFuzzyKey(fuzzyCenterKeyString);
                     oSRecordMap.getKey2FileNameMap().put(key, currentFileName);
-                    Map<String,String> realKeyList=oSRecordMap.getFuzzyKey2RealKeyMap().get(fuzzyCenterKeyString);
-                    if(realKeyList==null){
-                        realKeyList=new HashMap<>();
+                    Map<String, String> realKeyList = oSRecordMap.getFuzzyKey2RealKeyMap().get(fuzzyCenterKeyString);
+                    if (realKeyList == null) {
+                        realKeyList = new HashMap<>();
                         oSRecordMap.getFuzzyKey2RealKeyMap().put(fuzzyCenterKeyString, realKeyList);
                     }
-                    if(realKeyList.containsKey(key)==false){
+                    if (realKeyList.containsKey(key) == false) {
                         realKeyList.put(key, "");
-                        if(realKeyList.size()>FAST_ACCESS_THRESHOLD){
-                            if(oSRecordMap.getFastAccessMap().size()<OSMAP_MAX_ENTRIES){
+                        if (realKeyList.size() > FAST_ACCESS_THRESHOLD) {
+                            if (oSRecordMap.getFastAccessMap().size() < OSMAP_MAX_ENTRIES) {
                                 //then put this into fast access
                                 oSRecordMap.getFastAccessMap().put(key, record);
                             }
@@ -93,28 +97,28 @@ public class OSFileParser {
                     record.setImC1Y(row[16]);
                     record.setReC1Z(row[17]);
                     record.setImC1Z(row[18]);
-                    
+
                     record.setReC2X(row[19]);
                     record.setImC2X(row[20]);
                     record.setReC2Y(row[21]);
                     record.setImC2Y(row[22]);
                     record.setReC2Z(row[23]);
                     record.setImC2Z(row[24]);
-                    
+
                     record.setReC3X(row[25]);
                     record.setImC3X(row[26]);
                     record.setReC3Y(row[27]);
                     record.setImC3Y(row[28]);
                     record.setReC3Z(row[29]);
                     record.setImC3Z(row[30]);
-                    
+
                     ret.put(record.getKey(), record);
                     //System.out.println("ret.size="+ret.size());
-                    if(ret.size()>OSMAP_MAX_ENTRIES){
+                    if (ret.size() > OSMAP_MAX_ENTRIES) {
                         SerializeUtil.writeToFile(ret, new File(outputFolder, currentFileName));
                         ret = new HashMap<>();
                         osRecordMapIndex++;
-                        currentFileName=outputPrefix+"_"+osRecordMapIndex+".osRecordMap";
+                        currentFileName = outputPrefix + "_" + osRecordMapIndex + ".osRecordMap";
                         oSRecordMap.getOsRecordFileNames().add(currentFileName);
                     }
                 } else {

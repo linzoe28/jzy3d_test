@@ -3,10 +3,9 @@ num_col = 0
 num_theta = 0
 num_phi = 0
 data_dir = 
-data_dir = /home/lendle/dev/projects/1101/jzy3d_test/dist/n2ftools/results_16407577130390/
+data_dir = /home/lendle/dev/projects/1101/jzy3d_test/dist/n2ftools/results_164134973241311/
 status_dir = [](0x0)
-cmd = grep -n "^0 0" /home/lendle/dev/projects/1101/jzy3d_test/dist/n2ftools/results_16407577130390/0.ap | cut -f1 -d:
-grep: /home/lendle/dev/projects/1101/jzy3d_test/dist/n2ftools/results_16407577130390/0.ap: No such file or directory
+cmd = grep -n "^180 270" /home/lendle/dev/projects/1101/jzy3d_test/dist/n2ftools/results_164134973241311/0.ap | cut -f1 -d:
 num_col =  1
-data dir=/home/lendle/dev/projects/1101/jzy3d_test/dist/n2ftools/results_16407577130390/, num_sub = 8, num_col= 1, num_theta=0, num_phi=1
+data dir=/home/lendle/dev/projects/1101/jzy3d_test/dist/n2ftools/results_164134973241311/, num_sub = 8, num_col= 1, num_theta=180, num_phi=1
 finish

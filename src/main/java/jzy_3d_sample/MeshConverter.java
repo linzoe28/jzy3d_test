@@ -6,10 +6,13 @@
 package jzy_3d_sample;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import jzy_3d_sample.ui.MeshConverterController;
 
 /**
  *
@@ -23,12 +26,17 @@ public class MeshConverter extends Application {
         try {
             FXMLLoader zoompanelFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/batch_mesh_converter.fxml"));
             AnchorPane anchorPane=zoompanelFxmlLoader.load();
+            MeshConverterController controller=zoompanelFxmlLoader.getController();
             scene=new Scene(anchorPane);
             primaryStage.setTitle("CS");
             primaryStage.setScene(scene);
             
-            
-
+            primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
+                public void handle(WindowEvent event){
+                    event.consume();
+                    controller.shutdown();
+                }
+            });
             primaryStage.show();
 
         } catch (Exception ex) {

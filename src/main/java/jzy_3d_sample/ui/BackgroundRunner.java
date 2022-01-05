@@ -40,6 +40,7 @@ public abstract class BackgroundRunner {
         this.progressReporter.startProgress();
         runner=new Thread() {
             public void run() {
+                stopped=false;
                 runInWorkerThread();
                 progressReporter.stopProgress();
                 Platform.runLater(new Runnable() {
@@ -47,6 +48,7 @@ public abstract class BackgroundRunner {
                     public void run() {
                         runInUIThread();
                         stopped=true;
+                        afterStopped();
                     }
                 });
             }
@@ -66,6 +68,8 @@ public abstract class BackgroundRunner {
     public abstract void runInWorkerThread();
 
     public abstract void runInUIThread();
+    
+    protected void afterStopped(){}
 
     public static interface ProgressReporter {
 

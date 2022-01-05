@@ -11,7 +11,7 @@ package jzy_3d_sample.utils;
  */
 public class ThreadUtils {
 
-    private final static boolean activated = false;
+    private final static boolean activated = true;
 
     public static boolean isInterrupted() {
         return isInterrupted(Thread.currentThread());

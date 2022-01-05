@@ -5,6 +5,7 @@
  */
 package jzy_3d_sample.utils;
 
+import com.google.gson.Gson;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -15,13 +16,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
  * @author lendle
  */
 public class SerializeUtil {
-
+    public static Object readFromJsonFile(Class t, File file) throws IOException{
+        Gson gson=new Gson();
+        String str=FileUtils.readFileToString(file, "utf-8");
+        return gson.fromJson(str, t);
+    }
     public static Object readFromFile(File file) throws FileNotFoundException, IOException, ClassNotFoundException {
         try (ObjectInputStream objectInputStreamCurrent
                 = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
@@ -32,7 +38,12 @@ public class SerializeUtil {
 //            return in.readObject();
 //        }
     }
-
+    
+    public static void writeToJsonFile(Object obj, File file) throws IOException{
+        Gson gson=new Gson();
+        String json=gson.toJson(obj);
+        FileUtils.write(file, json, "utf-8");
+    }
     public static void writeToFile(Serializable obj, File file) throws IOException {
         try (ObjectOutputStream objectOutputStreamCurrent
                 = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
