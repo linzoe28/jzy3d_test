@@ -16,40 +16,21 @@ import java.util.List;
  */
 public class Status implements StatusProvider{
     private SerializedStatus s=null;
+    private List<File> osFiles=null;
+    private List<File> n2fProcessingQueue=null; 
     public Status(SerializedStatus s){
         this.s=s;
+        osFiles=new File2StringList(s.getOsFilePaths());
+        n2fProcessingQueue=new File2StringList(s.getN2fProcessingQueuePaths());
     }
     
     public List<File> getOsFiles(){
-        List<File> files=new ArrayList<>();
-        for(String path : s.osFilePaths){
-            files.add(new File(path));
-        }
-        return files;
+        return osFiles;
     }
     
     public void setOsFiles(List<File> files) throws IOException{
-        List<String> paths=new ArrayList<>();
-        for(File file : files){
-            paths.add(file.getCanonicalPath());
-        }
-        s.setOsFilePaths(paths);
-    }
-    
-    private static List<File> paths2Files(List<String> paths){
-        List<File> files=new ArrayList<>();
-        for(String path : paths){
-            files.add(new File(path));
-        }
-        return files;
-    }
-    
-    private static List<String> files2Paths(List<File> files) throws IOException{
-        List<String> paths=new ArrayList<>();
-        for(File file : files){
-            paths.add(file.getCanonicalPath());
-        }
-        return paths;
+        osFiles.clear();
+        osFiles.addAll(files);
     }
     
     @Override
@@ -121,10 +102,11 @@ public class Status implements StatusProvider{
     }
     
     public List<File> getN2fProcessingQueue() {
-        return paths2Files(s.getN2fProcessingQueuePaths());
+        return this.n2fProcessingQueue;
     }
 
     public void setN2fProcessingQueue(List<File> paths) throws IOException {
-        this.s.setN2fProcessingQueuePaths(files2Paths(paths));
+        this.n2fProcessingQueue.clear();
+        this.n2fProcessingQueue.addAll(paths);
     }
 }

@@ -118,7 +118,7 @@
       </TitledPane>
       <FlowPane alignment="BOTTOM_RIGHT" layoutX="428.0" layoutY="300.0" prefHeight="54.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="20.0">
          <children>
-            <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#buttonOkClicked" text="OK" />
+            <Button fx:id="buttonOk" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#buttonOkClicked" text="OK" />
             <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#buttonCancelClicked" text="Exit" />
          </children>
       </FlowPane>

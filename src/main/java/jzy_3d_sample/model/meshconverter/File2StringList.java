@@ -28,19 +28,23 @@ public class File2StringList implements List<File>{
     public File2StringList(List<String> internalList) {
         this.internalList=internalList;
     }
+
+    public List<String> getInternalList() {
+        return internalList;
+    }
     
     @Override
-    public int size() {
+    public synchronized int size() {
         return internalList.size();
     }
 
     @Override
-    public boolean isEmpty() {
+    public synchronized boolean isEmpty() {
         return internalList.isEmpty();
     }
 
     @Override
-    public boolean contains(Object o) {
+    public synchronized boolean contains(Object o) {
         try {
             File f=(File) o;
             return internalList.contains(f.getCanonicalPath());
@@ -51,22 +55,22 @@ public class File2StringList implements List<File>{
     }
 
     @Override
-    public Iterator<File> iterator() {
+    public synchronized Iterator<File> iterator() {
         return paths2Files(internalList).iterator();
     }
 
     @Override
-    public Object[] toArray() {
+    public synchronized Object[] toArray() {
         return paths2Files(internalList).toArray();
     }
 
     @Override
-    public <T> T[] toArray(T[] a) {
+    public synchronized <T> T[] toArray(T[] a) {
         return paths2Files(internalList).toArray((T[]) new File[0]);
     }
 
     @Override
-    public boolean add(File e) {
+    public synchronized boolean add(File e) {
         try {
             return internalList.add(e.getCanonicalPath());
         } catch (IOException ex) {
@@ -76,7 +80,7 @@ public class File2StringList implements List<File>{
     }
 
     @Override
-    public boolean remove(Object o) {
+    public synchronized boolean remove(Object o) {
         try {
             File e=(File) o;
             return internalList.remove(e.getCanonicalPath());
@@ -87,92 +91,138 @@ public class File2StringList implements List<File>{
     }
 
     @Override
-    public boolean containsAll(Collection<?> c) {
+    public synchronized boolean containsAll(Collection<?> c) {
+        return paths2Files(internalList).containsAll(c);
+    }
+
+    @Override
+    public synchronized boolean addAll(Collection<? extends File> c) {
+        try {
+            return this.internalList.addAll(files2Paths(new ArrayList<File>(c)));
+        } catch (IOException ex) {
+            Logger.getLogger(File2StringList.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return false;
     }
 
     @Override
-    public boolean addAll(Collection<? extends File> c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized boolean addAll(int index, Collection<? extends File> c) {
+        try {
+            return this.internalList.addAll(index, files2Paths(new ArrayList<File>(c)));
+        } catch (IOException ex) {
+            Logger.getLogger(File2StringList.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends File> c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized boolean removeAll(Collection<?> c) {
+        try {
+            return this.internalList.removeAll(files2Paths(collection2FileList(c)));
+        } catch (IOException ex) {
+            Logger.getLogger(File2StringList.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     @Override
-    public boolean removeAll(Collection<?> c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized boolean retainAll(Collection<?> c) {
+        try {
+            return this.internalList.retainAll(files2Paths(collection2FileList(c)));
+        } catch (IOException ex) {
+            Logger.getLogger(File2StringList.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     @Override
-    public boolean retainAll(Collection<?> c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void replaceAll(UnaryOperator<File> operator) {
+    public synchronized void replaceAll(UnaryOperator<File> operator) {
         List.super.replaceAll(operator); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void sort(Comparator<? super File> c) {
+    public synchronized void sort(Comparator<? super File> c) {
         List.super.sort(c); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized void clear() {
+        this.internalList.clear();
     }
 
     @Override
-    public File get(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized File get(int index) {
+        return new File(this.internalList.get(index));
     }
 
     @Override
-    public File set(int index, File element) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized File set(int index, File element) {
+        try {
+            return new File(this.internalList.set(index, element.getCanonicalPath()));
+        } catch (IOException ex) {
+            Logger.getLogger(File2StringList.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override
-    public void add(int index, File element) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized void add(int index, File element) {
+        try {
+            this.internalList.add(index, element.getCanonicalPath());
+        } catch (IOException ex) {
+            Logger.getLogger(File2StringList.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
-    public File remove(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized File remove(int index) {
+        try {
+            return new File(this.internalList.remove(index));
+        } catch (Exception ex) {
+            Logger.getLogger(File2StringList.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override
-    public int indexOf(Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized int indexOf(Object o) {
+        File file=(File) o;
+        try {
+            return this.internalList.indexOf(file.getCanonicalPath());
+        } catch (IOException ex) {
+            Logger.getLogger(File2StringList.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
     }
 
     @Override
-    public int lastIndexOf(Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized int lastIndexOf(Object o) {
+        File file=(File) o;
+        try {
+            return this.internalList.lastIndexOf(file.getCanonicalPath());
+        } catch (IOException ex) {
+            Logger.getLogger(File2StringList.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
     }
 
     @Override
-    public ListIterator<File> listIterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized ListIterator<File> listIterator() {
+        return paths2Files(internalList).listIterator();
     }
 
     @Override
-    public ListIterator<File> listIterator(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized ListIterator<File> listIterator(int index) {
+        return paths2Files(internalList).listIterator(index);
     }
 
     @Override
-    public List<File> subList(int fromIndex, int toIndex) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized List<File> subList(int fromIndex, int toIndex) {
+        return paths2Files(internalList).subList(fromIndex, toIndex);
     }
 
     @Override
-    public Spliterator<File> spliterator() {
+    public synchronized Spliterator<File> spliterator() {
         return List.super.spliterator(); //To change body of generated methods, choose Tools | Templates.
     }
  
@@ -190,5 +240,13 @@ public class File2StringList implements List<File>{
             paths.add(file.getCanonicalPath());
         }
         return paths;
+    }
+    
+    private static List<File> collection2FileList(Collection<?> c){
+        List<File> files=new ArrayList<>();
+        for(Object o : c){
+            files.add((File) o);
+        }
+        return files;
     }
 }

@@ -5,9 +5,14 @@
  */
 package jzy_3d_sample.ui;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.ConsoleAppender;
+import ch.qos.logback.core.FileAppender;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,10 +46,14 @@ import jzy_3d_sample.utils.ThreadUtils;
 import jzy_3d_sample.utils.meshconverter.StatusFileUtil;
 import org.apache.commons.io.FileUtils;
 import org.jzy3d.plot3d.primitives.Shape;
+import org.slf4j.LoggerFactory;
 import rocks.imsofa.n2fproxy.N2fExecutor;
 import rocks.imsofa.n2fproxy.N2fExecutorEvent;
 import rocks.imsofa.n2fproxy.N2fExecutorImpl;
 import rocks.imsofa.n2fproxy.N2fExecutorListener;
+import ch.qos.logback.classic.Logger;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  *
@@ -56,7 +65,10 @@ public class MeshConverterController {
     private File osFile = null;
     private boolean ok = false;
     private FileChooser fileChooser = new FileChooser();
-    private boolean closing=false;
+    private boolean closing = false;
+    @FXML
+    private Button buttonOk;
+    
     @FXML
     private TextField outputFolderText;
 
@@ -85,25 +97,25 @@ public class MeshConverterController {
     private CheckBox checkboxn2f;
     @FXML
     private Button buttonCancel;
-    
+
     private BackgroundRunner r = null;
 
     @FXML
     void buttonCancelClicked(ActionEvent event) {
         shutdown();
     }
-    
-    public void shutdown(){
-        closing=true;
+
+    public void shutdown() {
+        closing = true;
         if (r != null && !r.isStopped()) {
             buttonCancel.setDisable(true);
             buttonCancel.setText("Stopping");
             r.shutdown();
-        }else{
+        } else {
             ((Stage) nasFileText.getScene().getWindow()).close();
         }
     }
-    
+
     @FXML
     void buttonNasClicked(ActionEvent event) {
         fileChooser.getExtensionFilters().clear();
@@ -120,6 +132,7 @@ public class MeshConverterController {
 
     @FXML
     void buttonOkClicked(ActionEvent event) {
+        buttonOk.setDisable(true);
         r = new BackgroundRunner(new ProgressReporter() {
             public void startProgress() {
             }
@@ -130,19 +143,30 @@ public class MeshConverterController {
             public void setStatus(String status) {
             }
         }) {
-            private List<Integer> frequencies = new ArrayList<>();
-            private List<File> n2fProcessingQueue = new ArrayList<>();
-            private Status status=null;
+//            private List<Integer> frequencies = new ArrayList<>();
+//            private List<File> n2fProcessingQueue = new ArrayList<>();
+//            private List<File> osFiles=new ArrayList<>();
+            private Status status = null;
+            private File outputDir = null;
+            private Logger logger=null;
 
             @Override
-            public void afterStopped(){
-                if(closing){
+            public void afterStopped() {
+                buttonOk.setDisable(false);
+                if (closing) {
                     ((Stage) nasFileText.getScene().getWindow()).close();
                 }
             }
-            
+
             public void runBeforeWorkerThread() {
                 progressBar.setVisible(true);
+            }
+
+            private void checkpoint() throws Exception {
+                StatusFileUtil.saveStatus(outputDir, status);
+                if (ThreadUtils.isInterrupted()) {
+                    throw new Exception("interrupted");
+                }
             }
 
             public void runInWorkerThread() {
@@ -151,22 +175,64 @@ public class MeshConverterController {
                     File bigOsFile = new File(osFileText.getText());
                     File nasFile = new File(nasFileText.getText());
                     setStatusMessage("splitting os files");
-                    File outputDir = new File(outputFolderText.getText());
-//                    if(!outputDir.exists()){
+                    outputDir = new File(outputFolderText.getText());
+//                    if (!outputDir.exists()) {
 //                        FileUtils.forceMkdir(outputDir);
 //                    }
-//                    status=StatusFileUtil.loadStatus(outputDir, bigOsFile.getParentFile());
-                    if (outputDir.exists()) {
-                        FileUtils.deleteDirectory(outputDir);
+//                    status = StatusFileUtil.loadStatus(outputDir, bigOsFile.getParentFile());
+
+//                    if (outputDir.exists()) {
+//                        FileUtils.deleteDirectory(outputDir);
+//                    }
+//                    System.out.println(outputDir.listFiles()!=null && outputDir.listFiles().length>0);
+                    if(outputDir.exists() && outputDir.listFiles()!=null && outputDir.listFiles().length>0){
+                        Platform.runLater(new Runnable(){
+                            public void run(){
+                                Alert a = new Alert(AlertType.ERROR);
+                                a.setTitle("Not Empty");
+                                a.setContentText("Output Directory not Empty!");
+                                a.show();
+                                shutdown();
+                            }
+                        });
+                        
+                        return;
                     }
-                    FileUtils.forceMkdir(outputDir);
+                    if(!outputDir.exists()){
+                        FileUtils.forceMkdir(outputDir);
+                    }
+
+                    //configure logger
+                    LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+                    PatternLayoutEncoder ple = new PatternLayoutEncoder();
+                    ple.setPattern("%date %level [%thread] %logger{10} [%file:%line] %msg%n");
+                    ple.setContext(lc);
+                    ple.start();
+                    FileAppender<ILoggingEvent> fileAppender = new FileAppender<ILoggingEvent>();
+                    fileAppender.setFile(new File(outputDir, "MeshConverter.log").getCanonicalPath());
+                    fileAppender.setEncoder(ple);
+                    fileAppender.setContext(lc);
+                    fileAppender.start();
+                    ConsoleAppender consoleAppender=new ConsoleAppender();
+                    consoleAppender.setEncoder(ple);
+                    consoleAppender.setContext(lc);
+                    consoleAppender.start();
+                    logger = (Logger) LoggerFactory.getLogger(MeshConverterController.class.getName());
+                    logger.addAppender(fileAppender);
+                    logger.addAppender(consoleAppender);
+                    logger.setLevel(Level.ALL);
+                    
+                    status = StatusFileUtil.loadStatus(outputDir, bigOsFile.getParentFile());
                     File outputOsFolder = new File(bigOsFile.getParentFile(), ".os");
-                    List<File> osFiles = null;
+
                     if (outputOsFolder.exists() && outputOsFolder.list().length == 0) {
                         FileUtils.deleteDirectory(outputOsFolder);
                     }
                     //split os files by angle
-                    osFiles = splitOSFileByAngle(outputOsFolder, osFiles, bigOsFile);
+                    if (status.getOsFiles().isEmpty()) {
+                        status.setOsFiles(splitOSFileByAngle(outputOsFolder, bigOsFile));
+                    }
+
                     ////////////////////////////
                     Read_data r = new Read_data(outputDir, "angle0");
                     long x = Long.valueOf(x_value.getText());
@@ -175,15 +241,11 @@ public class MeshConverterController {
                     int index = 0;
 
                     //first, output the no-os model
-                    File firstOsFile = osFiles.get(0);
-                    if (ThreadUtils.isInterrupted()) {
-                        throw new Exception("interrupted");
-                    }
+                    File firstOsFile = status.getOsFiles().get(0);
+                    checkpoint();
                     setStatusMessage("processing mesh");
                     List<Mesh> meshes = r.getdata_from_nas(nasFile, firstOsFile);
-                    if (ThreadUtils.isInterrupted()) {
-                        throw new Exception("interrupted");
-                    }
+                    checkpoint();
                     setStatusMessage("done loading mesh definition");
                     {
                         Shape surface = SurfaceLoader.loadSurface(meshes);
@@ -195,25 +257,23 @@ public class MeshConverterController {
                         projectModel.setzSlice(z);
                         projectModel.setCubes(cubes);
                     }
-                    
+
                     //serializeCurrentData
-                    serializeCurrentData(index, osFiles, outputDir, r, meshes, x, y, z, projectModel);
+                    serializeCurrentData(index, status.getOsFiles(), outputDir, r, meshes, x, y, z, projectModel);
                     ///////////////////////
                     index = 0;
                     projectModel.setHomeFolder(outputDir);
                     if (checkboxn2f.isSelected()) {
-                        int delta = AngleLabelMapGenerator.getDelta(n2fProcessingQueue.size());
+                        int delta = AngleLabelMapGenerator.getDelta(status.getN2fProcessingQueue().size());
                         int theta = 0;
                         int phi = 0;
-                        for (phi = 0; index < n2fProcessingQueue.size() && phi <= 360; phi += delta) {
-                            for (theta = 0; index < n2fProcessingQueue.size() && theta <= 180; theta += delta) {
-                                if (ThreadUtils.isInterrupted()) {
-                                    throw new Exception("interrupted");
-                                }
-                                File n2fFolder = n2fProcessingQueue.get(index);
-                                int frequency = frequencies.get(index);
-                                System.out.println("theta=" + theta + ", phi=" + phi + ", frequency=" + frequency);
-                                setStatusMessage("processing n2f for angle " + (index + 1) + "/" + osFiles.size());
+                        for (phi = 0; index < status.getN2fProcessingQueue().size() && phi <= 360; phi += delta) {
+                            for (theta = 0; index < status.getN2fProcessingQueue().size() && theta <= 180; theta += delta) {
+                                checkpoint();
+                                File n2fFolder = status.getN2fProcessingQueue().get(index);
+                                int frequency = status.getFrequencies().get(index);
+                                logger.info("theta=" + theta + ", phi=" + phi + ", frequency=" + frequency);
+                                setStatusMessage("processing n2f for angle " + (index + 1) + "/" + status.getOsFiles().size());
                                 N2fExecutor executor = new N2fExecutorImpl(new File("n2ftools"));
 
                                 executor.addN2fExecutorListener(new N2fExecutorListener() {
@@ -230,7 +290,7 @@ public class MeshConverterController {
                                 currentData.setPhi(phi);
                                 currentData.setRcs(executor.getResults());
                                 currentData.setRcsTotal(executor.getRCSTotal());
-                                System.out.println("\trcs="+executor.getRCSTotal()+":"+Arrays.toString(executor.getResults()));
+                                logger.info("\trcs=" + executor.getRCSTotal() + ":" + Arrays.toString(executor.getResults()));
                                 File currentObjFile = new File(outputDir, "angle" + index + ".current");
                                 SerializeUtil.writeToFile(currentData, currentObjFile);
                                 executor.close();
@@ -244,10 +304,13 @@ public class MeshConverterController {
                     }
                     SerializeUtil.writeToFile(projectModel, new File(outputDir, "cubes.obj"));
                     setStatusMessage("done");
+                    checkpoint();
                 } catch (IOException ex) {
                     ex.printStackTrace();
+                    logger.error(ex.getMessage(), ex);
                 } catch (Exception ex) {
                     ex.printStackTrace();
+                    logger.error(ex.getMessage(), ex);
                 } finally {
                 }
             }
@@ -256,12 +319,10 @@ public class MeshConverterController {
                 ///////////////////////////////
                 index = 0;//angle 0 was already processed when loading meshes
                 for (int n = 0; n < osFiles.size(); n++) {
-                    if (ThreadUtils.isInterrupted()) {
-                        throw new Exception("interrupted");
-                    }
+                    checkpoint();
                     File osFile = osFiles.get(n);
                     setStatusMessage("slicing for angle " + (index + 1) + "/" + osFiles.size());
-                    System.out.println("slicing for angle " + (index + 1) + "/" + osFiles.size());
+                    logger.info("slicing for angle " + (index + 1) + "/" + osFiles.size());
                     File subOutputFolder = new File(outputDir, "angle" + (index));
                     if (subOutputFolder.exists()) {
                         FileUtils.deleteDirectory(subOutputFolder);
@@ -277,8 +338,8 @@ public class MeshConverterController {
                         osRecords = OSFileParser.readOSFile(outputDir, osFile, "angle" + (index));
                         r1.applyOStoMeshes(meshes, osRecords);
                     }
-                    System.out.println("finished slicing for angle " + (index + 1) + "/" + osFiles.size());
-                    frequencies.add(osRecords.getFrequency());
+                    logger.info("finished slicing for angle " + (index + 1) + "/" + osFiles.size());
+                    status.getFrequencies().add(osRecords.getFrequency());
                     Shape surface = SurfaceLoader.loadSurface(meshes);
                     Cube boundingCube = new Cube(surface.getBounds(), meshes);
                     List<Cube> cubes = boundingCube.slice(x, y, z);
@@ -293,7 +354,7 @@ public class MeshConverterController {
                         FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeDir, i + ".curM"));
                         FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeDir, i + ".curJ"));
                     }
-                    n2fProcessingQueue.add(subOutputFolder);
+                    status.getN2fProcessingQueue().add(subOutputFolder);
                     //TODO: separate n2f process from slicing process
                     CurrentData currentData = new CurrentData();
                     currentData.setOsRecordsMap(osRecords);
@@ -303,12 +364,13 @@ public class MeshConverterController {
                     index++;
 
                     //FileUtils.forceDelete(osFile);
-//                        System.out.println("hit: " + osRecords.getHit() + ", miss: " + osRecords.getMiss());
+//                        logger.info("hit: " + osRecords.getHit() + ", miss: " + osRecords.getMiss());
                 }
             }
-            
-            private List<File> splitOSFileByAngle(File outputOsFolder, List<File> osFiles, File bigOsFile) throws Exception {
+
+            private List<File> splitOSFileByAngle(File outputOsFolder, File bigOsFile) throws Exception {
                 //split os files by angle
+                List<File> osFiles = null;
                 if (!outputOsFolder.exists()) {
                     outputOsFolder.mkdirs();
                     osFiles = OSFileSplitter.splitByAngle(bigOsFile, new OSFileSplitter.OutputFileCreator() {
