@@ -1,5 +1,6 @@
 package jzy_3d_sample.ui;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -11,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.StringConverter;
@@ -137,7 +137,8 @@ public class RCSvalueController {
     }
 
     public List<Cube> sortCube(List<Cube> Cubes) {
-        Collections.sort(Cubes, new Comparator<Cube>() {
+        List<Cube> clonedCubes=new ArrayList<>(Cubes);
+        Collections.sort(clonedCubes, new Comparator<Cube>() {
 
             @Override
             public int compare(Cube o1, Cube o2) {
@@ -151,7 +152,7 @@ public class RCSvalueController {
             }
         });
 
-        return Cubes;
+        return clonedCubes;
 
     }
 

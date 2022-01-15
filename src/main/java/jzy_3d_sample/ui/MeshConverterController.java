@@ -228,11 +228,11 @@ public class MeshConverterController {
                     if (outputOsFolder.exists() && outputOsFolder.list().length == 0) {
                         FileUtils.deleteDirectory(outputOsFolder);
                     }
+                    logger.info("splitting os file");
                     //split os files by angle
                     if (status.getOsFiles().isEmpty()) {
                         status.setOsFiles(splitOSFileByAngle(outputOsFolder, bigOsFile));
                     }
-
                     ////////////////////////////
                     Read_data r = new Read_data(outputDir, "angle0");
                     long x = Long.valueOf(x_value.getText());
@@ -244,6 +244,7 @@ public class MeshConverterController {
                     File firstOsFile = status.getOsFiles().get(0);
                     checkpoint();
                     setStatusMessage("processing mesh");
+                    logger.info("processing mesh");
                     List<Mesh> meshes = r.getdata_from_nas(nasFile, firstOsFile);
                     checkpoint();
                     setStatusMessage("done loading mesh definition");
@@ -259,10 +260,12 @@ public class MeshConverterController {
                     }
 
                     //serializeCurrentData
+                    logger.info("serializing current data");
                     serializeCurrentData(index, status.getOsFiles(), outputDir, r, meshes, x, y, z, projectModel);
                     ///////////////////////
                     index = 0;
                     projectModel.setHomeFolder(outputDir);
+                    logger.info("running n2f and RCS");
                     if (checkboxn2f.isSelected()) {
                         int delta = AngleLabelMapGenerator.getDelta(status.getN2fProcessingQueue().size());
                         int theta = 0;
@@ -274,6 +277,7 @@ public class MeshConverterController {
                                 int frequency = status.getFrequencies().get(index);
                                 logger.info("theta=" + theta + ", phi=" + phi + ", frequency=" + frequency);
                                 setStatusMessage("processing n2f for angle " + (index + 1) + "/" + status.getOsFiles().size());
+                                logger.info("processing n2f for angle " + (index + 1) + "/" + status.getOsFiles().size());
                                 N2fExecutor executor = new N2fExecutorImpl(new File("n2ftools"));
 
                                 executor.addN2fExecutorListener(new N2fExecutorListener() {
@@ -293,6 +297,7 @@ public class MeshConverterController {
                                 logger.info("\trcs=" + executor.getRCSTotal() + ":" + Arrays.toString(executor.getResults()));
                                 File currentObjFile = new File(outputDir, "angle" + index + ".current");
                                 SerializeUtil.writeToFile(currentData, currentObjFile);
+                                logger.info("current data serialized");
                                 executor.close();
                                 index++;
                             }
@@ -302,8 +307,10 @@ public class MeshConverterController {
                     for (Mesh mesh : meshes) {
                         mesh.emptyCurrent();
                     }
+                    logger.info("serializing obj file");
                     SerializeUtil.writeToFile(projectModel, new File(outputDir, "cubes.obj"));
                     setStatusMessage("done");
+                    logger.info("done");
                     checkpoint();
                 } catch (IOException ex) {
                     ex.printStackTrace();

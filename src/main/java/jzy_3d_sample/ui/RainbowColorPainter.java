@@ -25,9 +25,11 @@ public class RainbowColorPainter implements ColorPainter {
 
     @Override
     public void paint(int index, Cube c) {
+        int count=0;
         for (Mesh m : c.getMeshs()) {
             if (c.getRcs() >= rcsThreshold) {
                 m.setColor(Color.RED);
+                count++;
             } else if (c.getRcs() >= rcsThreshold - gap && c.getRcs() < rcsThreshold) {
                 m.setColor(new Color(255, 128, 0));
             } else if (c.getRcs() >= rcsThreshold - 2 * gap && c.getRcs() < rcsThreshold - gap) {
@@ -40,6 +42,7 @@ public class RainbowColorPainter implements ColorPainter {
                 m.setColor(new Color(0, 59, 231));
             }
         }
+//        System.out.println(gap+", count="+count);
     }
 
 }

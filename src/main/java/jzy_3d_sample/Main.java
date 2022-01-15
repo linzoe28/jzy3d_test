@@ -172,6 +172,7 @@ public class Main extends Application implements AngleSelectionHandler {
                                             try {
                                                 CurrentData cd = renderModel.getProjectModel().getCurrentData("angle" + (angle));
 //                                                System.out.println("cd.getRcs().length=" + cd.getRcs().length);
+//                                                System.out.println(Arrays.toString(cd.getRcs()));
                                                 for (int i = 0; angle == 0 && i < cd.getRcs().length - 1; i++) {
                                                     subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
                                                 }
@@ -303,7 +304,7 @@ public class Main extends Application implements AngleSelectionHandler {
 
             Menu toolMenu = new Menu("Tools");
             MenuItem openMeshConverterMenuItem = new MenuItem("開啓 MeshConverter");
-            menuBar.getMenus().add(toolMenu);
+            //menuBar.getMenus().add(toolMenu);
             toolMenu.getItems().add(openMeshConverterMenuItem);
             openMeshConverterMenuItem.setOnAction(new EventHandler<ActionEvent>() {
                 public void handle(ActionEvent event) {
@@ -391,11 +392,20 @@ public class Main extends Application implements AngleSelectionHandler {
 
     }
 
+    private void printRCS(List<Cube> cubes){
+        List<Double> list=new ArrayList<>();
+        for(Cube cube: cubes){
+            list.add(cube.getRcs());
+        }
+        System.out.println("cube rcs="+Arrays.deepToString(list.toArray()));
+    }
+    
     private void resetColor(double rcsThreshold) {
         if (extremeValuePoint != null) {
             renderModel.getChart().getScene().remove(extremeValuePoint);
         }
         List<Cube> colorCubes = new ArrayList<>(subCubes);
+        printRCS(colorCubes);
         double gap = (rcsThreshold - colorCubes.get(0).getRcs()) / 5;
         LegendController legendController = legendloader.getController();
         legendController.getRedValue().setText(String.format("%06.3f", rcsThreshold));
@@ -411,7 +421,9 @@ public class Main extends Application implements AngleSelectionHandler {
         }
         renderModel.getSurface().setWireframeDisplayed(false);
         //設定亮點
+        
         List<Mesh> meshs = subCubes.get(subCubes.size() - 1).getMeshs();
+//        System.out.println("meshs.size="+meshs.size());
         Collections.sort(meshs, new Comparator<Mesh>() {
 
             @Override
@@ -454,10 +466,11 @@ public class Main extends Application implements AngleSelectionHandler {
                 public void runInWorkerThread() {
                     try {
                         Read_data r=new Read_data();
+//                        System.out.println("index="+index);
                         CurrentData cd = renderModel.getProjectModel().getCurrentData(index);
                         cd.getOsRecordsMap().setHomeFolder(renderModel.getProjectModel().getHomeFolder());
                         //set rcs to cubes
-//                        System.out.println(Arrays.toString(cd.getRcs()));
+                        System.out.println(Arrays.toString(cd.getRcs()));
                         for (int i = 0; i < cd.getRcs().length - 1; i++) {
                             subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
                         }
