@@ -5,9 +5,7 @@
  */
 package jzy_3d_sample;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import jzy_3d_sample.datafactory.Read_data;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +34,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -48,7 +48,6 @@ import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
 import jzy_3d_sample.model.Vertex;
 import jzy_3d_sample.model.VertexCurrent;
-import jzy_3d_sample.model.os.OSRecord;
 import jzy_3d_sample.model.serialized.CurrentData;
 import jzy_3d_sample.ui.AnglePanelController;
 import jzy_3d_sample.ui.AngleSelectionHandler;
@@ -57,7 +56,6 @@ import jzy_3d_sample.ui.FileOpenObjController;
 import jzy_3d_sample.ui.LegendController;
 import jzy_3d_sample.ui.RCSvalueController;
 import jzy_3d_sample.ui.RainbowColorPainter;
-import jzy_3d_sample.ui.RcslistController;
 import jzy_3d_sample.ui.SouthpanelController;
 import jzy_3d_sample.ui.ZoomPanelController;
 import org.apache.commons.io.FileUtils;
@@ -195,8 +193,11 @@ public class Main extends Application implements AngleSelectionHandler {
 
                                 @Override
                                 public void runInUIThread() {
+                                    TabPane tabPane=new TabPane();
+                                    tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
                                     ScrollPane scrollPane = new ScrollPane();
-                                    container.setCenter(scrollPane);
+                                    tabPane.getTabs().add(new Tab("Main View", scrollPane));
+                                    container.setCenter(tabPane);
                                     scrollPane.setContent(renderModel.getView());
                                     renderModel.repaint();
                                     southpanelController.setStatus("Done");
