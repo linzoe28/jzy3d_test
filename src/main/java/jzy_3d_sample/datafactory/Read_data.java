@@ -15,7 +15,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -168,6 +171,7 @@ public class Read_data {
                     throw new IOException(new Exception("interrupted"));
                 }
                 points.put(nextLine[0], new double[]{Double.valueOf(nextLine[1]), Double.valueOf(nextLine[2]), Double.valueOf(nextLine[3])});
+//                System.out.println(nextLine[0]+":"+Arrays.toString(new double[]{Double.valueOf(nextLine[1]), Double.valueOf(nextLine[2]), Double.valueOf(nextLine[3])}));
             }
             long total = 0;
             CSVReader reader_mesh = new CSVReader(new FileReader(meshFile), ',', '\'', 1);
@@ -250,16 +254,16 @@ public class Read_data {
         if (mesh.getOsRecordKey() == null) {
             Mesh m = mesh;
             Vertex center = m.getCenter();
-            String key = String.format("%13.4E", (double) center.getX())
-                    + String.format("%13.4E", (double) center.getY())
-                    + String.format("%13.4E", (double) center.getZ());
+            String key = String.format("%13.4f", (double) center.getX())
+                    + String.format("%13.4f", (double) center.getY())
+                    + String.format("%13.4f", (double) center.getZ());
             OSRecord oSRecord = osRecordsMap.get(key);
             if (oSRecord == null) {
                 double minDistance = Double.MAX_VALUE;
                 OSRecord candidate = null;
-                String fuzzyCenterKey = String.format("%13.4E", (double) center.getX()).substring(0, 4)
-                        + String.format("%13.4E", (double) center.getY()).substring(0, 4)
-                        + String.format("%13.4E", (double) center.getZ()).substring(0, 4);
+                String fuzzyCenterKey = String.format("%13.4f", (double) center.getX()).substring(0, 4)
+                        + String.format("%13.4f", (double) center.getY()).substring(0, 4)
+                        + String.format("%13.4f", (double) center.getZ()).substring(0, 4);
                 List<String> candidateRealKeys = osRecordsMap.getCandidateKeyFromFuzzyKey(fuzzyCenterKey);
                 //System.out.println(candidateRealKeys.size());
                 int keyIndex = 0;
@@ -326,7 +330,6 @@ public class Read_data {
                             applyOSRecord2Mesh(entry.getMesh(), osRecord);
                             tobeRemoved = entry;
                             index++;
-                            //System.out.println(index+"/"+osRecordsMap.getKey2FileNameMap().size());
                             break;
                         }
                     }
@@ -355,14 +358,30 @@ public class Read_data {
         //process all undetermined entries
         for (List<MeshOSMatchingEntry> entries : fuzzyKeyMatchingMap.values()) {
             if (!entries.isEmpty()) {
+                MeshOSMatchingEntry tobeRemoved = null;
                 for (MeshOSMatchingEntry entry : entries) {
                     if (entry.getBestOSRecord() != null) {
                         index++;
+                        tobeRemoved = entry;
 //                        System.out.println(index+"/"+osRecordsMap.getKey2FileNameMap().size());
                         applyOSRecord2Mesh(entry.getMesh(), entry.getBestOSRecord());
+                        break;
                     } else {
-                        System.out.println("fail on " + entry.getMesh());
+                        Mesh _m = entry.getMesh();
+                        System.out.println("fail on " + _m.getCenter() + ":" + _m.getVertices()[0] + ", " + _m.getVertices()[1] + ", " + _m.getVertices()[2] + ":" + _m.getTest());
+//                        applyOSRecord2Mesh(entry.getMesh(), OSRecord.createZeroOSRecord(entry.getMesh()));
                     }
+                }
+                if (tobeRemoved != null) {
+                    entries.remove(tobeRemoved);
+                }
+            }
+        }
+        for (List<MeshOSMatchingEntry> entries : fuzzyKeyMatchingMap.values()) {
+            if(entries.size()>0){
+                System.out.println("orphaned entries: ");
+                for(MeshOSMatchingEntry entry : entries){
+                    System.out.println(entry.getMeshFuzzyKey()+":"+entry.getMeshKey());
                 }
             }
         }
@@ -380,13 +399,14 @@ public class Read_data {
                 throw new RuntimeException("interrupted");
             }
             Vertex center = mesh.getCenter();
-            String key = String.format("%13.4E", (double) center.getX())
-                    + String.format("%13.4E", (double) center.getY())
-                    + String.format("%13.4E", (double) center.getZ());
-            String fuzzyCenterKey = String.format("%13.4E", (double) center.getX()).substring(0, 4)
-                    + String.format("%13.4E", (double) center.getY()).substring(0, 4)
-                    + String.format("%13.4E", (double) center.getZ()).substring(0, 4);
+            String key = String.format("%13.4f", (double) center.getX())
+                    + String.format("%13.4f", (double) center.getY())
+                    + String.format("%13.4f", (double) center.getZ());
+            String fuzzyCenterKey = String.format("%13.4f", (double) center.getX()).substring(0, 4)
+                    + String.format("%13.4f", (double) center.getY()).substring(0, 4)
+                    + String.format("%13.4f", (double) center.getZ()).substring(0, 4);
             List<MeshOSMatchingEntry> entries = fuzzyKeyMatchingMap.get(fuzzyCenterKey);
+            
             if (entries == null) {
                 entries = new ArrayList<>();
                 fuzzyKeyMatchingMap.put(fuzzyCenterKey, entries);
@@ -397,6 +417,7 @@ public class Read_data {
             entry.setMeshKey(key);
             entry.setMinDistance(Double.MAX_VALUE);
             entries.add(entry);
+           
         }
         return fuzzyKeyMatchingMap;
     }

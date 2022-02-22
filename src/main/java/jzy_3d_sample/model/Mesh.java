@@ -23,6 +23,17 @@ public class Mesh extends Polygon implements Cloneable, Serializable{
     private String osRecordKey=null;//used for mapping mesh to its corresponding os record
     private Vertex[] vertices=null;
     private Map<Vertex, VertexCurrent> currentMap=new HashMap<>();
+    private String test=null;
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
+    
+    
     
     
     public Mesh(Vertex [] vertices){
@@ -57,7 +68,12 @@ public class Mesh extends Polygon implements Cloneable, Serializable{
     }
     
     public VertexCurrent getCurrent(Vertex vertex){
-        return currentMap.get(vertex);
+        VertexCurrent current=currentMap.get(vertex);
+//        if(current==null){
+//            current=new VertexCurrent(Complex.ZERO, Complex.ZERO, Complex.ZERO);
+//            currentMap.put(vertex, current);
+//        }
+        return current;
     }
     
     public VertexCurrent getCurrent(float x, float y, float z){

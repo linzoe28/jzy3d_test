@@ -65,11 +65,12 @@ public class OSFileParser {
                     String[] row = line.split(" +");
                     OSRecord record = new OSRecord();
                     record.setRow(line);
-                    String key = String.format("%13.4E", Double.valueOf(row[1]))
-                            + String.format("%13.4E", Double.valueOf(row[2]))
-                            + String.format("%13.4E", Double.valueOf(row[3]));
-                    String fuzzyCenterKeyString = String.format("%13.4E", Double.valueOf(row[1])).substring(0, 4)
-                            + String.format("%13.4E", Double.valueOf(row[2])).substring(0, 4) + String.format("%13.4E", Double.valueOf(row[3])).substring(0, 4);
+                    String key = String.format("%13.4f", Double.valueOf(row[1]))
+                            + String.format("%13.4f", Double.valueOf(row[2]))
+                            + String.format("%13.4f", Double.valueOf(row[3]));
+                    String fuzzyCenterKeyString = String.format("%13.4f", Double.valueOf(row[1])).substring(0, 4)
+                            + String.format("%13.4f", Double.valueOf(row[2])).substring(0, 4) + String.format("%13.4f", Double.valueOf(row[3])).substring(0, 4);
+
                     record.setKey(key);
                     record.setFuzzyKey(fuzzyCenterKeyString);
                     oSRecordMap.getKey2FileNameMap().put(key, currentFileName);

@@ -9,7 +9,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Map;
+import jzy_3d_sample.model.Mesh;
+import jzy_3d_sample.model.Vertex;
 
 /**
  *
@@ -28,6 +32,7 @@ public class OSRecord implements Cloneable, Serializable{
     private String imC1Z = null, imC2Z = null, imC3Z = null;
     private String row=null;
     private double x=-1, y=-1, z=-1;
+    private static NumberFormat sciFormat=new DecimalFormat("0.########E0");
 
     public String getRow() {
         return row;
@@ -36,7 +41,42 @@ public class OSRecord implements Cloneable, Serializable{
     public void setRow(String row) {
         this.row = row;
     }
-
+    
+    
+    public static OSRecord createZeroOSRecord(Mesh m){
+        OSRecord oSRecord=new OSRecord();
+        oSRecord.setImC1X("0.00000000E+000");
+        oSRecord.setImC1Y("0.00000000E+000");
+        oSRecord.setImC1Z("0.00000000E+000");
+        oSRecord.setImC2X("0.00000000E+000");
+        oSRecord.setImC2Y("0.00000000E+000");
+        oSRecord.setImC2Z("0.00000000E+000");
+        oSRecord.setImC3X("0.00000000E+000");
+        oSRecord.setImC3Y("0.00000000E+000");
+        oSRecord.setImC3Z("0.00000000E+000");
+        oSRecord.setReC1X("0.00000000E+000");
+        oSRecord.setReC1Y("0.00000000E+000");
+        oSRecord.setReC1Z("0.00000000E+000");
+        oSRecord.setReC2X("0.00000000E+000");
+        oSRecord.setReC2Y("0.00000000E+000");
+        oSRecord.setReC2Z("0.00000000E+000");
+        oSRecord.setReC3X("0.00000000E+000");
+        oSRecord.setReC3Y("0.00000000E+000");
+        oSRecord.setReC3Z("0.00000000E+000");
+        Vertex center=m.getCenter();
+        oSRecord.setX(m.getCenter().x);
+        oSRecord.setY(m.getCenter().y);
+        oSRecord.setZ(m.getCenter().z);
+        String fuzzyCenterKey = String.format("%13.4f", (double) center.getX()).substring(0, 4)
+                        + String.format("%13.4f", (double) center.getY()).substring(0, 4)
+                        + String.format("%13.4f", (double) center.getZ()).substring(0, 4);
+        String key = String.format("%13.4f", (double) center.getX())
+                    + String.format("%13.4f", (double) center.getY())
+                    + String.format("%13.4f", (double) center.getZ());
+        oSRecord.setFuzzyKey(fuzzyCenterKey);
+        oSRecord.setKey(key);
+        return oSRecord;
+    }
     
     
     public static void serialize2File(Map<String, OSRecord> osRecords, File file) throws Exception{
