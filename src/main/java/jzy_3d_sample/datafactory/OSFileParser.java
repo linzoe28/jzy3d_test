@@ -14,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import jzy_3d_sample.Commons;
 import jzy_3d_sample.model.os.OSRecord;
 import jzy_3d_sample.model.os.OSRecordMap;
 import jzy_3d_sample.utils.SerializeUtil;
@@ -65,11 +66,8 @@ public class OSFileParser {
                     String[] row = line.split(" +");
                     OSRecord record = new OSRecord();
                     record.setRow(line);
-                    String key = String.format("%13.4f", Double.valueOf(row[1]))
-                            + String.format("%13.4f", Double.valueOf(row[2]))
-                            + String.format("%13.4f", Double.valueOf(row[3]));
-                    String fuzzyCenterKeyString = String.format("%13.4f", Double.valueOf(row[1])).substring(0, 4)
-                            + String.format("%13.4f", Double.valueOf(row[2])).substring(0, 4) + String.format("%13.4f", Double.valueOf(row[3])).substring(0, 4);
+                    String key = Commons.createCoordKey(row[1], row[2], row[3]);
+                    String fuzzyCenterKeyString = Commons.createCoordFuzzyKey(row[1], row[2], row[3]);
 
                     record.setKey(key);
                     record.setFuzzyKey(fuzzyCenterKeyString);

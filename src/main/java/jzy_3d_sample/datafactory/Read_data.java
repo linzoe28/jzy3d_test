@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jzy_3d_sample.Commons;
 import jzy_3d_sample.datafactory.model.MeshOSMatchingEntry;
 import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.Vertex;
@@ -254,16 +255,13 @@ public class Read_data {
         if (mesh.getOsRecordKey() == null) {
             Mesh m = mesh;
             Vertex center = m.getCenter();
-            String key = String.format("%13.4f", (double) center.getX())
-                    + String.format("%13.4f", (double) center.getY())
-                    + String.format("%13.4f", (double) center.getZ());
+            String key = Commons.createCoordKey(center.getX(), center.getY(), center.getZ());
             OSRecord oSRecord = osRecordsMap.get(key);
             if (oSRecord == null) {
                 double minDistance = Double.MAX_VALUE;
                 OSRecord candidate = null;
-                String fuzzyCenterKey = String.format("%13.4f", (double) center.getX()).substring(0, 4)
-                        + String.format("%13.4f", (double) center.getY()).substring(0, 4)
-                        + String.format("%13.4f", (double) center.getZ()).substring(0, 4);
+                String fuzzyCenterKey = Commons.createCoordFuzzyKey(center.getX(), center.getY(), center.getZ());
+
                 List<String> candidateRealKeys = osRecordsMap.getCandidateKeyFromFuzzyKey(fuzzyCenterKey);
                 //System.out.println(candidateRealKeys.size());
                 int keyIndex = 0;
@@ -309,33 +307,28 @@ public class Read_data {
 
     public void applyOStoMeshes(Map<String, List<MeshOSMatchingEntry>> fuzzyKeyMatchingMap, OSRecordMap osRecordsMap) {
         List<String> fileNames = osRecordsMap.getOsRecordFileNames();
-        int index = 0;
         for (String fileName : fileNames) {
-            OSRecord current = null;
             try {
                 Map<String, OSRecord> map = osRecordsMap.load(fileName);
                 for (OSRecord osRecord : map.values()) {
-                    current = osRecord;
+//                    leftOverOSRecords.put(osRecord.getKey(), osRecord);
                     String fuzzyOSKey = osRecord.getFuzzyKey();
                     List<MeshOSMatchingEntry> entries = fuzzyKeyMatchingMap.get(fuzzyOSKey);
-                    MeshOSMatchingEntry tobeRemoved = null;
+                    boolean preciseMathFound=false;
                     //for 100% matched entries
                     for (MeshOSMatchingEntry entry : entries) {
                         if (ThreadUtils.isInterrupted()) {
                             throw new RuntimeException("interrupted");
                         }
                         if (entry.getMeshKey().equals(osRecord.getKey())) {
+                            preciseMathFound=true;
                             entry.setBestOSRecord(osRecord);
                             entry.setMinDistance(0);
                             applyOSRecord2Mesh(entry.getMesh(), osRecord);
-                            tobeRemoved = entry;
-                            index++;
                             break;
                         }
                     }
-                    if (tobeRemoved != null) {
-                        entries.remove(tobeRemoved);
-                    } else {
+                    if (!preciseMathFound) {
                         //for not 100% matched entries
                         for (MeshOSMatchingEntry entry : entries) {
                             Vertex center = entry.getMesh().getCenter();
@@ -355,41 +348,72 @@ public class Read_data {
 //                System.exit(0);
             }
         }
+        List<MeshOSMatchingEntry> orphanedEntries = new ArrayList<>();
         //process all undetermined entries
         for (List<MeshOSMatchingEntry> entries : fuzzyKeyMatchingMap.values()) {
             if (!entries.isEmpty()) {
-                MeshOSMatchingEntry tobeRemoved = null;
                 for (MeshOSMatchingEntry entry : entries) {
                     if (entry.getBestOSRecord() != null) {
-                        index++;
-                        tobeRemoved = entry;
-//                        System.out.println(index+"/"+osRecordsMap.getKey2FileNameMap().size());
                         applyOSRecord2Mesh(entry.getMesh(), entry.getBestOSRecord());
-                        break;
                     } else {
-                        Mesh _m = entry.getMesh();
-                        System.out.println("fail on " + _m.getCenter() + ":" + _m.getVertices()[0] + ", " + _m.getVertices()[1] + ", " + _m.getVertices()[2] + ":" + _m.getTest());
-//                        applyOSRecord2Mesh(entry.getMesh(), OSRecord.createZeroOSRecord(entry.getMesh()));
+                        orphanedEntries.add(entry);
                     }
                 }
-                if (tobeRemoved != null) {
-                    entries.remove(tobeRemoved);
-                }
+
             }
         }
+       
+        if(!orphanedEntries.isEmpty()){
+            System.out.println("warning orphanedEntries: " + orphanedEntries.size());
+        }
+//        for (MeshOSMatchingEntry entry : orphanedEntries) {
+//
+//            for (OSRecord osRecord : leftOverOSRecords.values()) {
+//                Vertex center = entry.getMesh().getCenter();
+//                double distance = Math.sqrt(Math.pow(osRecord.getX() - center.getX(), 2)
+//                        + Math.pow(osRecord.getY() - center.getY(), 2) + Math.pow(osRecord.getZ() - center.getZ(), 2));
+//                if (distance < entry.getMinDistance()) {
+//                    entry.setMinDistance(distance);
+//                    entry.setBestOSRecord(osRecord);
+//                }
+//            }
+//
+//        }
+//        boolean printed=false;
+//        for (MeshOSMatchingEntry entry : orphanedEntries) {
+//            if (entry.getBestOSRecord() != null) {
+//                leftOverOSRecords.remove(entry.getBestOSRecord().getKey());
+//                applyOSRecord2Mesh(entry.getMesh(), entry.getBestOSRecord());
+//                if(!printed){
+//                    printed=true;
+//                    System.out.println(entry.getMeshFuzzyKey()+":"+entry.getBestOSRecord().getFuzzyKey());
+//                }
+//            }
+//        }
+
+        /*System.out.println("matched entries: "+counter);
+        int orphanedCounter=0;
         for (List<MeshOSMatchingEntry> entries : fuzzyKeyMatchingMap.values()) {
             if(entries.size()>0){
                 System.out.println("orphaned entries: ");
                 for(MeshOSMatchingEntry entry : entries){
+                    orphanedCounter++;
                     System.out.println(entry.getMeshFuzzyKey()+":"+entry.getMeshKey());
                 }
             }
         }
+        System.out.println("unmatched: "+orphanedCounter);*/
     }
 
     public void applyOStoMeshes(List<Mesh> meshes, OSRecordMap osRecordsMap) {
         Map<String, List<MeshOSMatchingEntry>> fuzzyKeyMatchingMap = createMatchingMap(meshes);
         this.applyOStoMeshes(fuzzyKeyMatchingMap, osRecordsMap);
+        int counter = 0;
+        for (Mesh m : meshes) {
+            if (m.getOsRecordKey() == null) {
+                counter++;
+            }
+        }
     }
 
     private Map<String, List<MeshOSMatchingEntry>> createMatchingMap(List<Mesh> meshes) {
@@ -399,14 +423,11 @@ public class Read_data {
                 throw new RuntimeException("interrupted");
             }
             Vertex center = mesh.getCenter();
-            String key = String.format("%13.4f", (double) center.getX())
-                    + String.format("%13.4f", (double) center.getY())
-                    + String.format("%13.4f", (double) center.getZ());
-            String fuzzyCenterKey = String.format("%13.4f", (double) center.getX()).substring(0, 4)
-                    + String.format("%13.4f", (double) center.getY()).substring(0, 4)
-                    + String.format("%13.4f", (double) center.getZ()).substring(0, 4);
+            String key = Commons.createCoordKey(center.getX(), center.getY(), center.getZ());
+            String fuzzyCenterKey = Commons.createCoordFuzzyKey(center.getX(), center.getY(), center.getZ());
+
             List<MeshOSMatchingEntry> entries = fuzzyKeyMatchingMap.get(fuzzyCenterKey);
-            
+
             if (entries == null) {
                 entries = new ArrayList<>();
                 fuzzyKeyMatchingMap.put(fuzzyCenterKey, entries);
@@ -417,7 +438,7 @@ public class Read_data {
             entry.setMeshKey(key);
             entry.setMinDistance(Double.MAX_VALUE);
             entries.add(entry);
-           
+
         }
         return fuzzyKeyMatchingMap;
     }

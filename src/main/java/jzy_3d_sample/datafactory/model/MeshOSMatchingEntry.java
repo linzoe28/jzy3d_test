@@ -17,7 +17,7 @@ public class MeshOSMatchingEntry {
     private String meshKey=null;
     private String meshFuzzyKey=null;
     private OSRecord bestOSRecord=null;
-    private double minDistance=-1;
+    private double minDistance=Double.MAX_VALUE;
 
     public Mesh getMesh() {
         return mesh;
