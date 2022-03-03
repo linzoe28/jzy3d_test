@@ -25,6 +25,7 @@ import jzy_3d_sample.ui.SubCubesColorPainter;
 import jzy_3d_sample.utils.SerializeUtil;
 import org.jzy3d.chart.AWTChart;
 import org.jzy3d.chart.Settings;
+import org.jzy3d.colors.Color;
 import org.jzy3d.javafx.JavaFXChartFactory;
 import org.jzy3d.javafx.controllers.mouse.JavaFXCameraMouseController;
 import org.jzy3d.maths.BoundingBox3d;
@@ -112,8 +113,12 @@ public class RenderModel {
 private void init() {
         JavaFXChartFactory factory = new JavaFXChartFactory();
         chart = (AWTChart) factory.newChart(Quality.Fastest, "offscreen");
-        //chart.getScene().getGraph().add(surfaceLight);
         chart.getScene().getGraph().add(surface);
+        chart.getAxeLayout().setGridColor(Color.WHITE);
+        chart.getAxeLayout().setTickLineDisplayed(false);
+        chart.getAxeLayout().setXTickColor(Color.WHITE);
+        chart.getAxeLayout().setYTickColor(Color.WHITE);
+        chart.getAxeLayout().setZTickColor(Color.WHITE);
         chart.getView().setSquared(false);
         view = factory.bindImageView(chart);
         try {
