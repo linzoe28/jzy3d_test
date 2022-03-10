@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<<<<<<< Updated upstream
+=======
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+>>>>>>> Stashed changes
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TitledPane?>
@@ -8,7 +13,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<<<<<<< Updated upstream
 <AnchorPane id="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.ZoomPanelController">
+=======
+<AnchorPane id="AnchorPane" prefHeight="443.0" prefWidth="241.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.ZoomPanelController">
+>>>>>>> Stashed changes
    <children>
       <TitledPane text="載具視角設定">
          <content>
@@ -63,6 +72,42 @@
                         <Insets left="5.0" right="5.0" />
                      </VBox.margin>
                   </HBox>
+<<<<<<< Updated upstream
+=======
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="192.0">
+                           <children>
+                              <GridPane alignment="CENTER">
+                                <columnConstraints>
+                                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button fx:id="forwordViewButton" mnemonicParsing="false" onAction="#forwordViewButtonclick" text="前" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Button fx:id="leftViewButton" mnemonicParsing="false" onAction="#leftViewButtonclick" text="左" GridPane.rowIndex="1" />
+                                    <Button fx:id="rightViewButton" mnemonicParsing="false" onAction="#rightViewButtonclick" text="右" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <Button fx:id="downViewButton" mnemonicParsing="false" onAction="#downViewButtonclick" text="下" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Button fx:id="upViewButton" mnemonicParsing="false" onAction="#upViewButtonclick" text="上" GridPane.columnIndex="1" />
+                                    <Button fx:id="backViewButton" mnemonicParsing="false" onAction="#backViewButtonclick" text="後" GridPane.columnIndex="2" />
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <CheckBox fx:id="gridCheckbox" mnemonicParsing="false" onAction="#setGrid" selected="true" text="框線" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+>>>>>>> Stashed changes
                </children>
                <opaqueInsets>
                   <Insets />
