@@ -13,6 +13,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import jzy_3d_sample.model.RenderModel;
 import org.jzy3d.maths.BoundingBox3d;
+import org.jzy3d.maths.Coord3d;
 
 /**
  *
@@ -32,8 +33,6 @@ public class ZoomPanelController {
     @FXML
     private Slider zSlider;
 
-
-    
     @FXML
     private CheckBox gridCheckbox;
     
@@ -74,9 +73,6 @@ public class ZoomPanelController {
         renderModel.repaint();
     }
     
-<<<<<<< Updated upstream
-    
-=======
     @FXML
     void backViewButtonclick(ActionEvent event) {
         renderModel.changeView(new Coord3d(Math.PI, 0, 0));
@@ -112,7 +108,6 @@ public class ZoomPanelController {
     void setGrid(ActionEvent event) {
         renderModel.setGrid(gridCheckbox.isSelected());
     }
->>>>>>> Stashed changes
     
     void setslider(){
         BoundingBox3d bounds = renderModel.getChart().getView().getBounds();

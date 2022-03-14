@@ -246,6 +246,10 @@ private void init() {
         chart.setAxeDisplayed(b);
     }
     
+    public void changeView(Coord3d c){
+        chart.setViewPoint(c);
+    }
+    
     public void zoom(float factor) {
         float zoom = factor / currentZoom;
         BoundingBox3d bounds = chart.getView().getBounds();
