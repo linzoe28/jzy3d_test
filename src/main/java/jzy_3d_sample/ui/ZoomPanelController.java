@@ -8,10 +8,12 @@ package jzy_3d_sample.ui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import jzy_3d_sample.model.RenderModel;
 import org.jzy3d.maths.BoundingBox3d;
+import org.jzy3d.maths.Coord3d;
 
 /**
  *
@@ -31,7 +33,8 @@ public class ZoomPanelController {
     @FXML
     private Slider zSlider;
 
-
+    @FXML
+    private CheckBox gridCheckbox;
     
     private RenderModel renderModel=null;
 
@@ -46,43 +49,7 @@ public class ZoomPanelController {
     
     @FXML
     void onZoomClicked(MouseEvent event) {
-        System.err.println(zoomSlider.getValue());
         renderModel.zoom((float) zoomSlider.getValue());
-        renderModel.repaint();
-        setslider();
-    }
-    
-    @FXML
-    void onZoomLClicked(ActionEvent event) {
-        renderModel.moveX(-1f);
-        renderModel.repaint();
-        setslider();
-    }
-    
-    @FXML
-    void onZoomRClicked(ActionEvent event) {
-        renderModel.moveX(1f);
-        renderModel.repaint();
-        setslider();
-    }
-    
-    @FXML
-    void onZoomUClicked(ActionEvent event) {
-        renderModel.moveZ(-1f);
-        renderModel.repaint();
-        setslider();
-    }
-    
-    @FXML
-    void onZoomDClicked(ActionEvent event) {
-        renderModel.moveZ(1f);
-        renderModel.repaint();
-        setslider();
-    }
-    
-    @FXML
-    void onZoomFClicked(ActionEvent event) {
-        renderModel.moveY(-1f);
         renderModel.repaint();
         setslider();
     }
@@ -106,7 +73,41 @@ public class ZoomPanelController {
         renderModel.repaint();
     }
     
+    @FXML
+    void backViewButtonclick(ActionEvent event) {
+        renderModel.changeView(new Coord3d(Math.PI, 0, 0));
+    }
+
+    @FXML
+    void downViewButtonclick(ActionEvent event) {
+        renderModel.changeView(new Coord3d(0, -Math.PI/2, 0));
+    }
+
+    @FXML
+    void forwordViewButtonclick(ActionEvent event) {
+        renderModel.changeView(new Coord3d(0, 0, 0));
+    }
+
+    @FXML
+    void leftViewButtonclick(ActionEvent event) {
+        renderModel.changeView(new Coord3d(-Math.PI/2, 0, 0));
+    }
+
+
+    @FXML
+    void rightViewButtonclick(ActionEvent event) {
+        renderModel.changeView(new Coord3d(Math.PI/2, 0, 0));
+    }
+
+    @FXML
+    void upViewButtonclick(ActionEvent event) {
+        renderModel.changeView(new Coord3d(0, Math.PI/2, 0));
+    }
     
+    @FXML
+    void setGrid(ActionEvent event) {
+        renderModel.setGrid(gridCheckbox.isSelected());
+    }
     
     void setslider(){
         BoundingBox3d bounds = renderModel.getChart().getView().getBounds();
