@@ -422,8 +422,8 @@ public class Main extends Application implements AngleSelectionHandler {
         }
         renderModel.getSurface().setWireframeDisplayed(false);
         //設定亮點
-        
-        List<Mesh> meshs = subCubes.get(subCubes.size() - 1).getMeshs();
+        List<Cube> Cubes = rCSvalueController.sortCube(subCubes);
+        List<Mesh> meshs = Cubes.get(Cubes.size() - 1).getMeshs();
 //        System.out.println("meshs.size="+meshs.size());
         Collections.sort(meshs, new Comparator<Mesh>() {
 

@@ -64,6 +64,7 @@ public class RenderModel {
 //        surface=surfaces[0];
 //        surfaceLight=surfaces[1];
         surface = SurfaceLoader.loadSurface(meshs, 1.0);
+        //surface.setDisplayed(false);
         this.meshs.addAll(meshs);
 
         for (Mesh m : meshs) {
@@ -111,7 +112,7 @@ public class RenderModel {
 
 private void init() {
         JavaFXChartFactory factory = new JavaFXChartFactory();
-        chart = (AWTChart) factory.newChart(Quality.Fastest, "offscreen");
+        chart = (AWTChart) factory.newChart(Quality.Advanced, "offscreen");
         //chart.getScene().getGraph().add(surfaceLight);
         chart.getScene().getGraph().add(surface);
         chart.getView().setSquared(false);
