@@ -52,7 +52,8 @@ import jzy_3d_sample.model.serialized.CurrentData;
 import jzy_3d_sample.ui.AnglePanelController;
 import jzy_3d_sample.ui.AngleSelectionHandler;
 import jzy_3d_sample.ui.BackgroundRunner;
-import jzy_3d_sample.ui.ColorPaintingModel;
+import jzy_3d_sample.model.ColorPaintingModel;
+import jzy_3d_sample.ui.Context;
 import jzy_3d_sample.ui.FileOpenObjController;
 import jzy_3d_sample.ui.LegendController;
 import jzy_3d_sample.ui.RCSvalueController;
@@ -68,7 +69,7 @@ import org.jzy3d.plot3d.primitives.Point;
  *
  * @author user
  */
-public class Main extends Application implements AngleSelectionHandler {
+public class Main extends Application implements AngleSelectionHandler, Context {
 
     private static final boolean TEST = false;
     private List<Mesh> meshs = new ArrayList<>();
@@ -519,5 +520,15 @@ public class Main extends Application implements AngleSelectionHandler {
         rCSvalueController.setSlidervalue(Cubes.get(0).getRcs());
         double majortick = ((Cubes.get(Cubes.size() - 1).getRcs()) - (Cubes.get(0).getRcs())) / 20;
         rCSvalueController.setSliderMajorTickUnit(majortick);
+    }
+
+    @Override
+    public List<Cube> getSubCubes() {
+        return this.subCubes;
+    }
+
+    @Override
+    public RenderModel getRenderModel() {
+        return this.renderModel;
     }
 }
