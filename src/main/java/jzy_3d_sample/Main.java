@@ -52,6 +52,7 @@ import jzy_3d_sample.model.serialized.CurrentData;
 import jzy_3d_sample.ui.AnglePanelController;
 import jzy_3d_sample.ui.AngleSelectionHandler;
 import jzy_3d_sample.ui.BackgroundRunner;
+import jzy_3d_sample.ui.ColorPaintingModel;
 import jzy_3d_sample.ui.FileOpenObjController;
 import jzy_3d_sample.ui.LegendController;
 import jzy_3d_sample.ui.RCSvalueController;
@@ -422,7 +423,7 @@ public class Main extends Application implements AngleSelectionHandler {
         }
         renderModel.getSurface().setWireframeDisplayed(false);
         //設定亮點
-        List<Cube> Cubes = rCSvalueController.sortCube(subCubes);
+        List<Cube> Cubes = ColorPaintingModel.sortCube(subCubes);
         List<Mesh> meshs = Cubes.get(Cubes.size() - 1).getMeshs();
 //        System.out.println("meshs.size="+meshs.size());
         Collections.sort(meshs, new Comparator<Mesh>() {
