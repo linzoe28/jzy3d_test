@@ -43,6 +43,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import jzy_3d_sample.datafactory.FastN2fWriter;
+import jzy_3d_sample.model.ColorPaintingMode;
 import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
@@ -85,13 +86,15 @@ public class Main extends Application implements AngleSelectionHandler, Context 
     private RCSvalueController rCSvalueController = null;
     private ZoomPanelController zoomPanelController = null;
     private AnglePanelController anglePanelController = null;
-    private Point extremeValuePoint = null;
+    
     private Map<Integer, Double> angle2RcsThreshold = new HashMap<>();//store selected angle to rcs threshold
     private int currentAngleIndex = 0;
+    private ColorPaintingModel colorPaintingModel=null;
 
     private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
         this.meshs = meshs;
         this.renderModel = new RenderModel(scene, primaryStage, meshs);
+        colorPaintingModel=new ColorPaintingModel(this);
         return this.renderModel;
     }
 
@@ -101,6 +104,8 @@ public class Main extends Application implements AngleSelectionHandler, Context 
             this.renderModel = new RenderModel(scene, primaryStage, savedFile);
             this.meshs = renderModel.getProjectModel().getMeshes();
             subCubes = renderModel.getProjectModel().getCubes();
+            colorPaintingModel=new ColorPaintingModel(this);
+            colorPaintingModel.setColorPaintingMode(ColorPaintingMode.EFFECTIVE_POINTS);
             return this.renderModel;
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -404,12 +409,11 @@ public class Main extends Application implements AngleSelectionHandler, Context 
     }
     
     private void resetColor(double rcsThreshold) {
-        if (extremeValuePoint != null) {
-            renderModel.getChart().getScene().remove(extremeValuePoint);
-        }
         List<Cube> colorCubes = new ArrayList<>(subCubes);
-        printRCS(colorCubes);
         double gap = (rcsThreshold - colorCubes.get(0).getRcs()) / 5;
+        colorPaintingModel.setRcsThresholdForHighlight(rcsThreshold);
+        colorPaintingModel.setRcsGapForRainbowLevels(gap);
+        
         LegendController legendController = legendloader.getController();
         legendController.getRedValue().setText(String.format("%06.3f", rcsThreshold));
         legendController.getoValue().setText(String.format("%06.3f", rcsThreshold - gap));
@@ -417,36 +421,8 @@ public class Main extends Application implements AngleSelectionHandler, Context 
         legendController.getgValue().setText(String.format("%06.3f", rcsThreshold - 3 * gap));
         legendController.getbValue().setText(String.format("%06.3f", rcsThreshold - 4 * gap));
         legendController.getbValue1().setText(String.format("%06.3f", rcsThreshold - 5 * gap));
-        RainbowColorPainter painter = new RainbowColorPainter(rcsThreshold, gap);
-        for (int i = 0; i < colorCubes.size(); i++) {
-            Cube c = colorCubes.get(i);
-            painter.paint(i, c);
-        }
-        renderModel.getSurface().setWireframeDisplayed(false);
-        //設定亮點
-        List<Cube> Cubes = ColorPaintingModel.sortCube(subCubes);
-        List<Mesh> meshs = Cubes.get(Cubes.size() - 1).getMeshs();
-//        System.out.println("meshs.size="+meshs.size());
-        Collections.sort(meshs, new Comparator<Mesh>() {
-
-            @Override
-            public int compare(Mesh o1, Mesh o2) {
-                if (o1.getCurrentAbs() < o2.getCurrentAbs()) {
-                    return -1;
-                } else if (o1.getCurrentAbs() == o2.getCurrentAbs()) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            }
-        });
-        //to be fixed
-        if (meshs.size() > 0) {
-            meshs.get(meshs.size() - 1).setColor(Color.WHITE);
-            this.extremeValuePoint = new Point(meshs.get(meshs.size() - 1).getCenter(), Color.WHITE, 10);
-            southpanelController.setExtremePointPosition(meshs.get(meshs.size() - 1).getCenter());
-            renderModel.getChart().getScene().add(extremeValuePoint);
-        }
+        
+        colorPaintingModel.update();
     }
 
     /**
@@ -530,5 +506,10 @@ public class Main extends Application implements AngleSelectionHandler, Context 
     @Override
     public RenderModel getRenderModel() {
         return this.renderModel;
+    }
+
+    @Override
+    public SouthpanelController getSouthpanelController() {
+        return southpanelController;
     }
 }

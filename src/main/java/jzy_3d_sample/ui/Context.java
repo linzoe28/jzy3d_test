@@ -15,4 +15,5 @@ import jzy_3d_sample.model.RenderModel;
 public interface Context {
     public List<Cube> getSubCubes();
     public RenderModel getRenderModel();
+    public SouthpanelController getSouthpanelController();
 }

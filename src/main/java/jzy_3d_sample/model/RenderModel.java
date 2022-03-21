@@ -111,7 +111,7 @@ public class RenderModel {
         this.init();
     }
 
-private void init() {
+    private void init() {
         JavaFXChartFactory factory = new JavaFXChartFactory();
         chart = (AWTChart) factory.newChart(Quality.Advanced, "offscreen");
         chart.getScene().getGraph().add(surface);

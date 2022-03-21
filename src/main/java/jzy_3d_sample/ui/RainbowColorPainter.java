@@ -28,7 +28,7 @@ public class RainbowColorPainter implements ColorPainter {
         int count=0;
         for (Mesh m : c.getMeshs()) {
             if (c.getRcs() >= rcsThreshold) {
-                m.setColor(new Color(255,0,0,0.5f));
+                m.setColor(new Color(255,0,0));
 //                count++;
             } else if (c.getRcs() >= rcsThreshold - gap && c.getRcs() < rcsThreshold) {
                 m.setColor(new Color(255, 128, 0));
