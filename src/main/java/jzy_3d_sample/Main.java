@@ -86,15 +86,15 @@ public class Main extends Application implements AngleSelectionHandler, Context 
     private RCSvalueController rCSvalueController = null;
     private ZoomPanelController zoomPanelController = null;
     private AnglePanelController anglePanelController = null;
-    
+
     private Map<Integer, Double> angle2RcsThreshold = new HashMap<>();//store selected angle to rcs threshold
     private int currentAngleIndex = 0;
-    private ColorPaintingModel colorPaintingModel=null;
+    private ColorPaintingModel colorPaintingModel = null;
 
     private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
         this.meshs = meshs;
         this.renderModel = new RenderModel(scene, primaryStage, meshs);
-        colorPaintingModel=new ColorPaintingModel(this);
+        colorPaintingModel = new ColorPaintingModel(this);
         return this.renderModel;
     }
 
@@ -104,7 +104,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
             this.renderModel = new RenderModel(scene, primaryStage, savedFile);
             this.meshs = renderModel.getProjectModel().getMeshes();
             subCubes = renderModel.getProjectModel().getCubes();
-            colorPaintingModel=new ColorPaintingModel(this);
+            colorPaintingModel = new ColorPaintingModel(this);
             colorPaintingModel.setColorPaintingMode(ColorPaintingMode.EFFECTIVE_POINTS);
             return this.renderModel;
         } catch (IOException ex) {
@@ -124,8 +124,8 @@ public class Main extends Application implements AngleSelectionHandler, Context 
             Menu fileMenu = new Menu("File");
             MenuItem fileOpenObjItem = new MenuItem("Open Obj");
             fileMenu.getItems().add(fileOpenObjItem);
-            MenuItem fileRCSMenuItem = new MenuItem("RCS資料輸入");
-            //fileMenu.getItems().add(fileRCSMenuItem);
+//            MenuItem fileRCSMenuItem = new MenuItem("RCS資料輸入");
+//            fileMenu.getItems().add(fileRCSMenuItem);
             MenuItem researchMenuItem = new MenuItem("研改輸出");
 //            researchMenuItem.setDisable(true);
             fileMenu.getItems().add(researchMenuItem);
@@ -155,8 +155,8 @@ public class Main extends Application implements AngleSelectionHandler, Context 
 
                             new BackgroundRunner(southpanelController) {
                                 ObservableList angleList;
-
                                 @Override
+
                                 public void runBeforeWorkerThread() {
                                     southpanelController.setStatus("Open data......");
                                 }
@@ -195,12 +195,13 @@ public class Main extends Application implements AngleSelectionHandler, Context 
                                         colorLegend.setVisible(true);
                                         renderModel.repaint();
                                     }
-
+                                    
+                                    
                                 }
 
                                 @Override
                                 public void runInUIThread() {
-                                    TabPane tabPane=new TabPane();
+                                    TabPane tabPane = new TabPane();
                                     tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
                                     ScrollPane scrollPane = new ScrollPane();
                                     tabPane.getTabs().add(new Tab("Main View", scrollPane));
@@ -211,6 +212,12 @@ public class Main extends Application implements AngleSelectionHandler, Context 
                                     resetColor(Double.valueOf(rCSvalueController.getThreshold()));
                                     //加入所有角度資料於清單
                                     anglePanelController.getAnglelist().setItems(angleList);
+                                    //加入所有等效散射點清單
+                                    ObservableList<Vertex> effectivePoints=FXCollections.observableArrayList();
+                                    for(Cube c : subCubes){
+                                        effectivePoints.add(c.getEffectivePoint());
+                                    }
+                                    anglePanelController.getEffective_point_list().setItems(effectivePoints);
                                     //顯示RCSTotal
                                     southpanelController.setTextBeforeValue(RCSTotal);
                                     resetSlider();
@@ -317,16 +324,16 @@ public class Main extends Application implements AngleSelectionHandler, Context 
             openMeshConverterMenuItem.setOnAction(new EventHandler<ActionEvent>() {
                 public void handle(ActionEvent event) {
                     ProcessBuilder pb = new ProcessBuilder();
-                    File jarFile=new File("jzy3d_test-1.1-jar-with-dependencies.jar");
-                    if(jarFile.exists()){
+                    File jarFile = new File("jzy3d_test-1.1-jar-with-dependencies.jar");
+                    if (jarFile.exists()) {
                         pb = pb.directory(new File("."));
-                    }else{
+                    } else {
                         pb = pb.directory(new File("dist"));
                     }
                     pb = pb.redirectErrorStream(true);
-                    if("linux".equals(System.getProperty("os.name").toLowerCase())){
+                    if ("linux".equals(System.getProperty("os.name").toLowerCase())) {
                         pb = pb.command("linux_jre/bin/java", "-Xmx10G", "-XX:+UseG1GC", "-cp", "./jzy3d_test-1.1-jar-with-dependencies.jar", "jzy_3d_sample.MeshConverter");
-                    }else{
+                    } else {
                         pb = pb.command("jre\\bin\\java", "-Xmx10G", "-XX:+UseG1GC", "-cp", "./jzy3d_test-1.1-jar-with-dependencies.jar", "jzy_3d_sample.MeshConverter");
                     }
                     try {
@@ -364,7 +371,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
             });
 
             FXMLLoader anglepanelFXMLLoader = new FXMLLoader(getClass().getResource("/fxml/anglepanel.fxml"));
-            AnchorPane anglepanelRoot = (AnchorPane) anglepanelFXMLLoader.load();
+            VBox anglepanelRoot = (VBox) anglepanelFXMLLoader.load();
             anglePanelController = anglepanelFXMLLoader.getController();
             anglePanelController.setAngleSelectionHandler(this);
             container.setLeft(anglepanelRoot);
@@ -400,20 +407,20 @@ public class Main extends Application implements AngleSelectionHandler, Context 
 
     }
 
-    private void printRCS(List<Cube> cubes){
-        List<Double> list=new ArrayList<>();
-        for(Cube cube: cubes){
+    private void printRCS(List<Cube> cubes) {
+        List<Double> list = new ArrayList<>();
+        for (Cube cube : cubes) {
             list.add(cube.getRcs());
         }
-        System.out.println("cube rcs="+Arrays.deepToString(list.toArray()));
+        System.out.println("cube rcs=" + Arrays.deepToString(list.toArray()));
     }
-    
+
     private void resetColor(double rcsThreshold) {
         List<Cube> colorCubes = new ArrayList<>(subCubes);
         double gap = (rcsThreshold - colorCubes.get(0).getRcs()) / 5;
         colorPaintingModel.setRcsThresholdForHighlight(rcsThreshold);
         colorPaintingModel.setRcsGapForRainbowLevels(gap);
-        
+
         LegendController legendController = legendloader.getController();
         legendController.getRedValue().setText(String.format("%06.3f", rcsThreshold));
         legendController.getoValue().setText(String.format("%06.3f", rcsThreshold - gap));
@@ -421,7 +428,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
         legendController.getgValue().setText(String.format("%06.3f", rcsThreshold - 3 * gap));
         legendController.getbValue().setText(String.format("%06.3f", rcsThreshold - 4 * gap));
         legendController.getbValue1().setText(String.format("%06.3f", rcsThreshold - 5 * gap));
-        
+
         colorPaintingModel.update();
     }
 
@@ -444,7 +451,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
                 @Override
                 public void runInWorkerThread() {
                     try {
-                        Read_data r=new Read_data();
+                        Read_data r = new Read_data();
 //                        System.out.println("index="+index);
                         CurrentData cd = renderModel.getProjectModel().getCurrentData(index);
                         cd.getOsRecordsMap().setHomeFolder(renderModel.getProjectModel().getHomeFolder());
@@ -458,7 +465,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
                         //set current to meshes
                         System.out.println("apply current");
                         r.applyOStoMeshes(meshs, cd.getOsRecordsMap());
-                        
+
                         System.out.println("done apply current");
                     } catch (Exception ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
