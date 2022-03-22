@@ -15,16 +15,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jzy3d.maths.BoundingBox3d;
 import org.jzy3d.maths.Coord3d;
+import org.jzy3d.plot3d.primitives.Point;
 
 /**
  *
  * @author lendle
  */
-public class Cube implements Serializable{
+public class Cube implements Serializable {
+
     private static final long serialVersionUID = -1636927109633279805L;
-    private List<Mesh> meshs=new ArrayList<>();
+    private List<Mesh> meshs = new ArrayList<>();
     private double rcs;
-    transient private BoundingBox3d box3d=null;
+    transient private BoundingBox3d box3d = null;
 
     public BoundingBox3d getBox3d() {
         return box3d;
@@ -37,23 +39,24 @@ public class Cube implements Serializable{
     public void setRcs(double rcs) {
         this.rcs = rcs;
     }
+
     /**
      * @param vertices must be of length 8
      */
     public Cube(List<Vertex> vertices, List<Mesh> meshs) {
-        box3d=new BoundingBox3d(new ArrayList<Coord3d>(vertices));
+        box3d = new BoundingBox3d(new ArrayList<Coord3d>(vertices));
         this.meshs.addAll(meshs);
     }
-    
+
     public Cube(BoundingBox3d box, List<Mesh> meshs) {
-        box3d=new BoundingBox3d(box);
+        box3d = new BoundingBox3d(box);
         this.meshs.addAll(meshs);
     }
-    
+
     public Cube(List<Vertex> vertices) {
         this(vertices, new ArrayList<Mesh>());
     }
-    
+
     public Cube(BoundingBox3d box) {
         this(box, new ArrayList<Mesh>());
     }
@@ -61,10 +64,10 @@ public class Cube implements Serializable{
     public List<Mesh> getMeshs() {
         return meshs;
     }
-    
-    protected List<Vertex> getVerticesVertexs(){
-        List<Vertex> ret=new ArrayList<>();
-        for(Coord3d point : box3d.getVertices()){
+
+    protected List<Vertex> getVerticesVertexs() {
+        List<Vertex> ret = new ArrayList<>();
+        for (Coord3d point : box3d.getVertices()) {
             ret.add(new Vertex(point.x, point.y, point.z));
         }
         return ret;
@@ -89,95 +92,96 @@ public class Cube implements Serializable{
         }
         return new Vertex(xmax, ymax, zmax);
     }
-    
+
 //    public List<Cube> slice(double length) {
 //        return this.slice(length, true);
 //    }
     /**
-     * create a vertex in the cube
-     * the method will check bounds
+     * create a vertex in the cube the method will check bounds
+     *
      * @param x
      * @param y
      * @param z
-     * @return 
+     * @return
      */
-    private Vertex createVertexInCube(double x, double y, double z){
-        x=(x<box3d.getXmin())?box3d.getXmin():x;
-        x=(x>box3d.getXmax())?box3d.getXmax():x;
-        y=(y<box3d.getYmin())?box3d.getYmin():y;
-        y=(y>box3d.getYmax())?box3d.getYmax():y;
-        z=(z<box3d.getZmin())?box3d.getZmin():z;
-        z=(z>box3d.getZmax())?box3d.getZmax():z;
+    private Vertex createVertexInCube(double x, double y, double z) {
+        x = (x < box3d.getXmin()) ? box3d.getXmin() : x;
+        x = (x > box3d.getXmax()) ? box3d.getXmax() : x;
+        y = (y < box3d.getYmin()) ? box3d.getYmin() : y;
+        y = (y > box3d.getYmax()) ? box3d.getYmax() : y;
+        z = (z < box3d.getZmin()) ? box3d.getZmin() : z;
+        z = (z > box3d.getZmax()) ? box3d.getZmax() : z;
         return new Vertex(x, y, z);
     }
-    
-    public List<Cube> slice(double xParts, double yParts, double zParts){
-        double xLength=box3d.getRange().x;
-        double yLength=box3d.getRange().y;
-        double zLength=box3d.getRange().z;
-        double xUnit=xLength/xParts;
-        double yUnit=yLength/yParts;
-        double zUnit=zLength/zParts;
-        List<Mesh> localMeshs=new ArrayList<>(this.meshs);
+
+    public List<Cube> slice(double xParts, double yParts, double zParts) {
+        double xLength = box3d.getRange().x;
+        double yLength = box3d.getRange().y;
+        double zLength = box3d.getRange().z;
+        double xUnit = xLength / xParts;
+        double yUnit = yLength / yParts;
+        double zUnit = zLength / zParts;
+        List<Mesh> localMeshs = new ArrayList<>(this.meshs);
         Collections.sort(localMeshs, new Comparator<Mesh>() {
             @Override
             public int compare(Mesh o1, Mesh o2) {
-                if(o1.equals(o2)){
+                if (o1.equals(o2)) {
                     return 0;
                 }
-                Vertex center1=o1.getCenter();
-                Vertex center2=o2.getCenter();
-                double d1=Math.pow(center1.x,2)+Math.pow(center1.y,2)+Math.pow(center1.z,2);
-                double d2=Math.pow(center2.x,2)+Math.pow(center2.y,2)+Math.pow(center2.z,2);
-                if(d1>d2){
+                Vertex center1 = o1.getCenter();
+                Vertex center2 = o2.getCenter();
+                double d1 = Math.pow(center1.x, 2) + Math.pow(center1.y, 2) + Math.pow(center1.z, 2);
+                double d2 = Math.pow(center2.x, 2) + Math.pow(center2.y, 2) + Math.pow(center2.z, 2);
+                if (d1 > d2) {
                     return 1;
-                }else if(d1==d2){
+                } else if (d1 == d2) {
                     return 0;
-                }else{
+                } else {
                     return -1;
                 }
             }
         });
         List<Cube> subCubes = new ArrayList<>();
-        for(int i=0; i<xParts; i++){
-            for(int j=0; j<yParts; j++){
-                for(int k=0; k<zParts; k++){
-                    double [] origin=new double[]{box3d.getXmin()+i*xUnit, box3d.getYmin()+j*yUnit, box3d.getZmin()+k*zUnit};
-                    List<Vertex> subVertices=Arrays.asList(
+        for (int i = 0; i < xParts; i++) {
+            for (int j = 0; j < yParts; j++) {
+                for (int k = 0; k < zParts; k++) {
+                    double[] origin = new double[]{box3d.getXmin() + i * xUnit, box3d.getYmin() + j * yUnit, box3d.getZmin() + k * zUnit};
+                    List<Vertex> subVertices = Arrays.asList(
                             createVertexInCube(origin[0], origin[1], origin[2]),
-                            createVertexInCube(origin[0]+xUnit, origin[1], origin[2]),
-                            createVertexInCube(origin[0], origin[1]+yUnit, origin[2]),
-                            createVertexInCube(origin[0], origin[1], origin[2]+zUnit),
-                            createVertexInCube(origin[0]+xUnit, origin[1]+yUnit, origin[2]),
-                            createVertexInCube(origin[0], origin[1]+yUnit, origin[2]+zUnit),
-                            createVertexInCube(origin[0]+xUnit, origin[1], origin[2]+zUnit),
-                            createVertexInCube(origin[0]+xUnit, origin[1]+yUnit, origin[2]+zUnit)
+                            createVertexInCube(origin[0] + xUnit, origin[1], origin[2]),
+                            createVertexInCube(origin[0], origin[1] + yUnit, origin[2]),
+                            createVertexInCube(origin[0], origin[1], origin[2] + zUnit),
+                            createVertexInCube(origin[0] + xUnit, origin[1] + yUnit, origin[2]),
+                            createVertexInCube(origin[0], origin[1] + yUnit, origin[2] + zUnit),
+                            createVertexInCube(origin[0] + xUnit, origin[1], origin[2] + zUnit),
+                            createVertexInCube(origin[0] + xUnit, origin[1] + yUnit, origin[2] + zUnit)
                     );
                     subCubes.add(new Cube(subVertices));
                 }
             }
         }
-        Cube lastCube=null;
-        List<Cube> lastFewCubes=new ArrayList<>();
-        outer: for(Mesh mesh : localMeshs){
-            if(lastCube!=null && lastCube.box3d.contains(mesh.getCenter())){
+        Cube lastCube = null;
+        List<Cube> lastFewCubes = new ArrayList<>();
+        outer:
+        for (Mesh mesh : localMeshs) {
+            if (lastCube != null && lastCube.box3d.contains(mesh.getCenter())) {
                 lastCube.getMeshs().add(mesh);
                 continue;
             }
-            for(Cube cube : lastFewCubes){
-                if(cube.box3d.contains(mesh.getCenter())){
-                    lastCube=cube;
+            for (Cube cube : lastFewCubes) {
+                if (cube.box3d.contains(mesh.getCenter())) {
+                    lastCube = cube;
                     cube.getMeshs().add(mesh);
                     continue outer;
                 }
             }
-            for(Cube cube : subCubes){
-                if(cube.box3d.contains(mesh.getCenter())){
+            for (Cube cube : subCubes) {
+                if (cube.box3d.contains(mesh.getCenter())) {
                     cube.getMeshs().add(mesh);
-                    if(lastFewCubes.size()>(xParts*yParts*zParts)/5){
+                    if (lastFewCubes.size() > (xParts * yParts * zParts) / 5) {
                         lastFewCubes.remove(0);
                     }
-                    lastCube=cube;
+                    lastCube = cube;
                     lastFewCubes.add(cube);
                     continue outer;
                 }
@@ -195,7 +199,7 @@ public class Cube implements Serializable{
 //        }
         return subCubes;
     }
-    
+
 //    public List<Cube> slice(double length, boolean boundInclusiveIfNotMatch) {
 //        List<Mesh> localMeshs=new ArrayList<>(this.meshs);
 //        List<Cube> subCubes = new ArrayList<>();
@@ -271,10 +275,9 @@ public class Cube implements Serializable{
 //
 //        return subCubes;
 //    }
-    
-    public List<Mesh> getClonedMeshs(){
-        List<Mesh> ret=new ArrayList<>();
-        for(Mesh m: meshs){
+    public List<Mesh> getClonedMeshs() {
+        List<Mesh> ret = new ArrayList<>();
+        for (Mesh m : meshs) {
             try {
                 ret.add(m.clone());
             } catch (CloneNotSupportedException ex) {
@@ -283,9 +286,28 @@ public class Cube implements Serializable{
         }
         return ret;
     }
-    
+
     public String toString() {
         return (Arrays.deepToString(getVerticesVertexs().toArray()));
+    }
+
+    public Vertex getEffectivePoint() {
+        List<Mesh> meshs = this.getClonedMeshs();
+        Collections.sort(meshs, new Comparator<Mesh>() {
+
+            @Override
+            public int compare(Mesh o1, Mesh o2) {
+                if (o1.getCurrentAbs() < o2.getCurrentAbs()) {
+                    return -1;
+                } else if (o1.getCurrentAbs() == o2.getCurrentAbs()) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            }
+        });
+        Vertex effectivePoint=meshs.get(meshs.size() - 1).getCenter();
+        return effectivePoint;
     }
 
     public static void main(String[] args) throws Exception {

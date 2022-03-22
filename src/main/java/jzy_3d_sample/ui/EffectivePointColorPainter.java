@@ -19,10 +19,18 @@ public class EffectivePointColorPainter implements ColorPainter{
     public Vertex getSelectedVertex() {
         return selectedVertex;
     }
+
+    public void setSelectedVertex(Vertex selectedVertex) {
+        this.selectedVertex = selectedVertex;
+    }
+    
+    
     
     @Override
     public void paint(int index, Cube cube) {
-        Color color=new Color(0,0,255, 0.1f);
+        Vertex effectivePointCube=cube.getEffectivePoint();
+        System.out.println(effectivePointCube.equals(selectedVertex));
+        Color color=(effectivePointCube.equals(selectedVertex))?new Color(0,0,255, 1f):new Color(0,0,255, 0.1f);
         for (Mesh m : cube.getMeshs()) {
             m.setColor(color);
         }

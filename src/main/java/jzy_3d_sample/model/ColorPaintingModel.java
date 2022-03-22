@@ -126,7 +126,7 @@ public class ColorPaintingModel {
                         }
                     }
                 });
-                painter.paint(i, c);
+                
                 Point effectivePoint=null;
                 if(selectedEffectivePoint==null){
                     selectedEffectivePoint=meshs.get(meshs.size() - 1).getCenter();
@@ -134,7 +134,8 @@ public class ColorPaintingModel {
                 }else{
                     effectivePoint=new Point(meshs.get(meshs.size() - 1).getCenter(), Color.WHITE, 10);
                 }
-                
+                ((EffectivePointColorPainter)painter).setSelectedVertex(selectedEffectivePoint);
+                painter.paint(i, c);
                 context.getRenderModel().getChart().getScene().add(effectivePoint);
             }
         }
