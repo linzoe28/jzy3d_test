@@ -208,7 +208,8 @@ public class Main extends Application implements AngleSelectionHandler, Context 
                                     scrollPane.setContent(renderModel.getView());
                                     renderModel.repaint();
                                     southpanelController.setStatus("Done");
-                                    resetColor(Double.valueOf(rCSvalueController.getThreshold()));
+                                    colorPaintingModel.setRcsThresholdForHighlight(Double.valueOf(rCSvalueController.getThreshold()));
+                                    resetColor();
                                     //加入所有角度資料於清單
                                     anglePanelController.getAnglelist().setItems(angleList);
                                     //顯示RCSTotal
@@ -352,7 +353,8 @@ public class Main extends Application implements AngleSelectionHandler, Context 
                 public void handle(ActionEvent event) {
                     double threshold = Double.valueOf(rCSvalueController.getThreshold());
                     angle2RcsThreshold.put(currentAngleIndex, threshold);
-                    resetColor(threshold);
+                    colorPaintingModel.setRcsThresholdForHighlight(threshold);
+                    resetColor();
                     double sum = 0;
                     for (Cube cube : subCubes) {
                         if (cube.getRcs() < threshold) {
@@ -408,12 +410,11 @@ public class Main extends Application implements AngleSelectionHandler, Context 
         System.out.println("cube rcs="+Arrays.deepToString(list.toArray()));
     }
     
-    private void resetColor(double rcsThreshold) {
+    private void resetColor() {
         List<Cube> colorCubes = new ArrayList<>(subCubes);
-        double gap = (rcsThreshold - colorCubes.get(0).getRcs()) / 5;
-        colorPaintingModel.setRcsThresholdForHighlight(rcsThreshold);
-        colorPaintingModel.setRcsGapForRainbowLevels(gap);
-        
+        double rcsThreshold=colorPaintingModel.getRcsThresholdForHighlight();
+        double gap=colorPaintingModel.getRcsGapForRainbowLevels();
+        colorPaintingModel.update();
         LegendController legendController = legendloader.getController();
         legendController.getRedValue().setText(String.format("%06.3f", rcsThreshold));
         legendController.getoValue().setText(String.format("%06.3f", rcsThreshold - gap));
@@ -421,8 +422,6 @@ public class Main extends Application implements AngleSelectionHandler, Context 
         legendController.getgValue().setText(String.format("%06.3f", rcsThreshold - 3 * gap));
         legendController.getbValue().setText(String.format("%06.3f", rcsThreshold - 4 * gap));
         legendController.getbValue1().setText(String.format("%06.3f", rcsThreshold - 5 * gap));
-        
-        colorPaintingModel.update();
     }
 
     /**
@@ -472,10 +471,12 @@ public class Main extends Application implements AngleSelectionHandler, Context 
                     currentAngleIndex = index;
                     if (angle2RcsThreshold.containsKey(currentAngleIndex)) {
                         double threshold = angle2RcsThreshold.get(currentAngleIndex);
-                        resetColor(threshold);
+                        colorPaintingModel.setRcsThresholdForHighlight(threshold);
+                        resetColor();
                         rCSvalueController.setThreshold(threshold);
                     } else {
-                        resetColor(0);
+                        colorPaintingModel.setRcsThresholdForHighlight(0);
+                        resetColor();
                     }
                     renderModel.repaint();
                     rCSvalueController.repaint();

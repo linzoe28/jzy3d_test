@@ -67,10 +67,7 @@ public class ColorPaintingModel {
         return rcsGapForRainbowLevels;
     }
 
-    public void setRcsGapForRainbowLevels(double rcsGapForRainbowLevels) {
-        this.rcsGapForRainbowLevels = rcsGapForRainbowLevels;
-    }
-
+  
     public void update() {
         ColorPainter painter = null;
         List<Cube> colorCubes = new ArrayList<>(context.getSubCubes());
@@ -78,7 +75,9 @@ public class ColorPaintingModel {
             context.getRenderModel().getChart().getScene().remove(extremeValuePoint);
         }
         if (colorPaintingMode.equals(ColorPaintingMode.RAINBOW)) {
-            painter = new RainbowColorPainter(rcsThresholdForHighlight, rcsGapForRainbowLevels);
+            double gap = (rcsThresholdForHighlight - colorCubes.get(0).getRcs()) / 5;
+            rcsGapForRainbowLevels=gap;
+            painter = new RainbowColorPainter(rcsThresholdForHighlight, gap);
             context.getRenderModel().getSurface().setWireframeDisplayed(false);
             for (int i = 0; i < colorCubes.size(); i++) {
                 Cube c = colorCubes.get(i);
