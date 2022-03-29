@@ -1,11 +1,11 @@
 ./cpscript: line 21: 1: No such file or directory
 Your Number of Subspace: 8
-Your Operating Frequency(MHz): 8000
-Root Directory: /home/lendle/Desktop/test/angle14
-./fast_n2f 0 8000 2 4
+Your Operating Frequency(MHz): 1000
+Root Directory: /home/lendle/Desktop/test_single/angle0
+./fast_n2f 0 1000 0 1
 Reading 0 ... 
-numNodes = 9991
-numAbcTri = 19347
+numNodes = 78
+numAbcTri = 111
 Reading 0.curJ ... 
 Loading ... 0.curJ
 Done loading 0.curJ. First order.
@@ -14,37 +14,14 @@ Loading ... 0.curM
 Done loading 0.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 123
-group = 5 / 123
-group = 10 / 123
-group = 15 / 123
-group = 20 / 123
-group = 25 / 123
-group = 30 / 123
-group = 35 / 123
-group = 40 / 123
-group = 45 / 123
-group = 50 / 123
-group = 55 / 123
-group = 60 / 123
-group = 65 / 123
-group = 70 / 123
-group = 75 / 123
-group = 80 / 123
-group = 85 / 123
-group = 90 / 123
-group = 95 / 123
-group = 100 / 123
-group = 105 / 123
-group = 110 / 123
-group = 115 / 123
-group = 120 / 123
-Writing to 0.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:4
-./fast_n2f 1 8000 2 4
+group = 0 / 11
+./cpscript: line 55: 2014826 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
+cp: cannot stat '/home/lendle/Desktop/test_single/angle0/0/0.ap': No such file or directory
+sed: can't read 0.ap: No such file or directory
+./fast_n2f 1 1000 0 1
 Reading 1 ... 
-numNodes = 8899
-numAbcTri = 17186
+numNodes = 0
+numAbcTri = 0
 Reading 1.curJ ... 
 Loading ... 1.curJ
 Done loading 1.curJ. First order.
@@ -53,40 +30,12 @@ Loading ... 1.curM
 Done loading 1.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 138
-group = 5 / 138
-group = 10 / 138
-group = 15 / 138
-group = 20 / 138
-group = 25 / 138
-group = 30 / 138
-group = 35 / 138
-group = 40 / 138
-group = 45 / 138
-group = 50 / 138
-group = 55 / 138
-group = 60 / 138
-group = 65 / 138
-group = 70 / 138
-group = 75 / 138
-group = 80 / 138
-group = 85 / 138
-group = 90 / 138
-group = 95 / 138
-group = 100 / 138
-group = 105 / 138
-group = 110 / 138
-group = 115 / 138
-group = 120 / 138
-group = 125 / 138
-group = 130 / 138
-group = 135 / 138
 Writing to 1.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:6
-./fast_n2f 2 8000 2 4
+Farfield Time(hh:mm:ss) = 0:0:0
+./fast_n2f 2 1000 0 1
 Reading 2 ... 
-numNodes = 9991
-numAbcTri = 19363
+numNodes = 76
+numAbcTri = 109
 Reading 2.curJ ... 
 Loading ... 2.curJ
 Done loading 2.curJ. First order.
@@ -95,37 +44,14 @@ Loading ... 2.curM
 Done loading 2.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 124
-group = 5 / 124
-group = 10 / 124
-group = 15 / 124
-group = 20 / 124
-group = 25 / 124
-group = 30 / 124
-group = 35 / 124
-group = 40 / 124
-group = 45 / 124
-group = 50 / 124
-group = 55 / 124
-group = 60 / 124
-group = 65 / 124
-group = 70 / 124
-group = 75 / 124
-group = 80 / 124
-group = 85 / 124
-group = 90 / 124
-group = 95 / 124
-group = 100 / 124
-group = 105 / 124
-group = 110 / 124
-group = 115 / 124
-group = 120 / 124
-Writing to 2.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:4
-./fast_n2f 3 8000 2 4
+group = 0 / 9
+./cpscript: line 55: 2014853 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
+cp: cannot stat '/home/lendle/Desktop/test_single/angle0/2/2.ap': No such file or directory
+sed: can't read 2.ap: No such file or directory
+./fast_n2f 3 1000 0 1
 Reading 3 ... 
-numNodes = 8916
-numAbcTri = 17219
+numNodes = 0
+numAbcTri = 0
 Reading 3.curJ ... 
 Loading ... 3.curJ
 Done loading 3.curJ. First order.
@@ -134,40 +60,12 @@ Loading ... 3.curM
 Done loading 3.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 138
-group = 5 / 138
-group = 10 / 138
-group = 15 / 138
-group = 20 / 138
-group = 25 / 138
-group = 30 / 138
-group = 35 / 138
-group = 40 / 138
-group = 45 / 138
-group = 50 / 138
-group = 55 / 138
-group = 60 / 138
-group = 65 / 138
-group = 70 / 138
-group = 75 / 138
-group = 80 / 138
-group = 85 / 138
-group = 90 / 138
-group = 95 / 138
-group = 100 / 138
-group = 105 / 138
-group = 110 / 138
-group = 115 / 138
-group = 120 / 138
-group = 125 / 138
-group = 130 / 138
-group = 135 / 138
 Writing to 3.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:3
-./fast_n2f 4 8000 2 4
+Farfield Time(hh:mm:ss) = 0:0:0
+./fast_n2f 4 1000 0 1
 Reading 4 ... 
-numNodes = 10007
-numAbcTri = 19368
+numNodes = 76
+numAbcTri = 109
 Reading 4.curJ ... 
 Loading ... 4.curJ
 Done loading 4.curJ. First order.
@@ -176,37 +74,14 @@ Loading ... 4.curM
 Done loading 4.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 125
-group = 5 / 125
-group = 10 / 125
-group = 15 / 125
-group = 20 / 125
-group = 25 / 125
-group = 30 / 125
-group = 35 / 125
-group = 40 / 125
-group = 45 / 125
-group = 50 / 125
-group = 55 / 125
-group = 60 / 125
-group = 65 / 125
-group = 70 / 125
-group = 75 / 125
-group = 80 / 125
-group = 85 / 125
-group = 90 / 125
-group = 95 / 125
-group = 100 / 125
-group = 105 / 125
-group = 110 / 125
-group = 115 / 125
-group = 120 / 125
-Writing to 4.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:6
-./fast_n2f 5 8000 2 4
+group = 0 / 9
+./cpscript: line 55: 2014880 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
+cp: cannot stat '/home/lendle/Desktop/test_single/angle0/4/4.ap': No such file or directory
+sed: can't read 4.ap: No such file or directory
+./fast_n2f 5 1000 0 1
 Reading 5 ... 
-numNodes = 8914
-numAbcTri = 17229
+numNodes = 0
+numAbcTri = 0
 Reading 5.curJ ... 
 Loading ... 5.curJ
 Done loading 5.curJ. First order.
@@ -215,40 +90,12 @@ Loading ... 5.curM
 Done loading 5.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 138
-group = 5 / 138
-group = 10 / 138
-group = 15 / 138
-group = 20 / 138
-group = 25 / 138
-group = 30 / 138
-group = 35 / 138
-group = 40 / 138
-group = 45 / 138
-group = 50 / 138
-group = 55 / 138
-group = 60 / 138
-group = 65 / 138
-group = 70 / 138
-group = 75 / 138
-group = 80 / 138
-group = 85 / 138
-group = 90 / 138
-group = 95 / 138
-group = 100 / 138
-group = 105 / 138
-group = 110 / 138
-group = 115 / 138
-group = 120 / 138
-group = 125 / 138
-group = 130 / 138
-group = 135 / 138
 Writing to 5.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:3
-./fast_n2f 6 8000 2 4
+Farfield Time(hh:mm:ss) = 0:0:0
+./fast_n2f 6 1000 0 1
 Reading 6 ... 
-numNodes = 9972
-numAbcTri = 19313
+numNodes = 78
+numAbcTri = 111
 Reading 6.curJ ... 
 Loading ... 6.curJ
 Done loading 6.curJ. First order.
@@ -257,38 +104,14 @@ Loading ... 6.curM
 Done loading 6.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 126
-group = 5 / 126
-group = 10 / 126
-group = 15 / 126
-group = 20 / 126
-group = 25 / 126
-group = 30 / 126
-group = 35 / 126
-group = 40 / 126
-group = 45 / 126
-group = 50 / 126
-group = 55 / 126
-group = 60 / 126
-group = 65 / 126
-group = 70 / 126
-group = 75 / 126
-group = 80 / 126
-group = 85 / 126
-group = 90 / 126
-group = 95 / 126
-group = 100 / 126
-group = 105 / 126
-group = 110 / 126
-group = 115 / 126
-group = 120 / 126
-group = 125 / 126
-Writing to 6.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:4
-./fast_n2f 7 8000 2 4
+group = 0 / 11
+./cpscript: line 55: 2014908 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
+cp: cannot stat '/home/lendle/Desktop/test_single/angle0/6/6.ap': No such file or directory
+sed: can't read 6.ap: No such file or directory
+./fast_n2f 7 1000 0 1
 Reading 7 ... 
-numNodes = 8888
-numAbcTri = 17179
+numNodes = 0
+numAbcTri = 0
 Reading 7.curJ ... 
 Loading ... 7.curJ
 Done loading 7.curJ. First order.
@@ -297,33 +120,5 @@ Loading ... 7.curM
 Done loading 7.curM. First order.
 Done reading files.
 Partitioning mesh ... 
-group = 0 / 138
-group = 5 / 138
-group = 10 / 138
-group = 15 / 138
-group = 20 / 138
-group = 25 / 138
-group = 30 / 138
-group = 35 / 138
-group = 40 / 138
-group = 45 / 138
-group = 50 / 138
-group = 55 / 138
-group = 60 / 138
-group = 65 / 138
-group = 70 / 138
-group = 75 / 138
-group = 80 / 138
-group = 85 / 138
-group = 90 / 138
-group = 95 / 138
-group = 100 / 138
-group = 105 / 138
-group = 110 / 138
-group = 115 / 138
-group = 120 / 138
-group = 125 / 138
-group = 130 / 138
-group = 135 / 138
 Writing to 7.ap ... 
-Farfield Time(hh:mm:ss) = 0:0:5
+Farfield Time(hh:mm:ss) = 0:0:0

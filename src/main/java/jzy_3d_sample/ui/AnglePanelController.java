@@ -4,12 +4,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleButton;
 import jzy_3d_sample.model.Vertex;
 
 public class AnglePanelController {
 
     private AngleSelectionHandler angleSelectionHandler = null;
     private EffectivePointHandler effectivePointHandler = null;
+    @FXML
+    private ToggleButton buttonSwitchColorMode=null;
 
     @FXML
     private ListView<?> anglelist;
@@ -53,6 +57,7 @@ public class AnglePanelController {
     void onShow_EffectivePoint(ActionEvent event) {
         System.err.println("effective_point_list_index" + effective_point_list.getSelectionModel().getSelectedIndex());
         if (this.effectivePointHandler != null) {
+            buttonSwitchColorMode.setSelected(true);
             this.effectivePointHandler.EffectivePointChanged(effective_point_list.getSelectionModel().getSelectedIndex());
         }
     }

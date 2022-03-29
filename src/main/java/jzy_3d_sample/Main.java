@@ -55,6 +55,7 @@ import jzy_3d_sample.ui.AngleSelectionHandler;
 import jzy_3d_sample.ui.BackgroundRunner;
 import jzy_3d_sample.model.ColorPaintingModel;
 import jzy_3d_sample.ui.Context;
+import jzy_3d_sample.ui.EffectivePointHandler;
 import jzy_3d_sample.ui.FileOpenObjController;
 import jzy_3d_sample.ui.LegendController;
 import jzy_3d_sample.ui.RCSvalueController;
@@ -70,7 +71,7 @@ import org.jzy3d.plot3d.primitives.Point;
  *
  * @author user
  */
-public class Main extends Application implements AngleSelectionHandler, Context {
+public class Main extends Application implements AngleSelectionHandler, Context, EffectivePointHandler {
 
     private static final boolean TEST = false;
     private List<Mesh> meshs = new ArrayList<>();
@@ -86,6 +87,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
     private RCSvalueController rCSvalueController = null;
     private ZoomPanelController zoomPanelController = null;
     private AnglePanelController anglePanelController = null;
+    private ObservableList<Vertex> effectivePoints=null;
 
     private Map<Integer, Double> angle2RcsThreshold = new HashMap<>();//store selected angle to rcs threshold
     private int currentAngleIndex = 0;
@@ -105,7 +107,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
             this.meshs = renderModel.getProjectModel().getMeshes();
             subCubes = renderModel.getProjectModel().getCubes();
             colorPaintingModel = new ColorPaintingModel(this);
-            colorPaintingModel.setColorPaintingMode(ColorPaintingMode.EFFECTIVE_POINTS);
+            colorPaintingModel.setColorPaintingMode(ColorPaintingMode.RAINBOW);
             return this.renderModel;
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -214,7 +216,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
                                     //加入所有角度資料於清單
                                     anglePanelController.getAnglelist().setItems(angleList);
                                     //加入所有等效散射點清單
-                                    ObservableList<Vertex> effectivePoints=FXCollections.observableArrayList();
+                                    effectivePoints=FXCollections.observableArrayList();
                                     for(Cube c : subCubes){
                                         effectivePoints.add(c.getEffectivePoint());
                                     }
@@ -376,6 +378,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
             VBox anglepanelRoot = (VBox) anglepanelFXMLLoader.load();
             anglePanelController = anglepanelFXMLLoader.getController();
             anglePanelController.setAngleSelectionHandler(this);
+            anglePanelController.setEffectivePointHandler(this);
             container.setLeft(anglepanelRoot);
 
             FXMLLoader southpanelFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/southpanel.fxml"));
@@ -522,5 +525,12 @@ public class Main extends Application implements AngleSelectionHandler, Context 
     @Override
     public SouthpanelController getSouthpanelController() {
         return southpanelController;
+    }
+
+    @Override
+    public void EffectivePointChanged(int index) {
+        colorPaintingModel.setColorPaintingMode(ColorPaintingMode.EFFECTIVE_POINTS);
+        colorPaintingModel.setSelectedEffectivePoint(effectivePoints.get(index));
+        resetColor();
     }
 }

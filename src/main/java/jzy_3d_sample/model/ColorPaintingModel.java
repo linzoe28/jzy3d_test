@@ -43,6 +43,15 @@ public class ColorPaintingModel {
         return colorPaintingMode;
     }
 
+    public Vertex getSelectedEffectivePoint() {
+        return selectedEffectivePoint;
+    }
+
+    public void setSelectedEffectivePoint(Vertex selectedEffectivePoint) {
+        this.selectedEffectivePoint = selectedEffectivePoint;
+    }
+    
+    
     public Point getExtremeValuePoint() {
         return extremeValuePoint;
     }
@@ -129,9 +138,12 @@ public class ColorPaintingModel {
                 Point effectivePoint=null;
                 if(selectedEffectivePoint==null){
                     selectedEffectivePoint=meshs.get(meshs.size() - 1).getCenter();
+                    
+                }
+                if(c.getEffectivePoint().equals(selectedEffectivePoint)){
                     effectivePoint=new Point(meshs.get(meshs.size() - 1).getCenter(), Color.RED, 10);
                 }else{
-                    effectivePoint=new Point(meshs.get(meshs.size() - 1).getCenter(), Color.WHITE, 10);
+                     effectivePoint=new Point(meshs.get(meshs.size() - 1).getCenter(), Color.WHITE, 10);
                 }
                 ((EffectivePointColorPainter)painter).setSelectedVertex(selectedEffectivePoint);
                 painter.paint(i, c);

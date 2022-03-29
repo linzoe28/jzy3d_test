@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.AnglePanelController">
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.AnglePanelController">
    <children>
       <TitledPane animated="false" text="全域角度切換">
         <content>
@@ -37,7 +37,7 @@
                               <Insets />
                            </HBox.margin>
                         </Button>
-                        <ToggleButton mnemonicParsing="false" text="等效散射點觀測模式">
+                        <ToggleButton fx:id="buttonSwitchColorMode" mnemonicParsing="false" text="等效散射點觀測模式">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
