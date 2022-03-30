@@ -1,25 +1,82 @@
 package jzy_3d_sample.ui;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.HBox;
+import jzy_3d_sample.model.ColorPaintingMode;
+import jzy_3d_sample.model.ColorPaintingModel;
 import jzy_3d_sample.model.Vertex;
+import org.controlsfx.control.ToggleSwitch;
 
 public class AnglePanelController {
 
     private AngleSelectionHandler angleSelectionHandler = null;
-    private EffectivePointHandler effectivePointHandler = null;
     @FXML
-    private ToggleButton buttonSwitchColorMode=null;
+    private HBox toggleButtonContainer;
 
     @FXML
     private ListView<?> anglelist;
 
     @FXML
     private ListView<Vertex> effective_point_list;
+    private Context context = null;
+
+    private ToggleSwitch toggleSwitch = null;
+
+    public void init(Context context) {
+        this.context = context;
+    }
+
+    @FXML
+    public void initialize() {
+        Label mode1 = new Label("一般顯示");
+//        mode1.setStyle("-fx-background-color: red");
+        Label mode2 = new Label("等效顯示");
+        toggleSwitch = new ToggleSwitch();
+        toggleSwitch.setAlignment(Pos.CENTER);
+        toggleSwitch.setPrefWidth(40);
+//        toggleSwitch.setStyle("-fx-background-color: red");
+        toggleButtonContainer.getChildren().addAll(mode1, toggleSwitch, mode2);
+        toggleSwitch.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                BackgroundRunner runner = new BackgroundRunner(context.getSouthpanelController()) {
+
+                    @Override
+                    public void runInWorkerThread() {
+                        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+                        ColorPaintingModel colorPaintingModel = context.getColorPaintingModel();
+                        if (newValue) {
+                            colorPaintingModel.setColorPaintingMode(ColorPaintingMode.EFFECTIVE_POINTS);
+                        } else {
+                            colorPaintingModel.setColorPaintingMode(ColorPaintingMode.RAINBOW);
+                        }
+
+                    }
+
+                    @Override
+                    public void runInUIThread() {
+                        context.resetColor();
+                    }
+
+                    @Override
+                    public void runBeforeWorkerThread() {
+                        if (effective_point_list.getSelectionModel().getSelectedIndex() == -1) {
+                            effective_point_list.getSelectionModel().select(0);
+                        }
+                    }
+                };
+                runner.start();
+
+            }
+        });
+    }
 
     public ListView<?> getAnglelist() {
         return anglelist;
@@ -37,17 +94,10 @@ public class AnglePanelController {
         return effective_point_list;
     }
 
-    public EffectivePointHandler getEffectivePointHandler() {
-        return effectivePointHandler;
-    }
-
-    public void setEffectivePointHandler(EffectivePointHandler effectivePointHandler) {
-        this.effectivePointHandler = effectivePointHandler;
-    }
 
     @FXML
     void onShowButtonClicked(ActionEvent event) {
-        System.out.println("anglelist_index" + anglelist.getSelectionModel().getSelectedIndex());
+//        System.out.println("anglelist_index" + anglelist.getSelectionModel().getSelectedIndex());
         if (this.angleSelectionHandler != null) {
             this.angleSelectionHandler.angleSelectionChanged(anglelist.getSelectionModel().getSelectedIndex());
         }
@@ -55,16 +105,30 @@ public class AnglePanelController {
 
     @FXML
     void onShow_EffectivePoint(ActionEvent event) {
-        System.err.println("effective_point_list_index" + effective_point_list.getSelectionModel().getSelectedIndex());
-        if (this.effectivePointHandler != null) {
-            buttonSwitchColorMode.setSelected(true);
-            this.effectivePointHandler.EffectivePointChanged(effective_point_list.getSelectionModel().getSelectedIndex());
-        }
+
+        BackgroundRunner runner = new BackgroundRunner(context.getSouthpanelController()) {
+            @Override
+            public void runInWorkerThread() {
+                context.getColorPaintingModel().setColorPaintingMode(ColorPaintingMode.EFFECTIVE_POINTS);
+                context.getColorPaintingModel().setSelectedEffectivePoint(effective_point_list.getSelectionModel().getSelectedItem());
+            }
+
+            @Override
+            public void runInUIThread() {
+                context.resetColor();
+            }
+
+            @Override
+            public void runBeforeWorkerThread() {
+                toggleSwitch.setSelected(true);
+            }
+
+        };
+        runner.start();
     }
 
 //    @FXML
 //    void onEffectivePointToggle(ActionEvent event) {
 //
 //    }
-
 }

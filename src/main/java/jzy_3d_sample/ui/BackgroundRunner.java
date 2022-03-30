@@ -34,21 +34,22 @@ public abstract class BackgroundRunner {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                progressReporter.startProgress();
                 runBeforeWorkerThread();
             }
         });
-        this.progressReporter.startProgress();
         runner=new Thread() {
             public void run() {
                 stopped=false;
                 runInWorkerThread();
-                progressReporter.stopProgress();
+                
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
                         runInUIThread();
                         stopped=true;
                         afterStopped();
+                        progressReporter.stopProgress();
                     }
                 });
             }

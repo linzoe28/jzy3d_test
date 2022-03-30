@@ -71,7 +71,7 @@ import org.jzy3d.plot3d.primitives.Point;
  *
  * @author user
  */
-public class Main extends Application implements AngleSelectionHandler, Context, EffectivePointHandler {
+public class Main extends Application implements AngleSelectionHandler, Context {
 
     private static final boolean TEST = false;
     private List<Mesh> meshs = new ArrayList<>();
@@ -378,7 +378,7 @@ public class Main extends Application implements AngleSelectionHandler, Context,
             VBox anglepanelRoot = (VBox) anglepanelFXMLLoader.load();
             anglePanelController = anglepanelFXMLLoader.getController();
             anglePanelController.setAngleSelectionHandler(this);
-            anglePanelController.setEffectivePointHandler(this);
+            anglePanelController.init(this);
             container.setLeft(anglepanelRoot);
 
             FXMLLoader southpanelFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/southpanel.fxml"));
@@ -421,7 +421,7 @@ public class Main extends Application implements AngleSelectionHandler, Context,
     }
 
     
-    private void resetColor() {
+    public void resetColor() {
         List<Cube> colorCubes = new ArrayList<>(subCubes);
         double rcsThreshold=colorPaintingModel.getRcsThresholdForHighlight();
         double gap=colorPaintingModel.getRcsGapForRainbowLevels();
@@ -527,10 +527,9 @@ public class Main extends Application implements AngleSelectionHandler, Context,
         return southpanelController;
     }
 
+
     @Override
-    public void EffectivePointChanged(int index) {
-        colorPaintingModel.setColorPaintingMode(ColorPaintingMode.EFFECTIVE_POINTS);
-        colorPaintingModel.setSelectedEffectivePoint(effectivePoints.get(index));
-        resetColor();
+    public ColorPaintingModel getColorPaintingModel() {
+        return this.colorPaintingModel;
     }
 }

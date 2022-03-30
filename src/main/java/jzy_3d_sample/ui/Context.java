@@ -5,6 +5,7 @@
 package jzy_3d_sample.ui;
 
 import java.util.List;
+import jzy_3d_sample.model.ColorPaintingModel;
 import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.RenderModel;
 
@@ -16,4 +17,6 @@ public interface Context {
     public List<Cube> getSubCubes();
     public RenderModel getRenderModel();
     public SouthpanelController getSouthpanelController();
+    public void resetColor();
+    public ColorPaintingModel getColorPaintingModel();
 }
