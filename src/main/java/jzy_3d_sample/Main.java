@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -87,7 +88,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
     private RCSvalueController rCSvalueController = null;
     private ZoomPanelController zoomPanelController = null;
     private AnglePanelController anglePanelController = null;
-    private ObservableList<Vertex> effectivePoints=null;
+    private ObservableList<Vertex> effectivePoints = null;
 
     private Map<Integer, Double> angle2RcsThreshold = new HashMap<>();//store selected angle to rcs threshold
     private int currentAngleIndex = 0;
@@ -157,6 +158,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
 
                             new BackgroundRunner(southpanelController) {
                                 ObservableList angleList;
+
                                 @Override
 
                                 public void runBeforeWorkerThread() {
@@ -197,8 +199,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
                                         colorLegend.setVisible(true);
                                         renderModel.repaint();
                                     }
-                                    
-                                    
+
                                 }
 
                                 @Override
@@ -216,8 +217,8 @@ public class Main extends Application implements AngleSelectionHandler, Context 
                                     //加入所有角度資料於清單
                                     anglePanelController.getAnglelist().setItems(angleList);
                                     //加入所有等效散射點清單
-                                    effectivePoints=FXCollections.observableArrayList();
-                                    for(Cube c : subCubes){
+                                    effectivePoints = FXCollections.observableArrayList();
+                                    for (Cube c : subCubes) {
                                         effectivePoints.add(c.getEffectivePoint());
                                     }
                                     anglePanelController.getEffective_point_list().setItems(effectivePoints);
@@ -420,20 +421,24 @@ public class Main extends Application implements AngleSelectionHandler, Context 
         System.out.println("cube rcs=" + Arrays.deepToString(list.toArray()));
     }
 
-    
     public void resetColor() {
         List<Cube> colorCubes = new ArrayList<>(subCubes);
-        double rcsThreshold=colorPaintingModel.getRcsThresholdForHighlight();
-        double gap=colorPaintingModel.getRcsGapForRainbowLevels();
+        double rcsThreshold = colorPaintingModel.getRcsThresholdForHighlight();
+        double gap = colorPaintingModel.getRcsGapForRainbowLevels();
         colorPaintingModel.update();
 
-        LegendController legendController = legendloader.getController();
-        legendController.getRedValue().setText(String.format("%06.3f", rcsThreshold));
-        legendController.getoValue().setText(String.format("%06.3f", rcsThreshold - gap));
-        legendController.getyValue().setText(String.format("%06.3f", rcsThreshold - 2 * gap));
-        legendController.getgValue().setText(String.format("%06.3f", rcsThreshold - 3 * gap));
-        legendController.getbValue().setText(String.format("%06.3f", rcsThreshold - 4 * gap));
-        legendController.getbValue1().setText(String.format("%06.3f", rcsThreshold - 5 * gap));
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                LegendController legendController = legendloader.getController();
+                legendController.getRedValue().setText(String.format("%06.3f", rcsThreshold));
+                legendController.getoValue().setText(String.format("%06.3f", rcsThreshold - gap));
+                legendController.getyValue().setText(String.format("%06.3f", rcsThreshold - 2 * gap));
+                legendController.getgValue().setText(String.format("%06.3f", rcsThreshold - 3 * gap));
+                legendController.getbValue().setText(String.format("%06.3f", rcsThreshold - 4 * gap));
+                legendController.getbValue1().setText(String.format("%06.3f", rcsThreshold - 5 * gap));
+            }
+        });
 
     }
 
@@ -526,7 +531,6 @@ public class Main extends Application implements AngleSelectionHandler, Context 
     public SouthpanelController getSouthpanelController() {
         return southpanelController;
     }
-
 
     @Override
     public ColorPaintingModel getColorPaintingModel() {

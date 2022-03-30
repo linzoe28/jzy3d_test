@@ -57,12 +57,12 @@ public class AnglePanelController {
                         } else {
                             colorPaintingModel.setColorPaintingMode(ColorPaintingMode.RAINBOW);
                         }
-
+                        context.resetColor();
                     }
 
                     @Override
                     public void runInUIThread() {
-                        context.resetColor();
+
                     }
 
                     @Override
@@ -94,7 +94,6 @@ public class AnglePanelController {
         return effective_point_list;
     }
 
-
     @FXML
     void onShowButtonClicked(ActionEvent event) {
 //        System.out.println("anglelist_index" + anglelist.getSelectionModel().getSelectedIndex());
@@ -111,11 +110,11 @@ public class AnglePanelController {
             public void runInWorkerThread() {
                 context.getColorPaintingModel().setColorPaintingMode(ColorPaintingMode.EFFECTIVE_POINTS);
                 context.getColorPaintingModel().setSelectedEffectivePoint(effective_point_list.getSelectionModel().getSelectedItem());
+                context.resetColor();
             }
 
             @Override
             public void runInUIThread() {
-                context.resetColor();
             }
 
             @Override
