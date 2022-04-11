@@ -234,6 +234,18 @@ public class MeshConverterController {
                         status.setOsFiles(splitOSFileByAngle(outputOsFolder, bigOsFile));
                     }
                     ////////////////////////////
+                    if(status.getOsFiles().size()==1){
+                        //single angle is not supported
+                        Platform.runLater(new Runnable(){
+                            @Override
+                            public void run() {
+                                Alert alert=new Alert(AlertType.ERROR, "This version does not support single angle cases.");
+                                alert.showAndWait();
+                            }
+                        });
+                        
+                        return;
+                    }
                     Read_data r = new Read_data(outputDir, "angle0");
                     long x = Long.valueOf(x_value.getText());
                     long y = Long.valueOf(y_value.getText());
@@ -299,6 +311,7 @@ public class MeshConverterController {
                                 }catch(Exception e){
                                     logger.warn("empty RCS_total file, assume rcs=0");
                                     currentData.setRcsTotal(0);
+                                    throw e;
                                 }
                                 
                                 File currentObjFile = new File(outputDir, "angle" + index + ".current");

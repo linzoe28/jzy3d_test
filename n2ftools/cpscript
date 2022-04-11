@@ -40,7 +40,7 @@ do
 	cp $home/fast_n2f $dir/$i
 
 	cd $dir/$i
-	echo "./fast_n2f $i $w $effectiveTheta $effectivePhi" 
+	echo -e "./fast_n2f ${i} ${w} ${effectiveTheta} ${effectivePhi}" 
 	./fast_n2f $i $w $effectiveTheta $effectivePhi
 
 	cd ..
