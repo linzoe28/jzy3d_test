@@ -24,7 +24,7 @@ public class ColorPaintingModel {
     private Context context = null;
     //for RainbowColorPainter
     private double rcsThresholdForHighlight = -1;
-    private double rcsGapForRainbowLevels = -1;
+    private double rcsGapForRainbowLevels = 0;
     private Point extremeValuePoint = null;
     private Vertex extremePointPosition = null;
     ///////////////////////////////////////////
@@ -79,7 +79,7 @@ public class ColorPaintingModel {
   
     public void update() {
         ColorPainter painter = null;
-        List<Cube> colorCubes = new ArrayList<>(context.getSubCubes());
+        List<Cube> colorCubes = sortCube(new ArrayList<>(context.getSubCubes()));
         if (extremeValuePoint != null) {
             context.getRenderModel().getChart().getScene().remove(extremeValuePoint);
         }
@@ -121,6 +121,9 @@ public class ColorPaintingModel {
             for (int i = 0; i < colorCubes.size(); i++) {
                 Cube c = colorCubes.get(i);
                 List<Mesh> meshs = c.getMeshs();
+                if(meshs.isEmpty()){
+                    continue;
+                }
                 Collections.sort(meshs, new Comparator<Mesh>() {
 
                     @Override

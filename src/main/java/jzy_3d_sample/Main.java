@@ -423,20 +423,21 @@ public class Main extends Application implements AngleSelectionHandler, Context 
 
     public void resetColor() {
         List<Cube> colorCubes = new ArrayList<>(subCubes);
+        colorPaintingModel.update();
         double rcsThreshold = colorPaintingModel.getRcsThresholdForHighlight();
         double gap = colorPaintingModel.getRcsGapForRainbowLevels();
-        colorPaintingModel.update();
+        
 
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 LegendController legendController = legendloader.getController();
-                legendController.getRedValue().setText(String.format("%06.3f", rcsThreshold));
-                legendController.getoValue().setText(String.format("%06.3f", rcsThreshold - gap));
-                legendController.getyValue().setText(String.format("%06.3f", rcsThreshold - 2 * gap));
-                legendController.getgValue().setText(String.format("%06.3f", rcsThreshold - 3 * gap));
-                legendController.getbValue().setText(String.format("%06.3f", rcsThreshold - 4 * gap));
-                legendController.getbValue1().setText(String.format("%06.3f", rcsThreshold - 5 * gap));
+                legendController.getRedValue().setText(String.format("%06.3e", rcsThreshold));
+                legendController.getoValue().setText(String.format("%06.3e", rcsThreshold - gap));
+                legendController.getyValue().setText(String.format("%06.3e", rcsThreshold - 2 * gap));
+                legendController.getgValue().setText(String.format("%06.3e", rcsThreshold - 3 * gap));
+                legendController.getbValue().setText(String.format("%06.3e", rcsThreshold - 4 * gap));
+                legendController.getbValue1().setText(String.format("%06.3e", rcsThreshold - 5 * gap));
             }
         });
 

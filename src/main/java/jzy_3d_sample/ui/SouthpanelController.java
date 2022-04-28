@@ -17,8 +17,13 @@ public class SouthpanelController implements ProgressReporter{
     private Label extremePointPosition;
     
     public void setExtremePointPosition(Vertex point){
-        this.extremePointPosition.setText(""+String.format("%.4f", point.x)+", "+String.format("%.4f", point.y)+", "+String.format("%.4f", point.z));
-        extremePointPosition.setTooltip(new Tooltip(""+point.x+", "+point.y+", "+point.z));
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                extremePointPosition.setText(""+String.format("%.4f", point.x)+", "+String.format("%.4f", point.y)+", "+String.format("%.4f", point.z));
+                extremePointPosition.setTooltip(new Tooltip(""+point.x+", "+point.y+", "+point.z));
+            }
+        });
     }
     
     public void setTextBeforeValue(String value){

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="108.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.LegendController">
+<VBox alignment="TOP_CENTER" prefHeight="108.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jzy_3d_sample.ui.LegendController">
    <children>
       <Label contentDisplay="CENTER" text="RCS">
          <font>
@@ -26,7 +26,7 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Label>
-            <Label fx:id="redValue" contentDisplay="RIGHT" prefWidth="50.0" text="50" textAlignment="CENTER">
+            <Label fx:id="redValue" contentDisplay="RIGHT" prefWidth="80.0" text="50" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -43,7 +43,7 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Label>
-            <Label fx:id="oValue" contentDisplay="RIGHT" prefWidth="50.0" text="50" textAlignment="CENTER">
+            <Label fx:id="oValue" contentDisplay="RIGHT" prefWidth="80.0" text="50" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -60,7 +60,7 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Label>
-            <Label fx:id="yValue" contentDisplay="RIGHT" prefWidth="50.0" text="50" textAlignment="CENTER">
+            <Label fx:id="yValue" contentDisplay="RIGHT" prefWidth="80.0" text="50" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -77,7 +77,7 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Label>
-            <Label fx:id="gValue" contentDisplay="RIGHT" prefWidth="50.0" text="50" textAlignment="CENTER">
+            <Label fx:id="gValue" contentDisplay="RIGHT" prefWidth="80.0" text="50" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -94,7 +94,7 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Label>
-            <Label fx:id="bValue" contentDisplay="RIGHT" prefWidth="50.0" text="50" textAlignment="CENTER">
+            <Label fx:id="bValue" contentDisplay="RIGHT" prefWidth="80.0" text="50" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -111,7 +111,7 @@
                   <Insets right="5.0" />
                </HBox.margin>
             </Label>
-            <Label fx:id="bValue1" contentDisplay="RIGHT" prefWidth="50.0" text="50" textAlignment="CENTER">
+            <Label fx:id="bValue1" contentDisplay="RIGHT" prefWidth="80.0" text="50" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>

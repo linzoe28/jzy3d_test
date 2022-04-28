@@ -29,6 +29,9 @@ public class EffectivePointColorPainter implements ColorPainter{
     @Override
     public void paint(int index, Cube cube) {
         Vertex effectivePointCube=cube.getEffectivePoint();
+        if(effectivePointCube.equals(Vertex.NULL_VERTEX)){
+            return;
+        }
         System.out.println(effectivePointCube.equals(selectedVertex));
         Color color=(effectivePointCube.equals(selectedVertex))?new Color(0,0,255, 1f):new Color(0,0,255, 0.1f);
 //        Color color=(effectivePointCube.equals(selectedVertex))?new Color(191,191,191, 1f):new Color(191,191,191, 0.1f);

@@ -17,6 +17,7 @@ import org.jzy3d.maths.Coord3d;
 public class Vertex extends Coord3d implements Comparable<Vertex>, Cloneable, Serializable {
 
     private static final long serialVersionUID = -1636927109633279805L;
+    public static final Vertex NULL_VERTEX=new Vertex(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
 
     public Vertex(float x, float y, float z) {
         super(x, y, z);

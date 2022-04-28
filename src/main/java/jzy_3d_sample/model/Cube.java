@@ -293,6 +293,9 @@ public class Cube implements Serializable {
 
     public Vertex getEffectivePoint() {
         List<Mesh> meshs = this.getClonedMeshs();
+        if(meshs.isEmpty()){
+            return Vertex.NULL_VERTEX;
+        }
         Collections.sort(meshs, new Comparator<Mesh>() {
 
             @Override
