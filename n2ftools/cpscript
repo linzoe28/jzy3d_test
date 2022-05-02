@@ -1,0 +1,56 @@
+#!/bin/bash
+home="$( cd "$( dirname "$0" )" && pwd )"
+workdir=$4
+
+if [ $# -eq 0 ]
+  then
+    read -p "Number of Subspace:" q
+    #echo -e "Your Number of Subspace: ${q}"
+    h=$[q-1]
+    read -p "Operating Frequency(MHz):" w
+    #echo -e "Your Operating Frequency(MHz): ${w}" 
+    read -p "Root Directory:" dir
+  else
+    q=$[$1]
+    h=$[q-1]
+    w=$[$2]
+    dir=$3
+    delta=$[$5]
+    effectiveTheta=$[180/$delta]
+    effectivePhi=$[360/$delta]
+    if [ effectiveTheta<1 ]
+		then
+			effectiveTheta=1
+	fi
+fi
+#read -p "Number of Subspace:" q
+echo -e "Your Number of Subspace: ${q}"
+#h=$[q-1]
+#echo $[$1-1]
+#read -p "Operating Frequency(MHz):" w
+echo -e "Your Operating Frequency(MHz): ${w}" 
+echo -e "Root Directory: ${dir}"
+
+mkdir $dir/ap
+echo "fast_n2f: Executing fast_n2f..." > $workdir/.n2f/status
+for ((i=0;i<=h;i++))
+
+do
+	echo "fast_n2f: $i/$h" > $workdir/.n2f/status
+	cp $home/fast_n2f $dir/$i
+
+	cd $dir/$i
+	echo -e "./fast_n2f ${i} ${w} ${effectiveTheta} ${effectivePhi}" 
+	./fast_n2f $i $w $effectiveTheta $effectivePhi
+
+	cd ..
+
+        cp $dir/$i/$i.ap $dir/ap/
+	
+	cd ap 
+
+	sed -i '1d' $i.ap
+	rm $dir/$i/fast_n2f
+	cd ..
+done
+

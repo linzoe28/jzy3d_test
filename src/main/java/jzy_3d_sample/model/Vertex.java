@@ -5,34 +5,39 @@
  */
 package jzy_3d_sample.model;
 
+import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import org.jzy3d.maths.Coord3d;
 
 /**
  *
  * @author user
  */
-public class Vertex extends Coord3d implements Comparable<Vertex>, Cloneable{
-    public Vertex(float x, float y, float z){
+public class Vertex extends Coord3d implements Comparable<Vertex>, Cloneable, Serializable {
+
+    private static final long serialVersionUID = -1636927109633279805L;
+    public static final Vertex NULL_VERTEX=new Vertex(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
+
+    public Vertex(float x, float y, float z) {
         super(x, y, z);
     }
-    
-    public Vertex(double x, double y, double z){
-        super((float)x, (float)y, (float)z);
+
+    public Vertex(double x, double y, double z) {
+        super((float) x, (float) y, (float) z);
     }
-    
-    public Vertex(float [] xyz){
+
+    public Vertex(float[] xyz) {
         super(xyz[0], xyz[1], xyz[2]);
     }
-    
-    public Vertex(double [] xyz){
-        super((float)xyz[0], (float)xyz[1], (float)xyz[2]);
+
+    public Vertex(double[] xyz) {
+        super((float) xyz[0], (float) xyz[1], (float) xyz[2]);
     }
 
     public Vertex() {
     }
-    
-    
-    
+
     public float getX() {
         return x;
     }
@@ -65,7 +70,7 @@ public class Vertex extends Coord3d implements Comparable<Vertex>, Cloneable{
         hash = 29 * hash + (int) (Double.doubleToLongBits(this.z) ^ (Double.doubleToLongBits(this.z) >>> 32));
         return hash;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -92,23 +97,29 @@ public class Vertex extends Coord3d implements Comparable<Vertex>, Cloneable{
 
     @Override
     public int compareTo(Vertex o) {
-        if(x==o.getX() && y==o.getY() && z==o.getZ()){
+        if (x == o.getX() && y == o.getY() && z == o.getZ()) {
             return 0;
-        }else if(x<=o.getX() && y<=o.getY() && z<=o.getZ()){
+        } else if (x <= o.getX() && y <= o.getY() && z <= o.getZ()) {
             return -1;
-        }else{
+        } else {
             return 1;
         }
     }
 
-    public String toString(){
-        return "("+x+","+y+","+z+")";
+    public String toString() {
+        DecimalFormat df = new DecimalFormat("0.0000");
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();  
+        numberFormat.setMaximumFractionDigits(4);  
+        String _x = df.format(x);
+        String _y = df.format(y);
+        String _z = df.format(z);
+        System.out.println("(" + x + "," + y + "," + z + ")");
+        return "(" + _x + "," + _y + "," + _z + ")";
     }
 
     @Override
     public Coord3d clone() {
         return new Vertex(x, y, z);
     }
-    
-    
+
 }

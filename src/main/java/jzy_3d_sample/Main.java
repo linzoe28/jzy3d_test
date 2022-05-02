@@ -5,19 +5,23 @@
  */
 package jzy_3d_sample;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import jzy_3d_sample.datafactory.Read_data;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +35,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -38,52 +44,78 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import jzy_3d_sample.datafactory.FastN2fWriter;
+import jzy_3d_sample.model.ColorPaintingMode;
 import jzy_3d_sample.model.Cube;
 import jzy_3d_sample.model.Mesh;
 import jzy_3d_sample.model.RenderModel;
 import jzy_3d_sample.model.Vertex;
 import jzy_3d_sample.model.VertexCurrent;
+import jzy_3d_sample.model.serialized.CurrentData;
+import jzy_3d_sample.ui.AnglePanelController;
+import jzy_3d_sample.ui.AngleSelectionHandler;
 import jzy_3d_sample.ui.BackgroundRunner;
-import jzy_3d_sample.ui.FileOpenController;
+import jzy_3d_sample.model.ColorPaintingModel;
+import jzy_3d_sample.ui.Context;
+import jzy_3d_sample.ui.EffectivePointHandler;
+import jzy_3d_sample.ui.FileOpenObjController;
 import jzy_3d_sample.ui.LegendController;
 import jzy_3d_sample.ui.RCSvalueController;
 import jzy_3d_sample.ui.RainbowColorPainter;
-import jzy_3d_sample.ui.RcslistController;
-import jzy_3d_sample.ui.SlicecubeController;
 import jzy_3d_sample.ui.SouthpanelController;
-import jzy_3d_sample.ui.SubCubesColorPainter;
-import net.lingala.zip4j.ZipFile;
-import net.lingala.zip4j.util.Zip4jUtil;
+import jzy_3d_sample.ui.ZoomPanelController;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.complex.Complex;
 import org.jzy3d.colors.Color;
 import org.jzy3d.plot3d.primitives.Point;
-import org.jzy3d.plot3d.primitives.Sphere;
 
 /**
  *
  * @author user
  */
-public class Main extends Application {
+public class Main extends Application implements AngleSelectionHandler, Context {
 
     private static final boolean TEST = false;
-    private List<Mesh> meshs = null;
+    private List<Mesh> meshs = new ArrayList<>();
     private RenderModel renderModel = null;
     private Scene scene = null;
     private BorderPane container = null;
-    private List<Cube> subCubes = null;
+    private List<Cube> subCubes = new ArrayList<>();
     File subCubeRoot = null;
     VBox colorLegend = null;
     FXMLLoader legendloader = null;
     String RCSTotal = "";
     private SouthpanelController southpanelController = null;
     private RCSvalueController rCSvalueController = null;
-    private Point extremeValuePoint = null;
+    private ZoomPanelController zoomPanelController = null;
+    private AnglePanelController anglePanelController = null;
+    private ObservableList<Vertex> effectivePoints = null;
+
+    private Map<Integer, Double> angle2RcsThreshold = new HashMap<>();//store selected angle to rcs threshold
+    private int currentAngleIndex = 0;
+    private ColorPaintingModel colorPaintingModel = null;
 
     private RenderModel loadRenderModel(Stage primaryStage, List<Mesh> meshs) {
         this.meshs = meshs;
         this.renderModel = new RenderModel(scene, primaryStage, meshs);
+        colorPaintingModel = new ColorPaintingModel(this);
         return this.renderModel;
+    }
+
+    private RenderModel loadRenderModel(Stage primaryStage, File savedFile) {
+        try {
+            subCubeRoot = savedFile;
+            this.renderModel = new RenderModel(scene, primaryStage, savedFile);
+            this.meshs = renderModel.getProjectModel().getMeshes();
+            subCubes = renderModel.getProjectModel().getCubes();
+            colorPaintingModel = new ColorPaintingModel(this);
+            colorPaintingModel.setColorPaintingMode(ColorPaintingMode.RAINBOW);
+            return this.renderModel;
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override
@@ -93,135 +125,128 @@ public class Main extends Application {
             MenuBar menuBar = new MenuBar();
             menuBar.setStyle("-fx-font-size: 11pt;");
             Menu fileMenu = new Menu("File");
-            MenuItem fileOpenMenuItem = new MenuItem("Open");
-            fileMenu.getItems().add(fileOpenMenuItem);
-            MenuItem fileSliceMenuItem = new MenuItem("子空間切割");
-            fileMenu.getItems().add(fileSliceMenuItem);
-            MenuItem fileRCSMenuItem = new MenuItem("RCS資料輸入");
-            fileMenu.getItems().add(fileRCSMenuItem);
+            MenuItem fileOpenObjItem = new MenuItem("Open Obj");
+            fileMenu.getItems().add(fileOpenObjItem);
+//            MenuItem fileRCSMenuItem = new MenuItem("RCS資料輸入");
+//            fileMenu.getItems().add(fileRCSMenuItem);
             MenuItem researchMenuItem = new MenuItem("研改輸出");
+//            researchMenuItem.setDisable(true);
             fileMenu.getItems().add(researchMenuItem);
             fileMenu.getItems().add(new SeparatorMenuItem());
             MenuItem fileExitMenuItem = new MenuItem("Exit");
             fileMenu.getItems().add(fileExitMenuItem);
 
-            fileOpenMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            fileOpenObjItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event) {
+                public void handle(ActionEvent t) {
                     try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/fileopen.fxml"));
+                        angle2RcsThreshold.clear();
+                        subCubes.clear();
+                        meshs.clear();
+                        currentAngleIndex = 0;
+
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/fileopen_obj.fxml"));
                         Parent root1 = (Parent) fxmlLoader.load();
-                        FileOpenController fileOpenController = fxmlLoader.getController();
+                        FileOpenObjController fileOpenObjController = fxmlLoader.getController();
                         Stage stage = new Stage();
                         stage.initModality(Modality.APPLICATION_MODAL);
                         stage.initStyle(StageStyle.UNDECORATED);
                         stage.setTitle("Open File...");
                         stage.setScene(new Scene(root1));
                         stage.showAndWait();
-                        if (fileOpenController.isOk()) {
+                        if (fileOpenObjController.isOk()) {
+
                             new BackgroundRunner(southpanelController) {
+                                ObservableList angleList;
+
                                 @Override
+
                                 public void runBeforeWorkerThread() {
-                                    southpanelController.setStatus("Rendering......");
-                                    if (renderModel != null) {
-                                            container.setCenter(null);
-                                        }
+                                    southpanelController.setStatus("Open data......");
                                 }
-                                
+
                                 @Override
                                 public void runInWorkerThread() {
-                                    try {
-                                        
-                                        meshs = r.getdata_from_nas(fileOpenController.getNasFile(), fileOpenController.getOsFile());
-                                        subCubeRoot = new File(fileOpenController.getNasFile().getName());
-                                        renderModel = loadRenderModel(primaryStage, meshs);
-                                        ScrollPane scrollPane = new ScrollPane();
-                                        
-                                        Platform.runLater(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                container.setCenter(scrollPane);
-                                                scrollPane.setContent(renderModel.getView());
-                                                renderModel.repaint();
+                                    File ObjFile = fileOpenObjController.getobjFile();
+                                    renderModel = loadRenderModel(primaryStage, ObjFile);
+                                    zoomPanelController.setRenderModel(renderModel);
+                                    angleList = FXCollections.observableArrayList();
+                                    int angle = 0;
+                                    for (String currentData : renderModel.getProjectModel().getCurrentDataList()) {
+                                        angleList.add(currentData);
+
+                                        //處理讀進來的 rcs 清單
+                                        //需要改成 ondemand 的方式
+                                        if (angle == 0) {
+                                            try {
+                                                CurrentData cd = renderModel.getProjectModel().getCurrentData("angle" + (angle));
+//                                                System.out.println("cd.getRcs().length=" + cd.getRcs().length);
+//                                                System.out.println(Arrays.toString(cd.getRcs()));
+                                                for (int i = 0; angle == 0 && i < cd.getRcs().length - 1; i++) {
+                                                    subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
+                                                }
+                                                //設定RCS總值
+                                                RCSTotal = "" + cd.getRcsTotal();
+//                                                System.out.println(RCSTotal);
+
+                                            } catch (Exception ex) {
+                                                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                                             }
-                                        });     } catch (IOException ex) {
-                                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
-                                }
-                                
-                                @Override
-                                public void runInUIThread() {
-                                    
-                                    southpanelController.setStatus("Done");
-                                }
-                            }.start();
-                            
-                        }
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            });
-
-            fileSliceMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/slicecube.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        SlicecubeController slicecubeController = fxmlLoader.getController();
-                        Stage stage = new Stage();
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.initStyle(StageStyle.UTILITY);
-                        stage.setTitle("Paste Slice Values......");
-                        stage.setScene(new Scene(root1));
-                        stage.showAndWait();
-                        if (slicecubeController.isOk()) {
-                            new BackgroundRunner(southpanelController) {
-                                @Override
-                                public void runBeforeWorkerThread() {
-                                    southpanelController.setStatus("Slicing cubes......");
-                                }
-
-                                @Override
-                                public void runInWorkerThread() {
-                                    try {
-                                        double[] slice_value = slicecubeController.getslice();
-                                        subCubes = renderModel.getBoundingCube().slice(slice_value[0], slice_value[1], slice_value[2]);
-                                        SubCubesColorPainter colorPainter = new SubCubesColorPainter();
-                                        for (int i = 0; i < subCubes.size(); i++) {
-                                            Cube cube = subCubes.get(i);
-                                            colorPainter.paint(i, cube);
                                         }
-                                        renderModel.getSurface().setWireframeDisplayed(false);
+                                        angle++;
+
+                                        colorLegend.setPrefWidth(63);
+                                        colorLegend.setVisible(true);
                                         renderModel.repaint();
-                                        southpanelController.setStatus("Output fast_n2f files......");
-                                        FileUtils.deleteDirectory(subCubeRoot);
-                                        FileUtils.forceMkdir(subCubeRoot);
-                                        for (int i = 0; i < subCubes.size(); i++) {
-                                            Cube c = subCubes.get(i);
-                                            File subCubeFolder = new File(subCubeRoot, "" + i);
-                                            FileUtils.forceMkdir(subCubeFolder);
-                                            FastN2fWriter.writeTriFile(c.getMeshs(), new File(subCubeFolder, i + ".tri"));
-                                            FastN2fWriter.writeCurMFile(c.getMeshs(), new File(subCubeFolder, i + ".curM"));
-                                            FastN2fWriter.writeCurJFile(c.getMeshs(), new File(subCubeFolder, i + ".curJ"));
-                                        }
-//                                        ZipFile zipFile = new ZipFile(new File(subCubeRoot.getName() + ".zip"));
-//                                        zipFile.addFolder(subCubeRoot);
-//                                        FileUtils.deleteDirectory(subCubeRoot);
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                                     }
+
                                 }
 
                                 @Override
                                 public void runInUIThread() {
+                                    TabPane tabPane = new TabPane();
+                                    tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+                                    ScrollPane scrollPane = new ScrollPane();
+                                    tabPane.getTabs().add(new Tab("Main View", scrollPane));
+                                    container.setCenter(tabPane);
+                                    scrollPane.setContent(renderModel.getView());
+                                    renderModel.repaint();
                                     southpanelController.setStatus("Done");
+                                    colorPaintingModel.setRcsThresholdForHighlight(Double.valueOf(rCSvalueController.getThreshold()));
+                                    resetColor();
+                                    //加入所有角度資料於清單
+                                    anglePanelController.getAnglelist().setItems(angleList);
+                                    //加入所有等效散射點清單
+                                    effectivePoints = FXCollections.observableArrayList();
+                                    for (Cube c : subCubes) {
+                                        effectivePoints.add(c.getEffectivePoint());
+                                    }
+                                    anglePanelController.getEffective_point_list().setItems(effectivePoints);
+                                    //顯示RCSTotal
+                                    southpanelController.setTextBeforeValue(RCSTotal);
+                                    resetSlider();
+                                    rCSvalueController.getTo_db_check().setOnAction(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent event) {
+                                            renderModel.repaint();
+                                            rCSvalueController.repaint();
+//                                            System.out.println(rCSvalueController.get_to_db_checkisOK());
+                                            if (!rCSvalueController.get_to_db_checkisOK()) {
+                                                southpanelController.setTextBeforeValue(RCSTotal);
+                                            } else {
+                                                southpanelController.setTextBeforeValue("" + rCSvalueController.to_dbvalue(Double.valueOf(RCSTotal)));
+                                            }
+                                        }
+                                    });
+
                                 }
+
                             }.start();
 
                         }
                     } catch (IOException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
@@ -232,6 +257,7 @@ public class Main extends Application {
                 public void handle(ActionEvent t) {
                     new BackgroundRunner(southpanelController) {
                         File researchFile = null;
+
                         public void runBeforeWorkerThread() {
                             southpanelController.setStatus("Outputing research results......");
                         }
@@ -258,7 +284,7 @@ public class Main extends Application {
                                 researchFile = new File("research_" + subCubeRoot.getName());
                                 FileUtils.deleteDirectory(researchFile);
                                 FileUtils.forceMkdir(researchFile);
-                                researchFile = new File(researchFile, "0");
+                                researchFile = new File(researchFile, renderModel.getProjectModel().getCurrentDataList(false).get(currentAngleIndex).replace(',', '_'));
                                 FileUtils.forceMkdir(researchFile);
                                 FastN2fWriter.writeTriFile(rmeshs, new File(researchFile, "0.tri"));
                                 FastN2fWriter.writeCurMFile(rmeshs, new File(researchFile, "0.curM"));
@@ -295,49 +321,38 @@ public class Main extends Application {
             });
             menuBar.getMenus().add(fileMenu);
 
-            BorderPane menuBarContainer = new BorderPane();
-            menuBarContainer.setTop(menuBar);
-            scene = new Scene(menuBarContainer, 800, 600);
-            container = new BorderPane();
-            menuBarContainer.setCenter(container);
-
-            fileRCSMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
+            Menu toolMenu = new Menu("Tools");
+            MenuItem openMeshConverterMenuItem = new MenuItem("開啓 MeshConverter");
+            //menuBar.getMenus().add(toolMenu);
+            toolMenu.getItems().add(openMeshConverterMenuItem);
+            openMeshConverterMenuItem.setOnAction(new EventHandler<ActionEvent>() {
                 public void handle(ActionEvent event) {
+                    ProcessBuilder pb = new ProcessBuilder();
+                    File jarFile = new File("jzy3d_test-1.1-jar-with-dependencies.jar");
+                    if (jarFile.exists()) {
+                        pb = pb.directory(new File("."));
+                    } else {
+                        pb = pb.directory(new File("dist"));
+                    }
+                    pb = pb.redirectErrorStream(true);
+                    if ("linux".equals(System.getProperty("os.name").toLowerCase())) {
+                        pb = pb.command("linux_jre/bin/java", "-Xmx10G", "-XX:+UseG1GC", "-cp", "./jzy3d_test-1.1-jar-with-dependencies.jar", "jzy_3d_sample.MeshConverter");
+                    } else {
+                        pb = pb.command("jre\\bin\\java", "-Xmx10G", "-XX:+UseG1GC", "-cp", "./jzy3d_test-1.1-jar-with-dependencies.jar", "jzy_3d_sample.MeshConverter");
+                    }
                     try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rcslist.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        RcslistController rcslistController = fxmlLoader.getController();
-                        Stage stage = new Stage();
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.initStyle(StageStyle.UTILITY);
-                        stage.setTitle("Paste RCS Values......");
-                        stage.setScene(new Scene(root1));
-                        stage.showAndWait();
-                        ArrayList<String> rcsList = new ArrayList<>();
-                        if (rcslistController.isOk()) {
-                            FileReader fileReader = new FileReader(rcslistController.getRCSFile());
-                            BufferedReader br = new BufferedReader(fileReader);
-                            while (br.ready()) {
-                                rcsList.add(br.readLine());
-                            }
-                            //處理讀進來的 rcs 清單
-                            for (int i = 0; i < rcsList.size() - 1; i++) {
-                                subCubes.get(i).setRcs(Double.valueOf(rcsList.get(i)));
-                            }
-                            RCSTotal = rcsList.get(rcsList.size() - 1);
-                            southpanelController.setTextBeforeValue(RCSTotal);
-                            sortCube(subCubes);
-                            resetColor(Double.valueOf(rCSvalueController.getThreshold()));
-                            colorLegend.setPrefWidth(63);
-                            colorLegend.setVisible(true);
-                            renderModel.repaint();
-                        }
+                        Process process = pb.start();
                     } catch (IOException ex) {
-                        ex.printStackTrace();
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             });
+
+            BorderPane menuBarContainer = new BorderPane();
+            menuBarContainer.setTop(menuBar);
+            scene = new Scene(menuBarContainer, 1100, 768);
+            container = new BorderPane();
+            menuBarContainer.setCenter(container);
 
             FXMLLoader rcsvalueFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rcsvaluepanel.fxml"));
             AnchorPane rcsvalueRoot = (AnchorPane) rcsvalueFxmlLoader.load();
@@ -347,7 +362,9 @@ public class Main extends Application {
                 @Override
                 public void handle(ActionEvent event) {
                     double threshold = Double.valueOf(rCSvalueController.getThreshold());
-                    resetColor(threshold);
+                    angle2RcsThreshold.put(currentAngleIndex, threshold);
+                    colorPaintingModel.setRcsThresholdForHighlight(threshold);
+                    resetColor();
                     double sum = 0;
                     for (Cube cube : subCubes) {
                         if (cube.getRcs() < threshold) {
@@ -358,44 +375,36 @@ public class Main extends Application {
                 }
             });
 
+            FXMLLoader anglepanelFXMLLoader = new FXMLLoader(getClass().getResource("/fxml/anglepanel.fxml"));
+            VBox anglepanelRoot = (VBox) anglepanelFXMLLoader.load();
+            anglePanelController = anglepanelFXMLLoader.getController();
+            anglePanelController.setAngleSelectionHandler(this);
+            anglePanelController.init(this);
+            container.setLeft(anglepanelRoot);
+
             FXMLLoader southpanelFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/southpanel.fxml"));
             AnchorPane southpanelRoot = (AnchorPane) southpanelFxmlLoader.load();
             southpanelController = southpanelFxmlLoader.getController();
             container.setBottom(southpanelRoot);
+
+            BorderPane rightToolBarContainer = new BorderPane();
+            container.setRight(rightToolBarContainer);
             legendloader = new FXMLLoader(getClass().getResource("/fxml/legend.fxml"));
             colorLegend = (VBox) legendloader.load();
-            container.setRight(colorLegend);
             colorLegend.setPrefWidth(0);
             colorLegend.setVisible(false);
             colorLegend.setPadding(new Insets(10));
 
+            FXMLLoader zoompanelFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/zoompanel.fxml"));
+            AnchorPane zoomPanelRoot = (AnchorPane) zoompanelFxmlLoader.load();
+            zoomPanelController = zoompanelFxmlLoader.getController();
+            rightToolBarContainer.setTop(colorLegend);
+            rightToolBarContainer.setBottom(zoomPanelRoot);
+            rightToolBarContainer.setStyle("-fx-border-style: solid; -fx-border-width: 1px; -fx-border-color: rgb(217,213,212)");
+//            rightToolBarContainer.getChildren().addAll(colorLegend, zoomPanelRoot);
             primaryStage.setTitle("CS");
             primaryStage.setScene(scene);
 
-            if (TEST) {
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            meshs = r.getdata_from_nas(new File("./sample/Missile_RCS_Vpol_MLFMM_10GHz_Efield_YZplane 154deg/Missile_RCS_Vpol_MLFMM_10GHz_Efield_YZplane 154deg.nas"), new File("./sample/Missile_RCS_Vpol_MLFMM_10GHz_Efield_YZplane 154deg/Missile_RCS_Vpol_MLFMM_10GHz_Efield_YZplane 154deg.os"));
-                            subCubeRoot = new File(new File("./sample/missile_cone_test/missile_cone_test.nas").getName());
-                            renderModel = loadRenderModel(primaryStage, meshs);
-                            ScrollPane scrollPane = new ScrollPane();
-                            container.setCenter(scrollPane);
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    scrollPane.setContent(renderModel.getView());
-
-                                    renderModel.repaint();
-                                }
-                            });
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                });
-            }
             primaryStage.show();
 
         } catch (Exception ex) {
@@ -404,73 +413,34 @@ public class Main extends Application {
 
     }
 
-    private void resetColor(double rcsThreshold) {
-        if (extremeValuePoint != null) {
-            renderModel.getChart().getScene().remove(extremeValuePoint);
+    private void printRCS(List<Cube> cubes) {
+        List<Double> list = new ArrayList<>();
+        for (Cube cube : cubes) {
+            list.add(cube.getRcs());
         }
-        List<Cube> colorCubes = new ArrayList<>(subCubes);
-        for (Cube c : colorCubes) {
-            if (c.getRcs() != 0) {
-                System.out.println(c.getRcs());
-            }
-        }
-        System.out.println("MIN" + colorCubes.get(0).getRcs() + ",MAX" + colorCubes.get(colorCubes.size() - 1).getRcs());
-        double gap = (rcsThreshold - colorCubes.get(0).getRcs()) / 5;
-        System.out.println("gap" + gap);
-        LegendController legendController = legendloader.getController();
-        legendController.getRedValue().setText(String.format("%06.4f", rcsThreshold));
-        legendController.getoValue().setText(String.format("%06.4f", rcsThreshold - gap));
-        legendController.getyValue().setText(String.format("%06.4f", rcsThreshold - 2 * gap));
-        legendController.getgValue().setText(String.format("%06.4f", rcsThreshold - 3 * gap));
-        legendController.getbValue().setText(String.format("%06.4f", rcsThreshold - 4 * gap));
-        legendController.getbValue1().setText(String.format("%06.4f", rcsThreshold - 5 * gap));
-//        System.out.println(Arrays.deepToString(colors));
-        RainbowColorPainter painter = new RainbowColorPainter(rcsThreshold, gap);
-        for (int i = 0; i < colorCubes.size(); i++) {
-            Cube c = colorCubes.get(i);
-            painter.paint(i, c);
-        }
-        renderModel.getSurface().setWireframeDisplayed(false);
-        //設定亮點
-        List<Mesh> meshs = subCubes.get(subCubes.size() - 1).getMeshs();
-        Collections.sort(meshs, new Comparator<Mesh>() {
-
-            @Override
-            public int compare(Mesh o1, Mesh o2) {
-                if (o1.getCurrentAbs() < o2.getCurrentAbs()) {
-                    return -1;
-                } else if (o1.getCurrentAbs() == o2.getCurrentAbs()) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            }
-        });
-        meshs.get(meshs.size() - 1).setColor(Color.WHITE);
-        this.extremeValuePoint = new Point(meshs.get(meshs.size() - 1).getCenter(), Color.WHITE, 10);
-        southpanelController.setExtremePointPosition(meshs.get(meshs.size() - 1).getCenter());
-        renderModel.getChart().getScene().add(extremeValuePoint);
+        System.out.println("cube rcs=" + Arrays.deepToString(list.toArray()));
     }
 
-    private void sortCube(List<Cube> Cubes) {
-        Collections.sort(Cubes, new Comparator<Cube>() {
+    public void resetColor() {
+        List<Cube> colorCubes = new ArrayList<>(subCubes);
+        colorPaintingModel.update();
+        double rcsThreshold = colorPaintingModel.getRcsThresholdForHighlight();
+        double gap = colorPaintingModel.getRcsGapForRainbowLevels();
+        
 
+        Platform.runLater(new Runnable() {
             @Override
-            public int compare(Cube o1, Cube o2) {
-                if (o1.getRcs() < o2.getRcs()) {
-                    return -1;
-                } else if (o1.getRcs() == o2.getRcs()) {
-                    return 0;
-                } else {
-                    return 1;
-                }
+            public void run() {
+                LegendController legendController = legendloader.getController();
+                legendController.getRedValue().setText(String.format("%06.3e", rcsThreshold));
+                legendController.getoValue().setText(String.format("%06.3e", rcsThreshold - gap));
+                legendController.getyValue().setText(String.format("%06.3e", rcsThreshold - 2 * gap));
+                legendController.getgValue().setText(String.format("%06.3e", rcsThreshold - 3 * gap));
+                legendController.getbValue().setText(String.format("%06.3e", rcsThreshold - 4 * gap));
+                legendController.getbValue1().setText(String.format("%06.3e", rcsThreshold - 5 * gap));
             }
         });
-        rCSvalueController.setSlidermax(Cubes.get(Cubes.size() - 1).getRcs());
-        rCSvalueController.setSlidermin(Cubes.get(0).getRcs());
-        rCSvalueController.setSlidervalue(Cubes.get(0).getRcs());
-        double majortick = ((Cubes.get(Cubes.size() - 1).getRcs()) - (Cubes.get(0).getRcs())) / 20;
-        rCSvalueController.setSliderMajorTickUnit(majortick);
+
     }
 
     /**
@@ -480,4 +450,91 @@ public class Main extends Application {
         launch(args);
     }
 
+    @Override
+    public void angleSelectionChanged(final int index) {
+        try {
+            new BackgroundRunner(southpanelController) {
+                @Override
+                public void runBeforeWorkerThread() {
+                    southpanelController.setStatus("Loading angle " + index + "......");
+                }
+
+                @Override
+                public void runInWorkerThread() {
+                    try {
+                        Read_data r = new Read_data();
+//                        System.out.println("index="+index);
+                        CurrentData cd = renderModel.getProjectModel().getCurrentData(index);
+                        cd.getOsRecordsMap().setHomeFolder(renderModel.getProjectModel().getHomeFolder());
+                        //set rcs to cubes
+                        System.out.println(Arrays.toString(cd.getRcs()));
+                        for (int i = 0; i < cd.getRcs().length - 1; i++) {
+                            subCubes.get(i).setRcs(Double.valueOf(cd.getRcs()[i]));
+                        }
+                        RCSTotal = "" + cd.getRcsTotal();
+                        southpanelController.setTextBeforeValue(RCSTotal);
+                        //set current to meshes
+                        System.out.println("apply current");
+                        r.applyOStoMeshes(meshs, cd.getOsRecordsMap());
+
+                        System.out.println("done apply current");
+                    } catch (Exception ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                @Override
+                public void runInUIThread() {
+                    //reset UI
+                    resetSlider();
+                    currentAngleIndex = index;
+                    if (angle2RcsThreshold.containsKey(currentAngleIndex)) {
+                        double threshold = angle2RcsThreshold.get(currentAngleIndex);
+                        colorPaintingModel.setRcsThresholdForHighlight(threshold);
+                        resetColor();
+                        rCSvalueController.setThreshold(threshold);
+                    } else {
+                        colorPaintingModel.setRcsThresholdForHighlight(0);
+                        resetColor();
+                    }
+                    renderModel.repaint();
+                    rCSvalueController.repaint();
+                    southpanelController.setStatus("Done");
+                }
+            }.start();
+
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void resetSlider() {
+        //設定Slider值
+        List<Cube> Cubes = rCSvalueController.sortCube(subCubes);
+        rCSvalueController.setSlidermax(Cubes.get(Cubes.size() - 1).getRcs());
+        rCSvalueController.setSlidermin(Cubes.get(0).getRcs());
+        rCSvalueController.setSlidervalue(Cubes.get(0).getRcs());
+        double majortick = ((Cubes.get(Cubes.size() - 1).getRcs()) - (Cubes.get(0).getRcs())) / 20;
+        rCSvalueController.setSliderMajorTickUnit(majortick);
+    }
+
+    @Override
+    public List<Cube> getSubCubes() {
+        return this.subCubes;
+    }
+
+    @Override
+    public RenderModel getRenderModel() {
+        return this.renderModel;
+    }
+
+    @Override
+    public SouthpanelController getSouthpanelController() {
+        return southpanelController;
+    }
+
+    @Override
+    public ColorPaintingModel getColorPaintingModel() {
+        return this.colorPaintingModel;
+    }
 }

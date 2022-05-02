@@ -14,7 +14,18 @@ import javafx.application.Platform;
 public abstract class BackgroundRunner {
 
     private ProgressReporter progressReporter = null;
+    private Thread runner=null;
+    private boolean stopping=false;
+    private boolean stopped=true;
 
+    public boolean isStopping() {
+        return stopping;
+    }
+
+    public boolean isStopped() {
+        return stopped;
+    }
+    
     public BackgroundRunner(ProgressReporter progressReporter) {
         this.progressReporter = progressReporter;
     }
@@ -23,29 +34,43 @@ public abstract class BackgroundRunner {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                progressReporter.startProgress();
                 runBeforeWorkerThread();
             }
         });
-        this.progressReporter.startProgress();
-        new Thread() {
+        runner=new Thread() {
             public void run() {
+                stopped=false;
                 runInWorkerThread();
-                progressReporter.stopProgress();
+                
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
                         runInUIThread();
+                        stopped=true;
+                        afterStopped();
+                        progressReporter.stopProgress();
                     }
                 });
             }
-        }.start();
+        };
+        runner.start();
     }
-
+    
+    public void shutdown(){
+        this.stopping=true;
+        if(runner!=null){
+            runner.interrupt();
+        }
+    }
+    
     public abstract void runBeforeWorkerThread();
 
     public abstract void runInWorkerThread();
 
     public abstract void runInUIThread();
+    
+    protected void afterStopped(){}
 
     public static interface ProgressReporter {
 

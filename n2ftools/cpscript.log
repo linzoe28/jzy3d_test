@@ -1,0 +1,124 @@
+./cpscript: line 21: 1: No such file or directory
+Your Number of Subspace: 8
+Your Operating Frequency(MHz): 1000
+Root Directory: /home/lendle/Desktop/test_single/angle0
+./fast_n2f 0 1000 0 1
+Reading 0 ... 
+numNodes = 78
+numAbcTri = 111
+Reading 0.curJ ... 
+Loading ... 0.curJ
+Done loading 0.curJ. First order.
+Reading 0.curM ... 
+Loading ... 0.curM
+Done loading 0.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 11
+./cpscript: line 55: 2109307 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
+cp: cannot stat '/home/lendle/Desktop/test_single/angle0/0/0.ap': No such file or directory
+sed: can't read 0.ap: No such file or directory
+./fast_n2f 1 1000 0 1
+Reading 1 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 1.curJ ... 
+Loading ... 1.curJ
+Done loading 1.curJ. First order.
+Reading 1.curM ... 
+Loading ... 1.curM
+Done loading 1.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 1.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+./fast_n2f 2 1000 0 1
+Reading 2 ... 
+numNodes = 76
+numAbcTri = 109
+Reading 2.curJ ... 
+Loading ... 2.curJ
+Done loading 2.curJ. First order.
+Reading 2.curM ... 
+Loading ... 2.curM
+Done loading 2.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 9
+./cpscript: line 55: 2109337 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
+cp: cannot stat '/home/lendle/Desktop/test_single/angle0/2/2.ap': No such file or directory
+sed: can't read 2.ap: No such file or directory
+./fast_n2f 3 1000 0 1
+Reading 3 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 3.curJ ... 
+Loading ... 3.curJ
+Done loading 3.curJ. First order.
+Reading 3.curM ... 
+Loading ... 3.curM
+Done loading 3.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 3.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+./fast_n2f 4 1000 0 1
+Reading 4 ... 
+numNodes = 76
+numAbcTri = 109
+Reading 4.curJ ... 
+Loading ... 4.curJ
+Done loading 4.curJ. First order.
+Reading 4.curM ... 
+Loading ... 4.curM
+Done loading 4.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 9
+./cpscript: line 55: 2109364 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
+cp: cannot stat '/home/lendle/Desktop/test_single/angle0/4/4.ap': No such file or directory
+sed: can't read 4.ap: No such file or directory
+./fast_n2f 5 1000 0 1
+Reading 5 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 5.curJ ... 
+Loading ... 5.curJ
+Done loading 5.curJ. First order.
+Reading 5.curM ... 
+Loading ... 5.curM
+Done loading 5.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 5.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0
+./fast_n2f 6 1000 0 1
+Reading 6 ... 
+numNodes = 78
+numAbcTri = 111
+Reading 6.curJ ... 
+Loading ... 6.curJ
+Done loading 6.curJ. First order.
+Reading 6.curM ... 
+Loading ... 6.curM
+Done loading 6.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+group = 0 / 11
+./cpscript: line 55: 2109391 Segmentation fault      (core dumped) ./fast_n2f $i $w $effectiveTheta $effectivePhi
+cp: cannot stat '/home/lendle/Desktop/test_single/angle0/6/6.ap': No such file or directory
+sed: can't read 6.ap: No such file or directory
+./fast_n2f 7 1000 0 1
+Reading 7 ... 
+numNodes = 0
+numAbcTri = 0
+Reading 7.curJ ... 
+Loading ... 7.curJ
+Done loading 7.curJ. First order.
+Reading 7.curM ... 
+Loading ... 7.curM
+Done loading 7.curM. First order.
+Done reading files.
+Partitioning mesh ... 
+Writing to 7.ap ... 
+Farfield Time(hh:mm:ss) = 0:0:0

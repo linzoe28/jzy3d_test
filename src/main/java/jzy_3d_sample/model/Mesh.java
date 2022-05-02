@@ -5,7 +5,10 @@
  */
 package jzy_3d_sample.model;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.math3.complex.Complex;
 import org.jzy3d.plot3d.primitives.Point;
@@ -15,15 +18,44 @@ import org.jzy3d.plot3d.primitives.Polygon;
  *
  * @author user
  */
-public class Mesh extends Polygon implements Cloneable{
+public class Mesh extends Polygon implements Cloneable, Serializable{
+    private static final long serialVersionUID = -1636927109633279805L;
+    private String osRecordKey=null;//used for mapping mesh to its corresponding os record
     private Vertex[] vertices=null;
     private Map<Vertex, VertexCurrent> currentMap=new HashMap<>();
+    private String test=null;
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
+    
+    
     
     
     public Mesh(Vertex [] vertices){
         this.vertices=vertices;
         for(Vertex v : vertices){
             super.add(new Point(v));
+        }
+    }
+
+    public String getOsRecordKey() {
+        return osRecordKey;
+    }
+
+    public void setOsRecordKey(String osRecordKey) {
+        this.osRecordKey = osRecordKey;
+    }
+    
+    
+    
+    public void emptyCurrent(){
+        for(Vertex vertex : vertices){
+            this.setCurrent(vertex, new VertexCurrent(new Complex(0, 0), new Complex(0, 0), new Complex(0, 0)));
         }
     }
 
@@ -36,7 +68,12 @@ public class Mesh extends Polygon implements Cloneable{
     }
     
     public VertexCurrent getCurrent(Vertex vertex){
-        return currentMap.get(vertex);
+        VertexCurrent current=currentMap.get(vertex);
+//        if(current==null){
+//            current=new VertexCurrent(Complex.ZERO, Complex.ZERO, Complex.ZERO);
+//            currentMap.put(vertex, current);
+//        }
+        return current;
     }
     
     public VertexCurrent getCurrent(float x, float y, float z){
@@ -76,8 +113,15 @@ public class Mesh extends Polygon implements Cloneable{
         for(Vertex v : newVertices){
             newMesh.setCurrent(v, (VertexCurrent) currentMap.get(v).clone());
         }
+        newMesh.setOsRecordKey(this.osRecordKey);
         return newMesh;
     }
     
-    
+    public List<Edge> getEdges(){
+        return Arrays.asList(
+                new Edge(this.vertices[0], this.vertices[1]),
+                new Edge(this.vertices[0], this.vertices[2]),
+                new Edge(this.vertices[1], this.vertices[2])
+        );
+    }
 }

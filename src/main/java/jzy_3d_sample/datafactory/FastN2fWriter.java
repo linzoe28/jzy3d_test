@@ -44,6 +44,10 @@ public class FastN2fWriter {
                 Vertex [] vertices=m.getVertices();
                 for(Vertex v : vertices){
                     VertexCurrent current=m.getCurrent(v);
+                    if(current==null){
+                        System.out.println("current is null for "+v);
+                        continue;
+                    }
                     writer.println(String.format("%13.8E", current.getX().getReal())+"   "+String.format("%13.8E", current.getX().getImaginary()));
                     writer.println(String.format("%13.8E", current.getY().getReal())+"   "+String.format("%13.8E", current.getY().getImaginary()));
                     writer.println(String.format("%13.8E", current.getZ().getReal())+"   "+String.format("%13.8E", current.getZ().getImaginary()));
