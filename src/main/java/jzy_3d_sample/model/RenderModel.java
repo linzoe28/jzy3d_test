@@ -25,7 +25,6 @@ import jzy_3d_sample.ui.SubCubesColorPainter;
 import jzy_3d_sample.utils.SerializeUtil;
 import org.jzy3d.chart.AWTChart;
 import org.jzy3d.chart.Settings;
-import org.jzy3d.colors.Color;
 import org.jzy3d.javafx.JavaFXChartFactory;
 import org.jzy3d.javafx.controllers.mouse.JavaFXCameraMouseController;
 import org.jzy3d.maths.BoundingBox3d;
@@ -39,7 +38,6 @@ import org.jzy3d.plot3d.rendering.canvas.Quality;
  * @author lendle
  */
 public class RenderModel {
-
     private Shape surface = null, surfaceLight = null;
     private ImageView view = null;
     private Scene scene = null;
@@ -48,7 +46,7 @@ public class RenderModel {
     private AWTChart chart = null;
     private float currentZoom = 1;
     private ProjectModel projectModel = null;//only a rendermodel built from saved model will have a project model
-
+    
     /**
      * load model from pre-defined file
      *
@@ -67,7 +65,7 @@ public class RenderModel {
         surface = SurfaceLoader.loadSurface(meshs, 1.0);
         //surface.setDisplayed(false);
         this.meshs.addAll(meshs);
-
+        ArrayList<Mesh> meshs1 = new ArrayList<Mesh>();
         for (Mesh m : meshs) {
             for (Vertex v : m.getVertices()) {
                 m.add(v);
@@ -79,6 +77,7 @@ public class RenderModel {
             Cube cube = projectModel.getCubes().get(i);
             colorPainter.paint(i, cube);
         }
+        this.chart.getView().resetcenter();
         this.getSurface().setWireframeDisplayed(false);
     }
 
@@ -115,11 +114,6 @@ public class RenderModel {
         JavaFXChartFactory factory = new JavaFXChartFactory();
         chart = (AWTChart) factory.newChart(Quality.Advanced, "offscreen");
         chart.getScene().getGraph().add(surface);
-        chart.getAxeLayout().setGridColor(Color.WHITE);
-        chart.getAxeLayout().setTickLineDisplayed(false);
-        chart.getAxeLayout().setXTickColor(Color.WHITE);
-        chart.getAxeLayout().setYTickColor(Color.WHITE);
-        chart.getAxeLayout().setZTickColor(Color.WHITE);
         chart.getView().setSquared(false);
         view = factory.bindImageView(chart);
         try {
@@ -252,28 +246,25 @@ public class RenderModel {
     }
     
     public void zoom(float factor) {
-        float zoom = factor / currentZoom;
-        BoundingBox3d bounds = chart.getView().getBounds();
-        float xlen = (bounds.getRange().x) / zoom / 2;
-//        float xcenter = bounds.getCenter().x;
-        float ylen = (bounds.getRange().y) / zoom / 2;
-//        float ycenter = bounds.getCenter().y;
-        float zlen = (bounds.getRange().z) / zoom / 2;
-//        float zcenter = bounds.getCenter().z;
-        bounds.setZmin(-zlen);
-        bounds.setZmax(zlen);
-        bounds.setXmin(xcenter - xlen);
-        bounds.setXmax(xcenter + xlen);
-        bounds.setYmin(ycenter - ylen);
-        bounds.setYmax(ycenter + ylen);
+        float zoom = currentZoom/factor;
+        chart.getView().zoom(factor,true,true);
+//        BoundingBox3d bounds = chart.getView().getBounds();
+//        float xlen = (bounds.getRange().x) / zoom / 2;
+////        float xcenter = bounds.getCenter().x;
+//        float ylen = (bounds.getRange().y) / zoom / 2;
+////        float ycenter = bounds.getCenter().y;
+//        float zlen = (bounds.getRange().z) / zoom / 2;
+////        float zcenter = bounds.getCenter().z;
+//        bounds.setZmin(-zlen);
+//        bounds.setZmax(zlen);
+//        bounds.setXmin(xcenter - xlen);
+//        bounds.setXmax(xcenter + xlen);
+//        bounds.setYmin(ycenter - ylen);
+//        bounds.setYmax(ycenter + ylen);
         currentZoom = factor;
-//        System.out.println(chart.getAWTView().getAxe().getCenter());
-        chart.getView().shoot();
-        chart.getView().computeScaledViewBounds();
-//        System.out.println(chart.getAWTView().getAxe().getBoxBounds());
-//        chart.getView().updateBoundsForceUpdate(true);//don't call this, this will reset rendering
+        
     }
-
+    
     public void move(float x, float y, float z) {
         BoundingBox3d bounds = chart.getView().getBounds();
         Coord3d range_ = bounds.getRange();
@@ -284,9 +275,19 @@ public class RenderModel {
         bounds.setZmin(minZ + range.z * z - range_.z / 2);
         bounds.setZmax(minZ + range.z * z + range_.z / 2);
         chart.getView().shoot();
-        chart.getView().computeScaledViewBounds();
-        System.out.println(chart.getAWTView().getAxe().getBoxBounds());
-        System.out.println(bounds);
+//        chart.getAWTView().getBounds().setXmax(range_.x / 2);
+//        chart.getAWTView().getBounds().setXmin(range_.x / -2);
+//        chart.getAWTView().getBounds().setYmax(range_.y / 2);
+//        chart.getAWTView().getBounds().setYmin(range_.y / -2);
+//        chart.getAWTView().getBounds().setZmax(range_.z / 2);
+//        chart.getAWTView().getBounds().setXmin(range_.z / -2);
+//        chart.getView().getCanvas().forceRepaint();
+//        chart.getAWTView().getBounds().setXmax(minX + range.x * x - range_.x / 2);
+//        chart.getAWTView().getBounds().setXmin(minX + range.x * x + range_.x / 2);
+        
+//        System.out.println(chart.getAWTView().getAxe().getBoxBounds());
+//        System.out.println(bounds);
+//        chart.getAWTView().getAxe().getWholeBounds().getVertices().forEach();
     }
 
     public void repaint() {

@@ -12,6 +12,10 @@
             <url>http://maven.jzy3d.org/snapshots</url>
         </repository>
         <repository>
+            <id>repo</id>
+            <url>file:///${project.basedir}/repo</url>
+        </repository>
+        <repository>
             <id>jzy3d-releases</id>
             <name>Jzy3d Releases</name>
             <url>http://maven.jzy3d.org/releases</url>
@@ -26,16 +30,6 @@
             <groupId>com.github.lendle1028</groupId>
             <artifactId>N2fProxy</artifactId>
             <version>837a9fcc16</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jzy3d</groupId>
-            <artifactId>jzy3d-javafx</artifactId>
-            <version>1.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jzy3d</groupId>
-            <artifactId>jzy3d-api</artifactId>
-            <version>1.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -77,11 +71,27 @@
             <artifactId>controlsfx</artifactId>
             <version>11.1.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.jzy3d</groupId>
+            <artifactId>jzy3d-javafx</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jzy3d</groupId>
+            <artifactId>jzy3d-api</artifactId>
+            <version>1.0.3a</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>2.1</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
     </properties>
     <build>
         <plugins>
