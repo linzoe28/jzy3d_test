@@ -31,6 +31,7 @@ public class ColorPaintingModel {
 
     //for EFFECTIVE_POINTS
     private Vertex selectedEffectivePoint = null;
+    private List<Point> renderedEffectivePoints=new ArrayList<>();
     //////////////////////
 
     public ColorPaintingModel(Context context) {
@@ -83,6 +84,10 @@ public class ColorPaintingModel {
         if (extremeValuePoint != null) {
             context.getRenderModel().getChart().getScene().remove(extremeValuePoint);
         }
+        for(Point point : renderedEffectivePoints){
+            context.getRenderModel().getChart().getScene().remove(point);
+        }
+        renderedEffectivePoints.clear();
         if (colorPaintingMode.equals(ColorPaintingMode.RAINBOW)) {
             double gap = (rcsThresholdForHighlight - colorCubes.get(0).getRcs()) / 5;
             rcsGapForRainbowLevels=gap;
@@ -151,6 +156,7 @@ public class ColorPaintingModel {
                 ((EffectivePointColorPainter)painter).setSelectedVertex(selectedEffectivePoint);
                 painter.paint(i, c);
                 context.getRenderModel().getChart().getScene().add(effectivePoint);
+                renderedEffectivePoints.add(effectivePoint);
             }
         }
     }

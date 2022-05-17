@@ -2,15 +2,21 @@ package jzy_3d_sample.ui;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 import jzy_3d_sample.model.ColorPaintingMode;
 import jzy_3d_sample.model.ColorPaintingModel;
+import jzy_3d_sample.model.EffectivePointModel;
 import jzy_3d_sample.model.Vertex;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -22,15 +28,56 @@ public class AnglePanelController {
 
     @FXML
     private ListView<?> anglelist;
-
     @FXML
-    private ListView<Vertex> effective_point_list;
+    private TableView<EffectivePointModel> effectivePointsTable;
+
     private Context context = null;
 
     private ToggleSwitch toggleSwitch = null;
 
     public void init(Context context) {
         this.context = context;
+        TableColumn xColumn=new TableColumn("X");
+        xColumn.setCellValueFactory(new PropertyValueFactory<EffectivePointModel, Double>("x"));
+        TableColumn yColumn=new TableColumn("Y");
+        yColumn.setCellValueFactory(new PropertyValueFactory<EffectivePointModel, Double>("y"));
+        TableColumn zColumn=new TableColumn("Z");
+        yColumn.setCellValueFactory(new PropertyValueFactory<EffectivePointModel, Double>("z"));
+        TableColumn rcsColumn=new TableColumn("RCS");
+        rcsColumn.setCellValueFactory(new PropertyValueFactory<EffectivePointModel, Double>("rcs"));
+        rcsColumn.setSortType(TableColumn.SortType.DESCENDING);
+        rcsColumn.setSortable(true);
+        effectivePointsTable.getColumns().addAll(xColumn, yColumn, zColumn, rcsColumn);
+        effectivePointsTable.setItems(FXCollections.observableArrayList());
+        effectivePointsTable.getSortOrder().add(rcsColumn);
+        xColumn.setCellFactory(new Callback<TableColumn<EffectivePointModel, Double>, TableCell<EffectivePointModel, Double>>() {
+
+            @Override
+            public TableCell<EffectivePointModel, Double> call(TableColumn<EffectivePointModel, Double> param) {
+                return new EffectivePointTableCell<>();
+            }
+        });
+        yColumn.setCellFactory(new Callback<TableColumn<EffectivePointModel, Double>, TableCell<EffectivePointModel, Double>>() {
+
+            @Override
+            public TableCell<EffectivePointModel, Double> call(TableColumn<EffectivePointModel, Double> param) {
+                return new EffectivePointTableCell<>();
+            }
+        });
+        zColumn.setCellFactory(new Callback<TableColumn<EffectivePointModel, Double>, TableCell<EffectivePointModel, Double>>() {
+
+            @Override
+            public TableCell<EffectivePointModel, Double> call(TableColumn<EffectivePointModel, Double> param) {
+                return new EffectivePointTableCell<>();
+            }
+        });
+        rcsColumn.setCellFactory(new Callback<TableColumn<EffectivePointModel, Double>, TableCell<EffectivePointModel, Double>>() {
+
+            @Override
+            public TableCell<EffectivePointModel, Double> call(TableColumn<EffectivePointModel, Double> param) {
+                return new EffectivePointTableCell<>();
+            }
+        });
     }
 
     @FXML
@@ -67,8 +114,8 @@ public class AnglePanelController {
 
                     @Override
                     public void runBeforeWorkerThread() {
-                        if (effective_point_list.getSelectionModel().getSelectedIndex() == -1) {
-                            effective_point_list.getSelectionModel().select(0);
+                        if (effectivePointsTable.getSelectionModel().getSelectedIndex() == -1) {
+                            effectivePointsTable.getSelectionModel().select(0);
                         }
                     }
                 };
@@ -90,9 +137,10 @@ public class AnglePanelController {
         this.angleSelectionHandler = angleSelectionHandler;
     }
 
-    public ListView<Vertex> getEffective_point_list() {
-        return effective_point_list;
+    public TableView<EffectivePointModel> getEffectivePointsTable() {
+        return effectivePointsTable;
     }
+
 
     @FXML
     void onShowButtonClicked(ActionEvent event) {
@@ -100,6 +148,30 @@ public class AnglePanelController {
         if (this.angleSelectionHandler != null) {
             this.angleSelectionHandler.angleSelectionChanged(anglelist.getSelectionModel().getSelectedIndex());
         }
+    }
+    
+    @FXML
+    void onShow_EffectivePoint2(ActionEvent event) {
+        BackgroundRunner runner = new BackgroundRunner(context.getSouthpanelController()) {
+            @Override
+            public void runInWorkerThread() {
+                context.getColorPaintingModel().setColorPaintingMode(ColorPaintingMode.EFFECTIVE_POINTS);
+                EffectivePointModel model=effectivePointsTable.getSelectionModel().getSelectedItem();
+                context.getColorPaintingModel().setSelectedEffectivePoint(new Vertex(model.getX(),model.getY(), model.getZ()));
+                context.resetColor();
+            }
+
+            @Override
+            public void runInUIThread() {
+            }
+
+            @Override
+            public void runBeforeWorkerThread() {
+                toggleSwitch.setSelected(true);
+            }
+
+        };
+        runner.start();
     }
 
     @FXML
@@ -109,7 +181,7 @@ public class AnglePanelController {
             @Override
             public void runInWorkerThread() {
                 context.getColorPaintingModel().setColorPaintingMode(ColorPaintingMode.EFFECTIVE_POINTS);
-                context.getColorPaintingModel().setSelectedEffectivePoint(effective_point_list.getSelectionModel().getSelectedItem());
+                context.getColorPaintingModel().setSelectedEffectivePoint(effectivePointsTable.getSelectionModel().getSelectedItem().getVertex());
                 context.resetColor();
             }
 

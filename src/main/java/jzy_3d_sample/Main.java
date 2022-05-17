@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,18 +54,15 @@ import jzy_3d_sample.ui.AnglePanelController;
 import jzy_3d_sample.ui.AngleSelectionHandler;
 import jzy_3d_sample.ui.BackgroundRunner;
 import jzy_3d_sample.model.ColorPaintingModel;
+import jzy_3d_sample.model.EffectivePointModel;
 import jzy_3d_sample.ui.Context;
-import jzy_3d_sample.ui.EffectivePointHandler;
 import jzy_3d_sample.ui.FileOpenObjController;
 import jzy_3d_sample.ui.LegendController;
 import jzy_3d_sample.ui.RCSvalueController;
-import jzy_3d_sample.ui.RainbowColorPainter;
 import jzy_3d_sample.ui.SouthpanelController;
 import jzy_3d_sample.ui.ZoomPanelController;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.complex.Complex;
-import org.jzy3d.colors.Color;
-import org.jzy3d.plot3d.primitives.Point;
 
 /**
  *
@@ -221,7 +217,15 @@ public class Main extends Application implements AngleSelectionHandler, Context 
                                     for (Cube c : subCubes) {
                                         effectivePoints.add(c.getEffectivePoint());
                                     }
-                                    anglePanelController.getEffective_point_list().setItems(effectivePoints);
+                                    //anglePanelController.getEffective_point_list().setItems(effectivePoints);
+                                    
+                                    List<EffectivePointModel> effectivePointModels=new ArrayList<>();
+                                    for (Cube c : subCubes) {
+                                        effectivePointModels.add(new EffectivePointModel(c.getEffectivePoint().x, c.getEffectivePoint().y, c.getEffectivePoint().z, c.getRcs()));
+                                    }
+                                    Collections.sort(effectivePointModels);
+                                    anglePanelController.getEffectivePointsTable().setItems(FXCollections.observableArrayList(effectivePointModels));
+                 
                                     //顯示RCSTotal
                                     southpanelController.setTextBeforeValue(RCSTotal);
                                     resetSlider();
@@ -238,6 +242,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
                                             }
                                         }
                                     });
+//                                    anglePanelController.getEffectivePointsTable().sort();
 
                                 }
 
@@ -350,7 +355,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
 
             BorderPane menuBarContainer = new BorderPane();
             menuBarContainer.setTop(menuBar);
-            scene = new Scene(menuBarContainer, 1100, 768);
+            scene = new Scene(menuBarContainer, 1400, 900);
             container = new BorderPane();
             menuBarContainer.setCenter(container);
 
@@ -380,6 +385,7 @@ public class Main extends Application implements AngleSelectionHandler, Context 
             anglePanelController = anglepanelFXMLLoader.getController();
             anglePanelController.setAngleSelectionHandler(this);
             anglePanelController.init(this);
+            anglepanelRoot.setPrefWidth(400);
             container.setLeft(anglepanelRoot);
 
             FXMLLoader southpanelFxmlLoader = new FXMLLoader(getClass().getResource("/fxml/southpanel.fxml"));
